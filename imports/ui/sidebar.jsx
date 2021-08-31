@@ -83,8 +83,6 @@ export default function Menu( props ) {
 }, [match.params.folderID, location.pathname, language, myFolders]);
 */
 
-  console.log(tags);
-
   return (
     <Sidebar>
             {
@@ -179,7 +177,7 @@ export default function Menu( props ) {
             ))
         }
         <AddTag />
-asdads
+
       <Modal isOpen={tagEdit} toggle={toggleTagEdit}>
         <ModalBody>
           <EditTag {...props} tag={selectedTag} closeSelf={toggleTagEdit}/>
