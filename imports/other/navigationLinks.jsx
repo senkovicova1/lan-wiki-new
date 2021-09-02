@@ -3,22 +3,20 @@ export const login = "/login";
 export const editCurrentUser = "/user/edit/";
 
 //notes
-export const noteAdd = "/notes/add";
-export const noteDetail = "/notes/:noteID";
-export const noteEdit = "/notes/:noteID/edit";
+export const noteAdd = "/:notebookID/:tagID/notes/add";
+export const noteDetail = "/:notebookID/:tagID/notes/:noteID";
+export const noteEdit = "/:notebookID/:tagID/notes/:noteID/edit";
 
 //archives
 export const archivedNotebooksList = "/archived/list";
-export const archivedNotesList = "/archived/:notebookID/list";
+export const archivedNotesList = "/archived/:notebookID";
 
 //notebooks
-export const notebookAdd = "/notebooks/add";
-export const notesList = "/notebooks/:notebookID/list";
-export const notebookEdit = "/notebooks/:notebookID/edit";
+export const notebookAdd = "/:notebookID/:tagID/add";
+export const notesList = "/:notebookID/:tagID/list";
+export const notebookEdit = "/:notebookID/:tagID/edit";
 
 export const getLink = (address, arguments) => {
-  if (arguments){
-  const {notebookID, noteID} = arguments;
   switch (address) {
     case "login":
       return "/login";
@@ -27,34 +25,37 @@ export const getLink = (address, arguments) => {
       return "/user/edit";
       break;
     case "noteAdd":
-      return "/notes/add";
+      return "/:notebookID/:tagID/notes/add";
       break;
     case "noteDetail":
-      return `/notes/${noteID}`;
+      return `/:notebookID/:tagID/notes/:noteID`;
       break;
     case "noteEdit":
-      return `/notes/${noteID}/edit`;
+      return `/:notebookID/:tagID/notes/:noteID/edit`;
       break;
     case "archivedNotebooksList":
       return `/archived/list`;
       break;
     case "archivedNotesList":
-      return `/archived/${notebookID}/list`;
+      return `/archived/:notebookID`;
       break;
     case "notebookAdd":
-      return `/notebooks/add`;
+      return `/:notebookID/:tagID/add`;
       break;
     case "notesList":
-      return `/notebooks/${notebookID}/list`;
+      return `/:notebookID/:tagID/list`;
       break;
     case "notebookEdit":
-      return `/notebooks/${notebookID}/edit`;
+      return `/:notebookID/:tagID/edit`;
       break;
     default:
-      return `/notebooks/all-notebooks/list`;
+      return `/all-notebooks/all-tags`;
       break;
     }
-  }
+}
+
+export const getGoToLink = (address, arguments) => {
+  const {notebookID, noteID, tagID} = arguments;
   switch (address) {
     case "login":
       return "/login";
@@ -63,31 +64,31 @@ export const getLink = (address, arguments) => {
       return "/user/edit";
       break;
     case "noteAdd":
-      return "/notes/add";
+      return `/${notebookID}/${tagID}/notes/add`;
       break;
     case "noteDetail":
-      return `/notes/:noteID`;
+      return `/${notebookID}/${tagID}/notes/${noteID}`;
       break;
     case "noteEdit":
-      return `/notes/:noteID/edit`;
+      return `/${notebookID}/${tagID}/notes/${noteID}/edit`;
       break;
     case "archivedNotebooksList":
       return `/archived/list`;
       break;
     case "archivedNotesList":
-      return `/archived/:notebookID/list`;
+      return `/archived/${notebookID}`;
       break;
     case "notebookAdd":
-      return `/notebooks/add`;
+      return `/${notebookID}/${tagID}/add`;
       break;
     case "notesList":
-      return `/notebooks/:notebookID/list`;
+      return `/${notebookID}/${tagID}/list`;
       break;
     case "notebookEdit":
-      return `/notebooks/:notebookID/edit`;
+      return `/${notebookID}/${tagID}/edit`;
       break;
     default:
-      return `/notebooks/all-notebooks/list`;
+      return `/all-notebooks/all-tags/list`;
       break;
     }
 }

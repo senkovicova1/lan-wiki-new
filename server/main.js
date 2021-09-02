@@ -14,5 +14,8 @@ import {
   TagsCollection
 } from '/imports/api/tagsCollection';
 import {
+  ImagesCollection
+} from '/imports/api/imagesCollection';
+import {
   UsersCollection
 } from '/imports/api/usersCollection';

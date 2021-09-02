@@ -11,7 +11,7 @@ import {
 
 import {
   uint8ArrayToImg
-} from '../../other/helperFunctions';
+} from '/imports/other/helperFunctions';
 
 export default function CKEditorWithFileUpload( props ) {
 
@@ -19,7 +19,6 @@ export default function CKEditorWithFileUpload( props ) {
     title,
     text,
     setText,
-    note,
     buttonId
   } = props;
 
@@ -35,7 +34,7 @@ export default function CKEditorWithFileUpload( props ) {
     <section  className="row-notes">
       <label>{title}</label>
       <div className="text">
-        <div className="main" style={note ? {} : {width: "100%", padding: "0px"}}>
+        <div className="main" style={{width: "100%"}}>
           <input
             type='file'
             id={`file-input-for-${buttonId}`}
@@ -73,12 +72,6 @@ export default function CKEditorWithFileUpload( props ) {
             }}
             />
         </div>
-        {
-          note &&
-        <div className="note">
-          {note}
-        </div>
-      }
       </div>
     </section>
   );

@@ -14,18 +14,16 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setNotebooks } from '/imports/redux/notebooksSlice';
-//import { setNotes } from '/imports/redux/notesSlice';
+import { setNotes } from '/imports/redux/notesSlice';
 import { setTags } from '/imports/redux/tagsSlice';
 import { setUsers } from '/imports/redux/usersSlice';
 
 import {
   NotebooksCollection
 } from '/imports/api/notebooksCollection';
-/*
 import {
   NotesCollection
 } from '/imports/api/notesCollection';
-*/
 import {
   TagsCollection
 } from '/imports/api/tagsCollection';
@@ -33,9 +31,14 @@ import {
 import Reroute from './reroute';
 import Header from './header';
 import Login from './login';
+import Breadcrumbs from './breadcrumbs';
 import EditUserContainer from './users/editUserContainer';
 import AddNotebook from '/imports/ui/notebooks/addNotebookContainer';
 import EditNotebook from '/imports/ui/notebooks/editNotebookContainer';
+import AddNote from '/imports/ui/notes/addContainer';
+import EditNote from '/imports/ui/notes/editContainer';
+import NotesList from '/imports/ui/notes/list';
+import NoteDetail from '/imports/ui/notes/view';
 
 import {
   uint8ArrayToImg
@@ -65,7 +68,6 @@ export default function MainPage( props ) {
   }, [currentUser]);
 
   const notebooks = useTracker( () => NotebooksCollection.find( { users:  { $elemMatch: { _id: userId, active: true } }, archived: false } ).fetch() );
-
   useEffect(() => {
     if (notebooks.length > 0){
       dispatch(
@@ -98,7 +100,7 @@ export default function MainPage( props ) {
   const tags = useTracker( () => TagsCollection.find( {} ).fetch() );
   useEffect(() => {
     if (tags.length > 0){
-      dispatch(setTags(tags));
+      dispatch(setTags(tags.map(tag => ({...tag, label: tag.name, value: tag._id}))));
     }
   }, [tags]);
 
@@ -118,22 +120,16 @@ export default function MainPage( props ) {
     );
   }, [users]);
 
-/*
-  const schemes = useTracker( () => SchemesCollection.find( { company:  { $in: companiesIds} } ).fetch() );
-  useEffect(() => {
-    if (schemes.length > 0){
-      dispatch(setSchemes(schemes));
-    }
-  }, [schemes]);
-
-    const itemsIds = items.map(item => item._id);
-    const addresses = useTracker( () => AddressesCollection.find( { item: {$in: itemsIds}} ).fetch() );
+    const notebookIds = notebooks.map(notebook => notebook._id);
+    const notes = useTracker( () => NotesCollection.find( { notebook: {$in: notebookIds}} ).fetch() );
     useEffect(() => {
-      if (addresses.length > 0){
-        dispatch(setAddresses(addresses));
+      if (notes.length > 0){
+        dispatch(setNotes(notes.map(note => ({
+            ...note,
+            tags: note.tags.map(t1 => ({...tags.find(t2 => t2._id === t1)}))
+        }))));
       }
-    }, [addresses]);
-*/
+    }, [notes, tags]);
 
   const [ search, setSearch ] = useState( "" );
   const [ openSidebar, setOpenSidebar ] = useState( false );
@@ -183,6 +179,26 @@ export default function MainPage( props ) {
         {
           currentUser &&
           <Content>
+
+            <Route
+              exact
+              path={[
+                "/",
+                getLink("noteAdd"),
+                getLink("noteDetail"),
+                getLink("noteEdit"),
+                getLink("archivedNotebooksList"),
+                getLink("archivedNotesList"),
+                getLink("notebookAdd"),
+                getLink("notesList"),
+                getLink("notebookEdit"),
+              ]}
+              render={(props) => (
+                <Breadcrumbs
+                  {...props}
+                  />
+              )}
+              />
             <div style={{height: "100%", position: "relative"}}>
 
             <Route
@@ -192,6 +208,23 @@ export default function MainPage( props ) {
                 <EditUserContainer {...props} />
               )}
               />
+
+            <Route exact path={getLink("noteAdd")} component={AddNote}/>
+
+            <Route exact path={getLink("noteEdit")} component={EditNote}/>
+
+              <Route
+                exact
+                path={[getLink("notesList"), getLink()]}
+                render={(props) => (
+                  <NotesList
+                    {...props}
+                    search={search}
+                    />
+                )}
+              />
+
+            <Route exact path={getLink("noteDetail")} component={NoteDetail}/>
 
             <Route exact path={getLink("notebookAdd")} component={AddNotebook}/>
 
@@ -230,16 +263,7 @@ export default function MainPage( props ) {
                 <Route exact path={getLink("addItem")} component={ItemAdd}/>
                 <Route exact path={getLink("editItem")} component={ItemEdit}/>
 
-                  <Route
-                    exact
-                    path={[getLink("listItemsInCategory"), getLink()]}
-                    render={(props) => (
-                      <ItemsList
-                        {...props}
-                        search={search}
-                        />
-                    )}
-                  />
+
 
                 <Route exact path={getLink("viewItem")} component={ItemView}/>
 

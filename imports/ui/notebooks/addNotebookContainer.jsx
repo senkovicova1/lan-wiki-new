@@ -7,10 +7,12 @@ import {
 import NotebookForm from './notebookForm';
 
 import {
-getLink
+getGoToLink
 } from "/imports/other/navigationLinks";
 
 export default function AddNotebookContainer( props ) {
+
+  const {tagID} = props.match.params;
 
   const addNewNotebook = (  name, archived, users ) => {
     NotebooksCollection.insert( {
@@ -19,7 +21,7 @@ export default function AddNotebookContainer( props ) {
       if (error){
         console.log(erro);
       } else {
-        props.history.push(getLink("notesList", {notebookID: _id}) );
+        props.history.push(getGoToLink("notesList", {notebookID: _id, tagID}) );
       }
     } );
   }

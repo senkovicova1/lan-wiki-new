@@ -71,17 +71,12 @@ const userId = Meteor.userId();
    return users.map(user =>
         {
         let newUser = {...dbUsers.find(u => u._id === user._id), ...user};
-        newUser.img = uint8ArrayToImg(newUser.avatar);
         return newUser;
       });
   }, [users, dbUsers]);
 
   const usersToSelect = useMemo(() => {
-    return dbUsers.filter(user => !users.find(u => u._id === user._id)).map(user => {
-      const img = uint8ArrayToImg(user.profile.avatar);
-      return {...user.profile, _id: user._id, label: `${user.profile.name} ${user.profile.surname}`, value: user._id, img};
-    }
-  );
+    return dbUsers.filter(user => !users.find(u => u._id === user._id));
   }, [dbUsers, users]);
 
   document.onkeydown = function (e) {
@@ -176,7 +171,7 @@ const userId = Meteor.userId();
                         id="read"
                         name="read"
                         type="checkbox"
-                        checked={user.viewItem}
+                        checked={user.viewItems}
                         onChange={(e) =>  {
                           const newUsers = users.map(u => {
                             if (u._id === user._id){
@@ -193,7 +188,7 @@ const userId = Meteor.userId();
                         id="read"
                         name="read"
                         type="checkbox"
-                        checked={user.editItem}
+                        checked={user.editItems}
                         onChange={(e) =>  {
                           const newUsers = users.map(u => {
                             if (u._id === user._id){

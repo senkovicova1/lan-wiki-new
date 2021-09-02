@@ -251,6 +251,10 @@ export const Content = styled.main `
   }
 `;
 
+export const Breadcrumbs = styled.div`
+width: 100%;
+`;
+
 export const Sidebar = styled.section `
   background-color: ${backgroundColour};
   position: absolute;
@@ -433,40 +437,31 @@ export const List = styled.section `
   width: 100%;
   padding: 0em ${inputOffset};
 
-  span.message{
-    margin: 0em ${inputOffset};
+  &>div{
+    display: flex;
     line-height: 3em;
+    margin: 0em;
+    border-bottom: 1px solid #d6d6d6;
   }
 
-  &>table{
-    width: 100%;
-    tr{
-      line-height: 2.5em;
+  &>div:hover{
+    cursor: pointer;
+    color: ${basicBlueColour};
+  }
+
+  &>div>span.title{
+
+  }
+
+  &>div>div.tags{
+    margin-left: auto;
+  }
+
+    &>div>div.tags>span.tag{
+      color: white;
+      padding: 0.3em;
+      margin-left: 0.3em;
     }
-  }
-
-  &>table>thead>tr>th{
-    font-weight: 400;
-      padding: 0px ${inputOffset};
-  }
-
-  &>table>tbody>tr{
-    background-color: white;
-    border-bottom: 1px solid ${backgroundColour};
-    color: #7d7d7d;
-  }
-
-  &>table>tbody>tr:hover{
-   cursor: pointer;
-  }
-
-  &>table>tbody>tr>td{
-    padding: 0px ${inputOffset};
-    p{
-      margin: 0px;
-      line-height: 2em;
-    }
-  }
 
 `;
 
@@ -554,7 +549,7 @@ section {
         margin: 0px;
       }
     }
-    img:not(.scheme) {
+    img {
       width: auto;
       max-width: 500px;
       height: auto;
@@ -582,48 +577,24 @@ section {
     }
   }
 
-  section.input-row{
-    display: flex;
-    max-width: 50%;
-  }
+  section.color-picker{
+    label{
+      display: block;
+    }
 
-  section.input-row>div{
-    margin-right: 1em;
-  }
-
-  section.row{
-    div{
-      padding: 0px !important;
+    div.colours{
       display: flex;
-      width: -webkit-fill-available;
-
-      div.dates{
-        display: inline-block;
-        text-align: end;
-        span{
-          display: block;
-          font-size: 0.8em;
-          color: #7d7d7d;
-          span{
-            font-weight
-          }
-        }
-      }
+      margin-bottom: 0.6em;
+      justify-content: space-between;
+      align-items: center;
     }
   }
-  
-      section.color-picker{
-        label{
-          display: block;
-        }
 
-        div.colours{
-          display: flex;
-          margin-bottom: 0.6em;
-          justify-content: space-between;
-          align-items: center;
-        }
-      }
+ span.tag{
+   color: white;
+   padding: 0.3em;
+   margin-right: 0.3em;
+ }
 
 `;
 

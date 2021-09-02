@@ -7,7 +7,7 @@ import {
 import UserForm from './userForm';
 
 import {
-  getLink
+  getGoToLink
 } from "/imports/other/navigationLinks";
 
 export default function EditUserContainer( props ) {
@@ -26,11 +26,11 @@ export default function EditUserContainer( props ) {
         profile: data
       }
     });
-    history.push(getLink("", {} ));
+    history.push(getGoToLink(""));
   };
 
   const onCancel = () => {
-    history.push(getLink("", {} ));
+    history.push(getGoToLink(""));
   }
 
   return (

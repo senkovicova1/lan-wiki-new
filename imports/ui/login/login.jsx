@@ -19,7 +19,7 @@ import {
 
 import Loader from "../other/loadingScreen";
 import {
-  getLink
+  getGoToLink
 } from "/imports/other/navigationLinks";
 
 export default function LoginForm( props ) {
@@ -46,7 +46,7 @@ export default function LoginForm( props ) {
           setShowLoading(false);
         }
       });
-    history.push(getLink("", {}));
+    history.push(getGoToLink(""));
   };
 
   const handleForgotPassword = () => {

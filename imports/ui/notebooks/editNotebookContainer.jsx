@@ -13,7 +13,7 @@ import {
 import NotebookForm from './notebookForm';
 
 import {
-getLink
+getGoToLink
 } from "/imports/other/navigationLinks";
 
 export default function EditNotebookContainer( props ) {
@@ -25,12 +25,12 @@ export default function EditNotebookContainer( props ) {
 
   const userId = Meteor.userId();
 
-  const {notebookID} = match.params;
+  const {notebookID, tagID} = match.params;
   const notebooks = useSelector((state) => state.notebooks.value);
   const notebook = useMemo(() => {
     return  notebooks.find(notebook => notebook._id === notebookID);
   }, [notebooks, notebookID]);
-
+  
 /*
     useEffect( () => {
       if (folder){
@@ -53,7 +53,7 @@ export default function EditNotebookContainer( props ) {
         ...data
       }
     } );
-    props.history.push(getLink("notesList", {notebookID: notebookID}) );
+    props.history.push(getGoToLink("notesList", {notebookID, tagID}) );
   };
 
   const removeNotebook = () => {
@@ -61,7 +61,7 @@ export default function EditNotebookContainer( props ) {
       NotebooksCollection.remove( {
         _id: notebookID
       } );
-      props.history.push(getLink("", {}));
+      props.history.push(getGoToLink(""));
     }
   }
 

@@ -21,7 +21,7 @@ import {
 } from 'meteor/react-meteor-data';
 */
 import {
-getLink
+getGoToLink
 } from "/imports/other/navigationLinks";
 
 import {
@@ -41,7 +41,7 @@ export default function Menu( props ) {
   } = props;
 
   const userId = Meteor.userId();
-  const {notebookID} = match.params;
+  const {notebookID, tagID} = match.params;
   const notebooks = useSelector((state) => state.notebooks.value);
   const tags = useSelector((state) => state.tags.value);
 
@@ -85,6 +85,21 @@ export default function Menu( props ) {
 
   return (
     <Sidebar>
+      {notebookID !== "all-notebooks" &&
+      <LinkButton
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd", {notebookID, tagID}));}}
+        >
+        <img
+          className="icon"
+          style={{marginRight: "0.6em"}}
+          src={PlusIcon}
+          alt=""
+          />
+        <span>
+          Note
+        </span>
+      </LinkButton>
+    }
             {
         notebooks.map(notebook =>  (
           <div className="nav" key={notebook.value}>
@@ -92,7 +107,7 @@ export default function Menu( props ) {
               className={notebook.value === notebookID ? "active" : ""}
               style={notebook.value === "all-notebooks" ? {width: "100%"} : {}}
               key={notebook.value}
-              to={getLink("notesList", {notebookID: notebook._id})}
+              to={getGoToLink("notesList", {notebookID: notebook.value, tagID})}
               onClick={() => {
                 if (/Mobi|Android/i.test(navigator.userAgent)) {
                   closeSelf();
@@ -104,7 +119,7 @@ export default function Menu( props ) {
             {
               notebook.value !== "all-notebooks" &&
             <LinkButton
-              onClick={(e) => {e.preventDefault(); history.push(getLink("notebookEdit", {notebookID: notebook.value}))}}
+              onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookEdit", {notebookID: notebook.value, tagID}))}}
               >
               <img
                 className="icon"
@@ -117,7 +132,7 @@ export default function Menu( props ) {
           ))
       }
       <LinkButton
-        onClick={(e) => {e.preventDefault(); history.push(getLink("notebookAdd", {}));}}
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookAdd"));}}
         >
         <img
           className="icon"
@@ -132,10 +147,10 @@ export default function Menu( props ) {
       <hr/>
           <div className="nav" key={"all-tags"}>
             <NavLink
-              className={"all-tags" === notebookID ? "active" : ""}
+              className={"all-tags" === tagID ? "active" : ""}
               style={{width: "100%"}}
               key={"all-tags"}
-              to={getLink("", {})}
+              to={getGoToLink("notesList", {notebookID, tagID: "all-tags"})}
               onClick={() => {
                 if (/Mobi|Android/i.test(navigator.userAgent)) {
                   closeSelf();
@@ -152,7 +167,7 @@ export default function Menu( props ) {
                 className={tag.value === notebookID ? "active" : ""}
                 style={tag.value === "all-tags" ? {width: "100%"} : {}}
                 key={tag.value}
-                to={getLink("notesList", {notebookID: tag._id})}
+                to={getGoToLink("notesList", {notebookID, tagID: tag.value})}
                 onClick={() => {
                   if (/Mobi|Android/i.test(navigator.userAgent)) {
                     closeSelf();
