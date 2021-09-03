@@ -31,19 +31,6 @@ export default function EditNotebookContainer( props ) {
     return  notebooks.find(notebook => notebook._id === notebookID);
   }, [notebooks, notebookID]);
   
-/*
-    useEffect( () => {
-      if (folder){
-
-        const userIsAdmin = folder.users.find(user => user._id === userId).admin;
-
-        if ( !userIsAdmin ) {
-          history.push(`/${folderID}/list`);
-        }
-      }
-
-    }, [ folderID, userId, folder ] );*/
-
   const editNotebook = ( name, archived, users ) => {
     let data = {
       name, archived, users

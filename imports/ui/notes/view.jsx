@@ -1,5 +1,6 @@
 import React, {
   useMemo,
+  useEffect
 } from 'react';
 import {
   useSelector
@@ -31,6 +32,8 @@ export default function NoteDetail( props ) {
     history
   } = props;
 
+  const userId = Meteor.userId();
+
   const {notebookID, tagID, noteID} = match.params;
 
   const notes = useSelector( ( state ) => state.notes.value );
@@ -40,6 +43,22 @@ export default function NoteDetail( props ) {
     }
     return {}
   }, [notes, noteID]);
+
+  const notebooks = useSelector((state) => state.notebooks.value);
+  const notebook = useMemo(() => {
+    return  notebooks.find(notebook => notebook._id === note.notebook);
+  }, [notebooks, note]);
+
+  useEffect(() => {
+    if (notebook){
+      const userCanViewDetail = notebook.users.find(user => user._id === userId).viewItems;
+      if (!userCanViewDetail){
+        history.goBack();
+      }
+    }
+  }, [notebook, userId]);
+
+  const userCanEdit = notebook.users.find(user => user._id === userId).editItems;
 
   return (
     <Form>
@@ -75,6 +94,8 @@ export default function NoteDetail( props ) {
               />
           </FloatingButton>
 
+          {
+          userCanEdit &&
           <FloatingButton
             onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {notebookID, tagID, noteID}));}}
             >
@@ -84,6 +105,7 @@ export default function NoteDetail( props ) {
               className="icon"
               />
           </FloatingButton>
+        }
 
     </Form>
   );

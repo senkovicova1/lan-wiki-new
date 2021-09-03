@@ -33,6 +33,7 @@ import Header from './header';
 import Login from './login';
 import Breadcrumbs from './breadcrumbs';
 import EditUserContainer from './users/editUserContainer';
+import UsersList from './users/list';
 import AddNotebook from '/imports/ui/notebooks/addNotebookContainer';
 import EditNotebook from '/imports/ui/notebooks/editNotebookContainer';
 import AddNote from '/imports/ui/notes/addContainer';
@@ -55,9 +56,9 @@ getLink
 
 export default function MainPage( props ) {
   const dispatch = useDispatch();
-/*
+
   console.log("All our amazing icons are from FlatIcon (https://www.flaticon.com/). Thank you to all creators whose icons we could use: PixelPerfect (https://www.flaticon.com/authors/pixel-perfect), Dmitri13 (https://www.flaticon.com/authors/dmitri13), Phatplus (https://www.flaticon.com/authors/phatplus), Kiranshastry (https://www.flaticon.com/authors/kiranshastry), Those Icons (https://www.flaticon.com/authors/those-icons), Google (https://www.flaticon.com/authors/google), Dave Gandy (https://www.flaticon.com/authors/dave-gandy), Tomas Knop (https://www.flaticon.com/authors/tomas-knop), Gregor Cresnar (https://www.flaticon.com/authors/gregor-cresnar), Freepik (https://www.flaticon.com/authors/freepik)");
-  */
+
 
   const currentUser = useTracker( () => Meteor.user() );
   const userId = useMemo(() => {
@@ -78,24 +79,14 @@ export default function MainPage( props ) {
           ]
         )
       );
-    }
-  }, [notebooks]);
-
-/*
-  const categories = useTracker( () => CategoriesCollection.find( {} ).fetch() );
-  useEffect(() => {
-    if (categories.length > 0){
+    } else {
       dispatch(
-        setCategories(
-          [
-          {label: "All categories", value: "all-categories"},
-          ...categories.map(category => ({...category, label: category.name, value: category._id}))
-          ]
+        setNotebooks(
+          [{label: "All notebooks", value: "all-notebooks"}]
         )
       );
     }
-  }, [categories]);
-*/
+  }, [notebooks]);
 
   const tags = useTracker( () => TagsCollection.find( {} ).fetch() );
   useEffect(() => {
@@ -161,6 +152,7 @@ export default function MainPage( props ) {
             getLink("notebookAdd"),
             getLink("notesList"),
             getLink("notebookEdit"),
+            getLink("usersList")
           ]}
           render={(props) => (
             <Header
@@ -192,6 +184,7 @@ export default function MainPage( props ) {
                 getLink("notebookAdd"),
                 getLink("notesList"),
                 getLink("notebookEdit"),
+                getLink("usersList")
               ]}
               render={(props) => (
                 <Breadcrumbs
@@ -209,7 +202,11 @@ export default function MainPage( props ) {
               )}
               />
 
+            <Route exact path={getLink("usersList")} component={UsersList}/>
+
             <Route exact path={getLink("noteAdd")} component={AddNote}/>
+
+            <Route exact path={getLink("noteDetail")} component={NoteDetail}/>
 
             <Route exact path={getLink("noteEdit")} component={EditNote}/>
 
@@ -224,7 +221,6 @@ export default function MainPage( props ) {
                 )}
               />
 
-            <Route exact path={getLink("noteDetail")} component={NoteDetail}/>
 
             <Route exact path={getLink("notebookAdd")} component={AddNotebook}/>
 

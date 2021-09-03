@@ -49,45 +49,14 @@ export default function Menu( props ) {
   const [ tagEdit, setTagEdit ] = useState(false);
   const toggleTagEdit = () => {setTagEdit(!tagEdit);};
 
-//  const [ search, setSearch ] = useState( "" );
-//  const [ showClosed, setShowClosed ] = useState(false);
-//  const [ openEdit, setOpenEdit ] = useState(false);
-//  const [ folderListOpen, setFolderListOpen ] = useState(false);
-//  const [ selectedFolder, setSelectedFolder ] = useState({label: translations[language].allFolders, value: "all"});
-
-/*  const myFolders = useMemo(() => {
-    let newMyFolders = folders.filter(folder => folder.users.find(user => user._id === userId));
-    newMyFolders = newMyFolders.map(folder => ({...folder, label: folder.name, value: folder._id}));
-    return newMyFolders;
-  }, [userId, folders]);*/
-/*
-  const myActiveFolders = useMemo(() => {
-    return [{label: translations[language].allFolders, value: "all"}, ...myFolders.filter(folder => !folder.archived), {label: translations[language].archivedFolders, value: "archived"}];
-  }, [myFolders]);*/
-/*
-  useEffect(() => {
-    if (!match.params.folderID || match.params.folderID === "all"){
-      setSelectedFolder({label: translations[language].allFolders, value: "all"});
-      setBackground("#0078d4");
-    } else if (location.pathname == "/folders/archived"){
-      setSelectedFolder({label: translations[language].archivedFolders, value: "archived"});
-      setBackground("#0078d4");
-    } else if (myFolders && myFolders.length > 0){
-      const newFolder = myFolders.find(folder => folder._id === match.params.folderID);
-      setBackground(newFolder.colour);
-      setSelectedFolder(newFolder);
-  } else {
-    setSelectedFolder({label: translations[language].allFolders, value: "all"});
-    setBackground("#0078d4");
-  }
-}, [match.params.folderID, location.pathname, language, myFolders]);
-*/
+const actualNotebookID = notebookID && notebookID !== "undefined" ? notebookID : "all-notebooks";
+const actualTagID = tagID && tagID !== "undefined" ? tagID : "all-tags";
 
   return (
     <Sidebar>
       {notebookID !== "all-notebooks" &&
       <LinkButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd", {notebookID, tagID}));}}
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd", {notebookID: actualNotebookID, tagID: actualTagID}));}}
         >
         <img
           className="icon"
@@ -107,7 +76,7 @@ export default function Menu( props ) {
               className={notebook.value === notebookID ? "active" : ""}
               style={notebook.value === "all-notebooks" ? {width: "100%"} : {}}
               key={notebook.value}
-              to={getGoToLink("notesList", {notebookID: notebook.value, tagID})}
+              to={getGoToLink("notesList", {notebookID: notebook.value, tagID: actualTagID})}
               onClick={() => {
                 if (/Mobi|Android/i.test(navigator.userAgent)) {
                   closeSelf();
@@ -119,7 +88,7 @@ export default function Menu( props ) {
             {
               notebook.value !== "all-notebooks" &&
             <LinkButton
-              onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookEdit", {notebookID: notebook.value, tagID}))}}
+              onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookEdit", {notebookID: notebook.value, tagID: actualTagID}))}}
               >
               <img
                 className="icon"
@@ -132,7 +101,7 @@ export default function Menu( props ) {
           ))
       }
       <LinkButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookAdd"));}}
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookAdd", {notebookID:actualNotebookID, tagID: actualTagID}));}}
         >
         <img
           className="icon"
@@ -150,7 +119,7 @@ export default function Menu( props ) {
               className={"all-tags" === tagID ? "active" : ""}
               style={{width: "100%"}}
               key={"all-tags"}
-              to={getGoToLink("notesList", {notebookID, tagID: "all-tags"})}
+              to={getGoToLink("notesList", {notebookID: actualNotebookID, tagID: "all-tags"})}
               onClick={() => {
                 if (/Mobi|Android/i.test(navigator.userAgent)) {
                   closeSelf();
@@ -167,7 +136,7 @@ export default function Menu( props ) {
                 className={tag.value === notebookID ? "active" : ""}
                 style={tag.value === "all-tags" ? {width: "100%"} : {}}
                 key={tag.value}
-                to={getGoToLink("notesList", {notebookID, tagID: tag.value})}
+                to={getGoToLink("notesList", {notebookID: actualNotebookID, tagID: tag.value})}
                 onClick={() => {
                   if (/Mobi|Android/i.test(navigator.userAgent)) {
                     closeSelf();
@@ -192,6 +161,22 @@ export default function Menu( props ) {
             ))
         }
         <AddTag />
+
+      <hr/>
+
+        <NavLink
+          className={match.path === "/users/list" ? "active" : ""}
+          style={{width: "100%"}}
+          key={"users"}
+          to={getGoToLink("usersList")}
+          onClick={() => {
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+              closeSelf();
+            }
+          }}
+          >
+          <span>Users</span>
+        </NavLink>
 
       <Modal isOpen={tagEdit} toggle={toggleTagEdit}>
         <ModalBody>

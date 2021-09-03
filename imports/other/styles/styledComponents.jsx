@@ -252,7 +252,22 @@ export const Content = styled.main `
 `;
 
 export const Breadcrumbs = styled.div`
-width: 100%;
+  width: 100%;
+  padding: 0em ${inputOffset};
+  display: flex;
+  &>span{
+    display: flex;
+    align-items: center;
+  }
+  &>span>button{
+      margin: 0em 0.3em;
+    }
+  &>span>button:last-of-type{
+    color: black !important;
+  }
+  &>span>button:first-of-type{
+    margin-left: 0px !important;
+  }
 `;
 
 export const Sidebar = styled.section `

@@ -36,6 +36,20 @@ export default function EditNoteContainer( props ) {
     return null;
   }, [notes, noteID]);
 
+    const notebooks = useSelector((state) => state.notebooks.value);
+    const notebook = useMemo(() => {
+      return  notebooks.find(notebook => notebook._id === note.notebook);
+    }, [notebooks, note]);
+
+    useEffect(() => {
+      if (notebook){
+        const userCanEditNotes = notebook.users.find(user => user._id === userId).editItems;
+        if (!userCanEditNotes){
+          history.goBack();
+        }
+      }
+    }, [notebook, userId]);
+
   const editNote = ( title, tags, body ) => {
     NotesCollection.update( noteID, {
        $set:

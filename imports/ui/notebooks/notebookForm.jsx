@@ -94,6 +94,8 @@ const userId = Meteor.userId();
     }
   }
 
+  const userCanManageUsers = !notebookId || notebookUsers.find(user => user._id === userId).manageUsers;
+
   return (
     <Form>
 
@@ -120,6 +122,8 @@ const userId = Meteor.userId();
         <label htmlFor="archived">Archived</label>
       </section>
 
+      {
+        userCanManageUsers &&
       <section>
         <label htmlFor="users">Users</label>
         <Select
@@ -131,7 +135,9 @@ const userId = Meteor.userId();
           options={usersToSelect}
           />
       </section>
-
+}
+      {
+        userCanManageUsers &&
       <section>
         <table width="100%">
           <thead>
@@ -239,6 +245,7 @@ const userId = Meteor.userId();
           </tbody>
         </table>
       </section>
+    }
 
       <ButtonCol>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>

@@ -4,7 +4,7 @@ export const editCurrentUser = "/user/edit/";
 
 //notes
 export const noteAdd = "/:notebookID/:tagID/notes/add";
-export const noteDetail = "/:notebookID/:tagID/notes/:noteID";
+export const noteDetail = "/:notebookID/:tagID/notes/:noteID/view";
 export const noteEdit = "/:notebookID/:tagID/notes/:noteID/edit";
 
 //archives
@@ -15,6 +15,9 @@ export const archivedNotesList = "/archived/:notebookID";
 export const notebookAdd = "/:notebookID/:tagID/add";
 export const notesList = "/:notebookID/:tagID/list";
 export const notebookEdit = "/:notebookID/:tagID/edit";
+
+//users
+export const usersList = "/users/list";
 
 export const getLink = (address, arguments) => {
   switch (address) {
@@ -28,7 +31,7 @@ export const getLink = (address, arguments) => {
       return "/:notebookID/:tagID/notes/add";
       break;
     case "noteDetail":
-      return `/:notebookID/:tagID/notes/:noteID`;
+      return `/:notebookID/:tagID/notes/:noteID/view`;
       break;
     case "noteEdit":
       return `/:notebookID/:tagID/notes/:noteID/edit`;
@@ -48,14 +51,17 @@ export const getLink = (address, arguments) => {
     case "notebookEdit":
       return `/:notebookID/:tagID/edit`;
       break;
+    case "usersList":
+      return `/users/list`;
+      break;
     default:
-      return `/all-notebooks/all-tags`;
+      return `/all-notebooks/all-tags/list`;
       break;
     }
 }
 
 export const getGoToLink = (address, arguments) => {
-  const {notebookID, noteID, tagID} = arguments;
+    const {notebookID, noteID, tagID} = arguments ? arguments : {};
   switch (address) {
     case "login":
       return "/login";
@@ -67,7 +73,7 @@ export const getGoToLink = (address, arguments) => {
       return `/${notebookID}/${tagID}/notes/add`;
       break;
     case "noteDetail":
-      return `/${notebookID}/${tagID}/notes/${noteID}`;
+      return `/${notebookID}/${tagID}/notes/${noteID}/view`;
       break;
     case "noteEdit":
       return `/${notebookID}/${tagID}/notes/${noteID}/edit`;
@@ -86,6 +92,9 @@ export const getGoToLink = (address, arguments) => {
       break;
     case "notebookEdit":
       return `/${notebookID}/${tagID}/edit`;
+      break;
+    case "usersList":
+      return `/users/list`;
       break;
     default:
       return `/all-notebooks/all-tags/list`;

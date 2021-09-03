@@ -4,21 +4,46 @@ import React, {
 import {
   Meteor
 } from 'meteor/meteor';
+import {
+  useSelector
+} from 'react-redux';
 
 import {
-  Breadcrumbs as StyledBreadcrumbs
+  Breadcrumbs as StyledBreadcrumbs,
+  LinkButton
 } from '/imports/other/styles/styledComponents';
+
+import {
+  getGoToLink,
+} from "/imports/other/navigationLinks";
 
 export default function Breadcrumbs( props ) {
 
   const {match, history, location} = props;
-  const {notebookId, tagID} = match.params;
+  const {notebookID, tagID} = match.params;
 
-  console.log(props);
+  const notebooks = useSelector( ( state ) => state.notebooks.value );
 
   const breadcrumbs = useMemo(() => {
-    return <span>HI</span>
-  }, [location]);
+    if (notebooks.length > 0){
+    if (match.path.includes("archived")){
+      if (match.path.includes(":notebookID")){
+        return <span><LinkButton onClick={(e) => {}}>Archived notebooks</LinkButton>><LinkButton onClick={(e) => {}}>{notebooks.find(nb => nb._id === notebookID).name}</LinkButton></span>;
+      } else {
+        return <span><LinkButton onClick={(e) => {}}>Archived notebooks</LinkButton>></span>;
+      }
+    }
+    if (match.path.includes("users") ){
+      return <span><LinkButton onClick={(e) => {}}>Users</LinkButton>></span>;
+    }
+    if (match.path.includes(":notebookID") && notebookID !== "undefined"){
+      return <span><LinkButton onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notesList", {notebookID: "all-notebooks", tagID}))}}>Notebooks</LinkButton>><LinkButton onClick={(e) => {}}>{notebooks.find(nb => nb.value === notebookID).label}</LinkButton>></span>;
+    } else {
+      return <span><LinkButton onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notesList", {notebookID: "all-notebooks", tagID}))}}>Notebooks</LinkButton>><LinkButton onClick={(e) => {}}>All notebooks</LinkButton>></span>;
+    }
+  }
+      return <span></span>;
+  }, [match.path, notebookID, notebooks]);
 
   return (
     <StyledBreadcrumbs>

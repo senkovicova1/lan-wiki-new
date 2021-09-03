@@ -26,19 +26,19 @@ export default function AddNoteContainer( props ) {
   const userId = Meteor.userId();
 
   const {notebookID, tagID} = match.params;
+  const notebooks = useSelector((state) => state.notebooks.value);
+  const notebook = useMemo(() => {
+    return  notebooks.find(notebook => notebook._id === notebookID);
+  }, [notebooks, notebookID]);
 
-/*
 useEffect(() => {
-  if (company){
-    const userCannotEdit = company.users.find(user => user._id === userId).level > 0;
-    if (userCannotEdit){
-      history.push(getGoToLink());
+  if (notebook){
+    const userCanAddNotes = notebook.users.find(user => user._id === userId).editItems;
+    if (!userCanAddNotes){
+      history.goBack();
     }
   }
-  if (!company){
-    history.push(getGoToLink());
-  }
-}, [company, userId]);*/
+}, [notebook, userId]);
 
 const addNew = ( title, tags, body ) => {
   NotesCollection.insert( {

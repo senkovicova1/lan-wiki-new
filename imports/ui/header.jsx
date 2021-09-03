@@ -1,7 +1,7 @@
 import React, {
   useState,
 //  useEffect,
-//  useMemo
+  useMemo
 } from 'react';
 import {
   Link
@@ -15,10 +15,10 @@ import Menu from './sidebar';
 import {
   useTracker
 } from 'meteor/react-meteor-data';
-/*
+
 import {
   uint8ArrayToImg
-} from '/imports/other/helperFunctions';*/
+} from '/imports/other/helperFunctions';
 import {
   PageHeader,
   LinkButton,
@@ -26,6 +26,9 @@ import {
   SearchSection,
   Input,
 } from '../other/styles/styledComponents';
+import {
+getGoToLink
+} from "/imports/other/navigationLinks";
 
 export default function Header( props ) {
 
@@ -47,32 +50,13 @@ export default function Header( props ) {
   const [ openSidebar, setOpenSidebar ] = useState(true);
 //  const [ openSearch, setOpenSearch ] = useState(true);
   const [ title, setTitle ] = useState("Lan Wiki");
-  /*
-  useEffect(() => {
-    if (location.pathname === "/folders/archived") {
-      setTitle("Archived Folders");
-    }
-    if (!folderID || folderID === "all") {
-      setTitle("TaskApp");
-    }
-    let folder = folders.find(folder => folder._id === folderID);
-    if (folder) {
-      setTitle(folder.name);
-      setBackground(folder.colour);
-    } else {
-      setTitle("TaskApp");
-      setBackground("#0078d4");
-    }
-  }, [folderID, location.pathname, folders]);
 
-  const avatar = useMemo(() => {
-    if (!currentUser || !currentUser.profile.avatar){
-      return null;
-    }
-    return uint8ArrayToImg(currentUser.profile.avatar);
-  }, [currentUser])*/
-
-//  const canEditFolder = folderID && folderID !== 'all' && folders.length > 0 ? folders.find(f => f._id === folderID).users.find(user => user._id === currentUser._id).admin : false;
+    const avatar = useMemo(() => {
+      if (!currentUser || !currentUser.profile.avatar){
+        return null;
+      }
+      return uint8ArrayToImg(currentUser.profile.avatar);
+    }, [currentUser]);
 
   return (
     <PageHeader>
@@ -133,14 +117,13 @@ export default function Header( props ) {
 */  }
 
 <section className="header-section" style={{justifyContent: "flex-end"}}>
-      {/*
+      {
         currentUser &&
-        (!folderID || folderID === "all") &&
         <LinkButton
           font="white"
           onClick={(e) => {
             e.preventDefault();
-            props.history.push("/settings");
+            props.history.push(getGoToLink("currentUserEdit"));
           }}
           >
           {
@@ -152,26 +135,7 @@ export default function Header( props ) {
             <img className="icon" src={UserIcon} alt="assignedAvatar" />
           }
         </LinkButton>
-    */  }
-
-      {/*
-        currentUser &&
-        canEditFolder &&
-        <LinkButton
-          font="white"
-          onClick={(e) => {
-            e.preventDefault();
-            setBackground("#0078d4");
-            props.history.push(`/${folderID}/edit`);
-          }}
-          >
-          <img
-            className="icon"
-            src={SettingsIcon}
-            alt="Settings icon not found"
-            />
-        </LinkButton>
-  */    }
+    }
 
       {
         currentUser &&
@@ -179,7 +143,6 @@ export default function Header( props ) {
           font="white"
           onClick={(e) => {
             e.preventDefault();
-            setBackground("#0078d4");
             props.history.push("/login");
             logout();
           }}

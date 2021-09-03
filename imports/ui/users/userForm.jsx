@@ -42,6 +42,10 @@ export default function UserForm( props ) {
   const [ errors, setErrors ] = useState( [] );
 
   useEffect( () => {
+    if (!profile){
+      setPassword1("lansystems123");
+      setPassword2("lansystems123");
+    }
     if ( profile?.name ) {
       setName( profile.name );
     } else {
