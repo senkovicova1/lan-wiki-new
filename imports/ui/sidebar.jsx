@@ -15,11 +15,6 @@ import { PlusIcon, SettingsIcon } from  "/imports/other/styles/icons";
 import AddTag from '/imports/ui/tags/addTagContainer';
 import EditTag from '/imports/ui/tags/editTagContainer';
 
-/*
-import {
-  useTracker
-} from 'meteor/react-meteor-data';
-*/
 import {
 getGoToLink
 } from "/imports/other/navigationLinks";
@@ -52,9 +47,11 @@ export default function Menu( props ) {
 const actualNotebookID = notebookID && notebookID !== "undefined" ? notebookID : "all-notebooks";
 const actualTagID = tagID && tagID !== "undefined" ? tagID : "all-tags";
 
+const userCanAddNotesToChosenNotebook = actualNotebookID !== "all-notebooks" && notebooks.length > 1 ? notebooks.find(notebook => notebook._id === notebookID).users.find(user => user._id === userId).editItems : false;
+
   return (
     <Sidebar>
-      {notebookID !== "all-notebooks" &&
+      {userCanAddNotesToChosenNotebook &&
       <LinkButton
         onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd", {notebookID: actualNotebookID, tagID: actualTagID}));}}
         >
@@ -176,6 +173,20 @@ const actualTagID = tagID && tagID !== "undefined" ? tagID : "all-tags";
           }}
           >
           <span>Users</span>
+        </NavLink>
+
+        <NavLink
+          className={match.path.includes("archived") ? "active" : ""}
+          style={{width: "100%"}}
+          key={"archived"}
+          to={getGoToLink("archivedNotebooksList")}
+          onClick={() => {
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+              closeSelf();
+            }
+          }}
+          >
+          <span>Archived</span>
         </NavLink>
 
       <Modal isOpen={tagEdit} toggle={toggleTagEdit}>

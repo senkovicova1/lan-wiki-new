@@ -35,20 +35,15 @@ export default function Header( props ) {
   const {
     match,
     location,
-    setParentOpenSidebar
-    /*setSearch,
-    search,*/
+    setParentOpenSidebar,
+    setSearch,
+    search
   } = props;
-
-//  const folderID = match.params.folderID;
 
   const currentUser = useTracker( () => Meteor.user() );
   const logout = () => Meteor.logout();
 
-  //const folders = useSelector((state) => state.folders.value);
-
   const [ openSidebar, setOpenSidebar ] = useState(true);
-//  const [ openSearch, setOpenSearch ] = useState(true);
   const [ title, setTitle ] = useState("Lan Wiki");
 
     const avatar = useMemo(() => {
@@ -78,9 +73,9 @@ export default function Header( props ) {
               />
           </LinkButton>
         }
-        <h1 onClick={(e) => props.history.push("/all/list")}>{title}</h1>
+        <h1 onClick={(e) => props.history.push(getGoToLink(""))}>{title}</h1>
       </section>
-          {/*
+          {
             currentUser &&
           <SearchSection>
             <LinkButton
@@ -114,7 +109,7 @@ export default function Header( props ) {
             />
         </LinkButton>
     </SearchSection>
-*/  }
+  }
 
 <section className="header-section" style={{justifyContent: "flex-end"}}>
       {

@@ -10,6 +10,7 @@ export const noteEdit = "/:notebookID/:tagID/notes/:noteID/edit";
 //archives
 export const archivedNotebooksList = "/archived/list";
 export const archivedNotesList = "/archived/:notebookID";
+export const archivedNoteDetail = "/archived/:notebookID/:noteID";
 
 //notebooks
 export const notebookAdd = "/:notebookID/:tagID/add";
@@ -37,10 +38,13 @@ export const getLink = (address, arguments) => {
       return `/:notebookID/:tagID/notes/:noteID/edit`;
       break;
     case "archivedNotebooksList":
-      return `/archived/list`;
+      return `/archived`;
       break;
     case "archivedNotesList":
       return `/archived/:notebookID`;
+      break;
+    case "archivedNoteDetail":
+      return `/archived/:notebookID/:noteID`;
       break;
     case "notebookAdd":
       return `/:notebookID/:tagID/add`;
@@ -79,10 +83,13 @@ export const getGoToLink = (address, arguments) => {
       return `/${notebookID}/${tagID}/notes/${noteID}/edit`;
       break;
     case "archivedNotebooksList":
-      return `/archived/list`;
+      return `/archived`;
       break;
     case "archivedNotesList":
       return `/archived/${notebookID}`;
+      break;
+    case "archivedNoteDetail":
+      return `/archived/${notebookID}/${noteID}`;
       break;
     case "notebookAdd":
       return `/${notebookID}/${tagID}/add`;

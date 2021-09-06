@@ -105,7 +105,7 @@ export default function TagForm( props ) {
 
       <ButtonRow>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
-        {onRemove &&
+        {false  && onRemove &&
           <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove(tagId);}}>Delete</FullButton>
         }
         <FullButton

@@ -23,12 +23,15 @@ export default function Breadcrumbs( props ) {
   const {notebookID, tagID} = match.params;
 
   const notebooks = useSelector( ( state ) => state.notebooks.value );
+  const archivedNotebooks = useSelector( ( state ) => state.archivedNotebooks.value );
 
   const breadcrumbs = useMemo(() => {
-    if (notebooks.length > 0){
+    if (notebooks.length > 1){
     if (match.path.includes("archived")){
-      if (match.path.includes(":notebookID")){
-        return <span><LinkButton onClick={(e) => {}}>Archived notebooks</LinkButton>><LinkButton onClick={(e) => {}}>{notebooks.find(nb => nb._id === notebookID).name}</LinkButton></span>;
+      if (match.path.includes(":noteID")){
+        return <span><LinkButton onClick={(e) => {e.preventDefault(); history.push(getGoToLink("archivedNotebooksList"));}}>Archived notebooks</LinkButton>><LinkButton onClick={(e) => {e.preventDefault(); history.push(getGoToLink("archivedNotesList", {notebookID: notebookID}));}}>{archivedNotebooks.find(nb => nb._id === notebookID).name}</LinkButton>><LinkButton onClick={(e) => {}}></LinkButton></span>;
+      } else if (match.path.includes(":notebookID")){
+        return <span><LinkButton onClick={(e) => {e.preventDefault(); history.push(getGoToLink("archivedNotebooksList"));}}>Archived notebooks</LinkButton>><LinkButton onClick={(e) => {e.preventDefault(); history.push(getGoToLink("archivedNotesList", {notebookID: notebookID}));}}>{archivedNotebooks.find(nb => nb._id === notebookID).name}</LinkButton>></span>;
       } else {
         return <span><LinkButton onClick={(e) => {}}>Archived notebooks</LinkButton>></span>;
       }

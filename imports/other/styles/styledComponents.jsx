@@ -166,6 +166,10 @@ export const PageHeader = styled.header `
     margin-left: 1em;
   }
 
+  h1:hover{
+    cursor: pointer;
+  }
+
   img.icon {
     filter: invert(1);
     height: 1.5em;

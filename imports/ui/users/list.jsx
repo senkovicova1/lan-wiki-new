@@ -14,14 +14,33 @@ import {
 
 export default function UserList( props ) {
 
+  const { search } = props;
+
   const users = useSelector((state) => state.users.value);
 
-  const [ search, setSearch ] = useState( "" );
   const [ searchName, setSearchName ] = useState( "" );
   const [ searchSurname, setSearchSurname ] = useState( "" );
-  const [ searchEmail, setSearchEmail ] = useState( "" );
 
   const [ chosenUser, setChosenUser ] = useState( null );
+
+  const searchedUsers = useMemo(() => {
+    return users.filter(user =>
+      (search.length + searchName.length + searchSurname.length === 0) ||
+      (search.length > 0 && user.name.toLowerCase().includes(search.toLowerCase())) ||
+      (searchName.length > 0 && user.name.toLowerCase().includes(searchName.toLowerCase())) ||
+      (search.length > 0 &&  user.surname.toLowerCase().includes(search.toLowerCase())) ||
+      (searchSurname.length > 0 && user.surname.toLowerCase().includes(searchSurname.toLowerCase()))
+      );
+  }, [users, search, searchName, searchSurname]);
+
+  const yellowMatch = ( string ) => {
+    if ( search.length === 0 || !string.toLowerCase().includes( search.toLowerCase() ) ) {
+      return string;
+    }
+    let startIndex = string.toLowerCase().indexOf( search.toLowerCase() );
+    let endIndex = startIndex + search.length;
+    return <span> {string.substring( 0, startIndex - 1 )} <span style={{ backgroundColor: "yellow" }}> {string.substring( startIndex-1, endIndex )} </span> {string.substring(endIndex )} </span>;
+  }
 
   return (
     <List>
@@ -32,7 +51,6 @@ export default function UserList( props ) {
           <tr>
             <th>Surname</th>
             <th>Name</th>
-            <th>Email</th>
           </tr>
         </thead>
         <tbody>
@@ -43,15 +61,11 @@ export default function UserList( props ) {
             <th>
               <Input value={searchName} onChange={(e) => setSearchName(e.target.value)} />
             </th>
-            <th>
-              <Input value={searchEmail} onChange={(e) => setSearchEmail(e.target.value)} />
-            </th>
           </tr>
-          {users.map(user =>
+          {searchedUsers.map(user =>
             <tr key={user._id} onClick={() => setChosenUser(user)}>
-              <td>{user.surname}</td>
-              <td>{user.name}</td>
-              <td>{user.emails ? user.emails[0].address : "Cannot access email"}</td>
+              <td>{yellowMatch(user.surname)}</td>
+              <td>{yellowMatch(user.name)}</td>
             </tr>
           )}
         </tbody>

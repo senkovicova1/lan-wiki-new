@@ -1,9 +1,20 @@
 import React, {
-  useMemo
+  useMemo,
+  useEffect
 } from 'react';
 import {
   useSelector
 } from 'react-redux';
+import {
+  useTracker
+} from 'meteor/react-meteor-data';
+import { useDispatch } from 'react-redux';
+
+import { setArchivedNotes } from '/imports/redux/archivedNotesSlice';
+
+import {
+  NotesCollection
+} from '/imports/api/notesCollection';
 
 import {
   List
@@ -12,7 +23,8 @@ import {
   getGoToLink
 } from "/imports/other/navigationLinks";
 
-export default function NotesList( props ) {
+export default function ArchivedNotesList( props ) {
+  const dispatch = useDispatch();
 
   const {
     match,
@@ -20,29 +32,34 @@ export default function NotesList( props ) {
     search
   } = props;
 
-  const {notebookID, tagID} = match.params;
+  const {notebookID} = match.params;
   const userId = Meteor.userId();
+
+  const notes = useTracker( () => NotesCollection.find( { notebook: notebookID} ).fetch() );
 
   const tags = useSelector( ( state ) => state.tags.value );
 
-  const allNotes = useSelector( ( state ) => state.notes.value );
-  const filteredNotes = useMemo( () => {
-    if ( allNotes.length > 0 ) {
-        let notes = allNotes;
-        if (notebookID !== "all-notebooks"){
-          notes = notes.filter(note => note.notebook === notebookID);
-        }
-        if (tagID !== "all-tags"){
-          notes = notes.filter(note => note.tags.map(tag => tag._id).includes(tagID));
-        }
-      return notes;
+  const taggedNotes = useMemo( () => {
+    if ( notes.length > 0 && tags.length > 0) {
+      return notes.map(note => ({
+        ...note,
+        tags: note.tags.map(t1 => ({...tags.find(t2 => t1 === t2._id)}))
+      }));
     }
     return [];
-  }, [ allNotes, notebookID, tagID ] );
+  }, [ notes, tags ] );
+
+  useEffect(() => {
+    if (taggedNotes.length > 0){
+      dispatch(setArchivedNotes(taggedNotes));
+    } else {
+      dispatch(setArchivedNotes([]));
+    }
+  }, [taggedNotes]);
 
   const searchedNotes = useMemo(() => {
-    return filteredNotes.filter(note => note.title.toLowerCase().includes(search.toLowerCase()));
-  }, [search, filteredNotes]);
+    return taggedNotes.filter(note => note.title.toLowerCase().includes(search.toLowerCase()));
+  }, [search, taggedNotes]);
 
   const yellowMatch = ( string ) => {
     if ( search.length === 0 || !string.toLowerCase().includes( search.toLowerCase() ) ) {
@@ -62,7 +79,7 @@ export default function NotesList( props ) {
 
       {searchedNotes.length > 0 &&
         searchedNotes.map((note) => (
-        <div key={note._id} onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteDetail", {notebookID, tagID, noteID: note._id}))}}>
+        <div key={note._id} onClick={(e) => {e.preventDefault(); history.push(getGoToLink("archivedNoteDetail", {notebookID, noteID: note._id}))}}>
           <span className="title">{yellowMatch(note.title)}</span>
           <div className="tags">
           {note.tags.map(tag => (

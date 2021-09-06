@@ -25,6 +25,8 @@ export default function AddNoteContainer( props ) {
 
   const userId = Meteor.userId();
 
+  console.log("HEY");
+
   const {notebookID, tagID} = match.params;
   const notebooks = useSelector((state) => state.notebooks.value);
   const notebook = useMemo(() => {
@@ -35,7 +37,7 @@ useEffect(() => {
   if (notebook){
     const userCanAddNotes = notebook.users.find(user => user._id === userId).editItems;
     if (!userCanAddNotes){
-      history.goBack();
+      history.push(getGoToLink("notesList", {notebookID, tagID}));
     }
   }
 }, [notebook, userId]);
@@ -53,10 +55,10 @@ const addNew = ( title, tags, body ) => {
 }
 
   const cancel = () => {
-    history.goBack();
+    history.push(getGoToLink("notesList", {notebookID, tagID}));
   }
 
   return (
-    <NoteForm {...props} formTitle={"Add note"} onSubmit={addNew} onCancel={close} />
+    <NoteForm {...props} formTitle={"Add note"} onSubmit={addNew} onCancel={cancel} />
   );
 };

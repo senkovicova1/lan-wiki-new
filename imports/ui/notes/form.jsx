@@ -114,7 +114,7 @@ export default function SchemeForm( props ) {
           />
 
       <ButtonCol>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
+        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
         <FullButton
           colour=""
           onClick={(e) => {e.preventDefault(); onSubmit(

@@ -25,7 +25,7 @@ import {
   addImagesToText
 } from '/imports/other/helperFunctions';
 
-export default function NoteDetail( props ) {
+export default function ArchivedNoteDetail( props ) {
 
   const {
     match,
@@ -36,7 +36,7 @@ export default function NoteDetail( props ) {
 
   const {notebookID, tagID, noteID} = match.params;
 
-  const notes = useSelector( ( state ) => state.notes.value );
+  const notes = useSelector( ( state ) => state.archivedNotes.value );
   const note = useMemo(() => {
     if (notes.length > 0){
       return notes.find(note => note._id === noteID);
@@ -44,7 +44,7 @@ export default function NoteDetail( props ) {
     return {}
   }, [notes, noteID]);
 
-  const notebooks = useSelector((state) => state.notebooks.value);
+  const notebooks = useSelector((state) => state.archivedNotebooks.value);
   const notebook = useMemo(() => {
     return  notebooks.find(notebook => notebook._id === note.notebook);
   }, [notebooks, note]);
@@ -57,8 +57,6 @@ export default function NoteDetail( props ) {
       }
     }
   }, [notebook, userId]);
-
-  const userCanEdit = notebook.users.find(user => user._id === userId).editItems;
 
   return (
     <Form>
@@ -84,7 +82,7 @@ export default function NoteDetail( props ) {
 
           <FloatingButton
             left
-            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notesList", {notebookID, tagID}));}}
+            onClick={(e) => {e.preventDefault(); history.goBack();}}
             >
             <img
               style={{marginRight: "2px"}}
@@ -93,19 +91,6 @@ export default function NoteDetail( props ) {
               className="icon"
               />
           </FloatingButton>
-
-          {
-          userCanEdit &&
-          <FloatingButton
-            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {notebookID, tagID, noteID}));}}
-            >
-            <img
-              src={PencilIcon}
-              alt=""
-              className="icon"
-              />
-          </FloatingButton>
-        }
 
     </Form>
   );

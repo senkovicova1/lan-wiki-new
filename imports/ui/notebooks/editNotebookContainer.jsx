@@ -30,7 +30,7 @@ export default function EditNotebookContainer( props ) {
   const notebook = useMemo(() => {
     return  notebooks.find(notebook => notebook._id === notebookID);
   }, [notebooks, notebookID]);
-  
+
   const editNotebook = ( name, archived, users ) => {
     let data = {
       name, archived, users
@@ -40,7 +40,11 @@ export default function EditNotebookContainer( props ) {
         ...data
       }
     } );
-    props.history.push(getGoToLink("notesList", {notebookID, tagID}) );
+    if (archived){
+      props.history.push(getGoToLink("notesList", {notebookID: "all-notebooks", tagID}));            
+    } else {
+      props.history.push(getGoToLink("notesList", {notebookID, tagID}));
+    }
   };
 
   const removeNotebook = () => {

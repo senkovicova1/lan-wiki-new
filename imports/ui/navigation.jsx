@@ -36,10 +36,13 @@ import EditUserContainer from './users/editUserContainer';
 import UsersList from './users/list';
 import AddNotebook from '/imports/ui/notebooks/addNotebookContainer';
 import EditNotebook from '/imports/ui/notebooks/editNotebookContainer';
+import ArchivedNotebooksList from '/imports/ui/notebooks/list';
 import AddNote from '/imports/ui/notes/addContainer';
 import EditNote from '/imports/ui/notes/editContainer';
 import NotesList from '/imports/ui/notes/list';
+import ArchivedNotesList from '/imports/ui/notes/archivedNotesList';
 import NoteDetail from '/imports/ui/notes/view';
+import ArchivedNoteDetail from '/imports/ui/notes/archivedView';
 
 import {
   uint8ArrayToImg
@@ -58,7 +61,6 @@ export default function MainPage( props ) {
   const dispatch = useDispatch();
 
   console.log("All our amazing icons are from FlatIcon (https://www.flaticon.com/). Thank you to all creators whose icons we could use: PixelPerfect (https://www.flaticon.com/authors/pixel-perfect), Dmitri13 (https://www.flaticon.com/authors/dmitri13), Phatplus (https://www.flaticon.com/authors/phatplus), Kiranshastry (https://www.flaticon.com/authors/kiranshastry), Those Icons (https://www.flaticon.com/authors/those-icons), Google (https://www.flaticon.com/authors/google), Dave Gandy (https://www.flaticon.com/authors/dave-gandy), Tomas Knop (https://www.flaticon.com/authors/tomas-knop), Gregor Cresnar (https://www.flaticon.com/authors/gregor-cresnar), Freepik (https://www.flaticon.com/authors/freepik)");
-
 
   const currentUser = useTracker( () => Meteor.user() );
   const userId = useMemo(() => {
@@ -94,7 +96,6 @@ export default function MainPage( props ) {
       dispatch(setTags(tags.map(tag => ({...tag, label: tag.name, value: tag._id}))));
     }
   }, [tags]);
-
 
   const users = useTracker( () => Meteor.users.find( {} ).fetch() );
   useEffect(() => {
@@ -146,6 +147,7 @@ export default function MainPage( props ) {
             getLink("currentUserEdit"),
             getLink("noteAdd"),
             getLink("noteDetail"),
+            getLink("archivedNoteDetail"),
             getLink("noteEdit"),
             getLink("archivedNotebooksList"),
             getLink("archivedNotesList"),
@@ -178,6 +180,7 @@ export default function MainPage( props ) {
                 "/",
                 getLink("noteAdd"),
                 getLink("noteDetail"),
+                getLink("archivedNoteDetail"),
                 getLink("noteEdit"),
                 getLink("archivedNotebooksList"),
                 getLink("archivedNotesList"),
@@ -202,11 +205,19 @@ export default function MainPage( props ) {
               )}
               />
 
-            <Route exact path={getLink("usersList")} component={UsersList}/>
+              <Route
+                exact
+                path={getLink("usersList")}
+                render={(props) => (
+                  <UsersList {...props} search={search}/>
+                )}
+                />
 
             <Route exact path={getLink("noteAdd")} component={AddNote}/>
 
             <Route exact path={getLink("noteDetail")} component={NoteDetail}/>
+
+          <Route exact path={                        getLink("archivedNoteDetail")} component={ArchivedNoteDetail}/>
 
             <Route exact path={getLink("noteEdit")} component={EditNote}/>
 
@@ -221,10 +232,31 @@ export default function MainPage( props ) {
                 )}
               />
 
-
             <Route exact path={getLink("notebookAdd")} component={AddNotebook}/>
 
             <Route exact path={getLink("notebookEdit")} component={EditNotebook}/>
+
+              <Route
+                exact
+                path={getLink("archivedNotebooksList")}
+                render={(props) => (
+                  <ArchivedNotebooksList
+                    {...props}
+                    search={search}
+                    />
+                )}
+              />
+
+            <Route
+              exact
+              path={getLink("archivedNotesList")}
+              render={(props) => (
+                <ArchivedNotesList
+                  {...props}
+                  search={search}
+                  />
+              )}
+              />
 
           </div>
         </Content>
