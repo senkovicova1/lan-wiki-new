@@ -1,18 +1,28 @@
 import React, {
   useMemo,
+  useEffect
 } from 'react';
-import { useSelector } from 'react-redux';
-
-import { FolderIcon } from  "/imports/other/styles/icons";
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  IndexList,
+  useTracker
+} from 'meteor/react-meteor-data';
+
+import {
+  NotebooksCollection
+} from '/imports/api/notebooksCollection';
+
+import { setArchivedNotebooks } from '/imports/redux/archivedNotebooksSlice';
+
+import {
+  List,
 } from "/imports/other/styles/styledComponents";
 
 import {
 getGoToLink
 } from "/imports/other/navigationLinks";
 
-export default function NotebooksList( props ) {
+export default function ArchivedNotebooksList( props ) {
+  const dispatch = useDispatch();
 
   const {
     match,
@@ -22,7 +32,21 @@ export default function NotebooksList( props ) {
 
   const userId = Meteor.userId();
 
-  const notebooks = useSelector((state) => state.notebooks.value);
+  const notebooks = useTracker( () => NotebooksCollection.find( { users:  { $elemMatch: { _id: userId, active: true } }, archived: true } ).fetch() );
+
+  useEffect(() => {
+    if (notebooks.length > 0){
+      dispatch(
+        setArchivedNotebooks(
+          [
+            ...notebooks.map(notebook => ({...notebook, label: notebook.name, value: notebook._id}))
+          ]
+        )
+      );
+    } else {
+      dispatch(setArchivedNotebooks([]));
+    }
+  }, [notebooks]);
 
   const searchedNotebooks = useMemo(() => {
     return notebooks.filter(notebook => notebook.name.toLowerCase().includes(search.toLowerCase()));
@@ -38,10 +62,10 @@ export default function NotebooksList( props ) {
     }
 
   return (
-    <IndexList>
+    <List>
       {
         searchedNotebooks.length === 0 &&
-        <span className="message">You have no notebooks</span>
+        <span className="message">You have no archived notebooks</span>
       }
       {
         searchedNotebooks.map(notebook =>
@@ -49,19 +73,15 @@ export default function NotebooksList( props ) {
             key={notebook._id}
             onClick={(e) => {
               e.preventDefault();
-              history.push(getGoToLink("notesInNotebook", {notebookID: notebook._id}))
+              history.push(getGoToLink("archivedNotesList", {notebookID: notebook._id}))
             }}
             >
-
-            <img
-              className="icon"
-              src={FolderIcon}
-              alt=""
-              />
+            <span className="title">
               {yellowMatch(notebook.name)}
+            </span>
           </div>
         )
       }
-    </IndexList>
+    </List>
   );
 };

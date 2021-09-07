@@ -25,20 +25,16 @@ export default function NotesList( props ) {
 
   const tags = useSelector( ( state ) => state.tags.value );
 
-  const allNotes = useSelector( ( state ) => state.notes.value );
+  const notes = useSelector( ( state ) => state.notes.value );
   const filteredNotes = useMemo( () => {
-    if ( allNotes.length > 0 ) {
-        let notes = allNotes;
-        if (notebookID !== "all-notebooks"){
-          notes = notes.filter(note => note.notebook === notebookID);
-        }
-        if (tagID !== "all-tags"){
-          notes = notes.filter(note => note.tags.map(tag => tag._id).includes(tagID));
-        }
-      return notes;
+    if (notebookID){
+      return notes.filter(note => note.notebook === notebookID);
     }
-    return [];
-  }, [ allNotes, notebookID, tagID ] );
+      return notes.filter(note => {
+        const tagIds = note.tags.map(tag => tag._id);
+        return tagIds.includes(tagID);
+      });
+  }, [ notes, notebookID, tagID ] );
 
   const searchedNotes = useMemo(() => {
     return filteredNotes.filter(note => note.title.toLowerCase().includes(search.toLowerCase()));
@@ -53,16 +49,20 @@ export default function NotesList( props ) {
     return <span> {string.substring( 0, startIndex - 1 )} <span style={{ backgroundColor: "yellow" }}> {string.substring( startIndex-1, endIndex )} </span> {string.substring(endIndex )} </span>;
   }
 
+  const filterType = notebookID ? "notebooks" : "tags";
+
   return (
     <List>
       {
         searchedNotes.length === 0 &&
-        <span className="message">You have no notes in this notebook.</span>
+        <span className="message">
+          {notebookID ? "You have no notes in this notebook." : "There are no notes with this tag."}
+          </span>
       }
 
       {searchedNotes.length > 0 &&
         searchedNotes.map((note) => (
-        <div key={note._id} onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteDetail", {notebookID, tagID, noteID: note._id}))}}>
+        <div key={note._id} onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteDetail", {noteID: note._id, filterType}))}}>
           <span className="title">{yellowMatch(note.title)}</span>
           <div className="tags">
           {note.tags.map(tag => (

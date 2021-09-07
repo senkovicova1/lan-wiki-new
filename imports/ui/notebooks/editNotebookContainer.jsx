@@ -25,7 +25,7 @@ export default function EditNotebookContainer( props ) {
 
   const userId = Meteor.userId();
 
-  const {notebookID, tagID} = match.params;
+  const {notebookID} = match.params;
   const notebooks = useSelector((state) => state.notebooks.value);
   const notebook = useMemo(() => {
     return  notebooks.find(notebook => notebook._id === notebookID);
@@ -41,9 +41,9 @@ export default function EditNotebookContainer( props ) {
       }
     } );
     if (archived){
-      props.history.push(getGoToLink("notesList", {notebookID: "all-notebooks", tagID}));            
+      props.history.push(getGoToLink(""));
     } else {
-      props.history.push(getGoToLink("notesList", {notebookID, tagID}));
+      props.history.push(getGoToLink("notesInNotebook", {notebookID}));
     }
   };
 

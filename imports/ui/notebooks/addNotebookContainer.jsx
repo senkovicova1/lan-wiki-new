@@ -19,9 +19,9 @@ export default function AddNotebookContainer( props ) {
        name, archived, users,
     }, (error, _id) => {
       if (error){
-        console.log(erro);
+        console.log(error);
       } else {
-        props.history.push(getGoToLink("notesList", {notebookID: _id, tagID}) );
+        props.history.goBack();
       }
     } );
   }

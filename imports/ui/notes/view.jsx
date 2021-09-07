@@ -34,7 +34,7 @@ export default function NoteDetail( props ) {
 
   const userId = Meteor.userId();
 
-  const {notebookID, tagID, noteID} = match.params;
+  const {noteID,filterType} = match.params;
 
   const notes = useSelector( ( state ) => state.notes.value );
   const note = useMemo(() => {
@@ -58,7 +58,7 @@ export default function NoteDetail( props ) {
     }
   }, [notebook, userId]);
 
-  const userCanEdit = notebook.users.find(user => user._id === userId).editItems;
+  const userCanEdit = notebook ? notebook.users.find(user => user._id === userId).editItems : false;
 
   return (
     <Form>
@@ -84,7 +84,7 @@ export default function NoteDetail( props ) {
 
           <FloatingButton
             left
-            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notesList", {notebookID, tagID}));}}
+            onClick={(e) => {e.preventDefault(); history.goBack();}}
             >
             <img
               style={{marginRight: "2px"}}
@@ -97,7 +97,7 @@ export default function NoteDetail( props ) {
           {
           userCanEdit &&
           <FloatingButton
-            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {notebookID, tagID, noteID}));}}
+            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {noteID, filterType}));}}
             >
             <img
               src={PencilIcon}

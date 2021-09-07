@@ -12,7 +12,7 @@ import {
 getGoToLink
 } from "/imports/other/navigationLinks";
 
-export default function NotebooksList( props ) {
+export default function TagsList( props ) {
 
   const {
     match,
@@ -22,11 +22,11 @@ export default function NotebooksList( props ) {
 
   const userId = Meteor.userId();
 
-  const notebooks = useSelector((state) => state.notebooks.value);
+  const tags = useSelector((state) => state.tags.value);
 
-  const searchedNotebooks = useMemo(() => {
-    return notebooks.filter(notebook => notebook.name.toLowerCase().includes(search.toLowerCase()));
-  }, [search, notebooks]);
+  const searchedTags = useMemo(() => {
+    return tags.filter(tag => tag.name.toLowerCase().includes(search.toLowerCase()));
+  }, [search, tags]);
 
     const yellowMatch = ( string ) => {
       if ( search.length === 0 || !string.toLowerCase().includes( search.toLowerCase() ) ) {
@@ -40,16 +40,16 @@ export default function NotebooksList( props ) {
   return (
     <IndexList>
       {
-        searchedNotebooks.length === 0 &&
-        <span className="message">You have no notebooks</span>
+        searchedTags.length === 0 &&
+        <span className="message">You have no tags</span>
       }
       {
-        searchedNotebooks.map(notebook =>
+        searchedTags.map(tag =>
           <div
-            key={notebook._id}
+            key={tag._id}
             onClick={(e) => {
               e.preventDefault();
-              history.push(getGoToLink("notesInNotebook", {notebookID: notebook._id}))
+              history.push(getGoToLink("notesWithTag", {tagID: tag._id}))
             }}
             >
 
@@ -58,7 +58,7 @@ export default function NotebooksList( props ) {
               src={FolderIcon}
               alt=""
               />
-              {yellowMatch(notebook.name)}
+              {yellowMatch(tag.name)}
           </div>
         )
       }

@@ -28,21 +28,22 @@ import {
   TagsCollection
 } from '/imports/api/tagsCollection';
 
-import Reroute from './reroute';
 import Header from './header';
 import Login from './login';
 import Breadcrumbs from './breadcrumbs';
 import EditUserContainer from './users/editUserContainer';
-import UsersList from './users/list';
+import NotesList from '/imports/ui/notes/list';
+import NotebooksList from '/imports/ui/notebooks/list';
 import AddNotebook from '/imports/ui/notebooks/addNotebookContainer';
 import EditNotebook from '/imports/ui/notebooks/editNotebookContainer';
-import ArchivedNotebooksList from '/imports/ui/notebooks/list';
+import TagsList from '/imports/ui/tags/list';
+import NoteDetail from '/imports/ui/notes/view';
 import AddNote from '/imports/ui/notes/addContainer';
 import EditNote from '/imports/ui/notes/editContainer';
-import NotesList from '/imports/ui/notes/list';
+/*import UsersList from './users/list';
+import ArchivedNotebooksList from '/imports/ui/notebooks/list';
 import ArchivedNotesList from '/imports/ui/notes/archivedNotesList';
-import NoteDetail from '/imports/ui/notes/view';
-import ArchivedNoteDetail from '/imports/ui/notes/archivedView';
+import ArchivedNoteDetail from '/imports/ui/notes/archivedView';*/
 
 import {
   uint8ArrayToImg
@@ -76,7 +77,6 @@ export default function MainPage( props ) {
       dispatch(
         setNotebooks(
           [
-          {label: "All notebooks", value: "all-notebooks"},
           ...notebooks.map(notebook => ({...notebook, label: notebook.name, value: notebook._id}))
           ]
         )
@@ -84,7 +84,7 @@ export default function MainPage( props ) {
     } else {
       dispatch(
         setNotebooks(
-          [{label: "All notebooks", value: "all-notebooks"}]
+          []
         )
       );
     }
@@ -129,32 +129,19 @@ export default function MainPage( props ) {
   return (
     <div style={{height: "100vh"}}>
       <BrowserRouter>
-        <Route
-          exact
-          path={"/"}
-          render={(props) => (
-            <Reroute
-              {...props}
-              />
-          )}
-          />
 
         <Route
           exact
           path={[
-            "/",
-            getLink("login"),
-            getLink("currentUserEdit"),
-            getLink("noteAdd"),
-            getLink("noteDetail"),
-            getLink("archivedNoteDetail"),
-            getLink("noteEdit"),
-            getLink("archivedNotebooksList"),
-            getLink("archivedNotesList"),
+            ...getLink("notebooksList"),
+            getLink("notesInNotebook"),
             getLink("notebookAdd"),
-            getLink("notesList"),
             getLink("notebookEdit"),
-            getLink("usersList")
+            getLink("tagsList"),
+            getLink("notesWithTag"),
+            getLink("noteDetail"),
+            getLink("noteEdit"),
+            getLink("noteAdd")
           ]}
           render={(props) => (
             <Header
@@ -177,17 +164,15 @@ export default function MainPage( props ) {
             <Route
               exact
               path={[
-                "/",
-                getLink("noteAdd"),
-                getLink("noteDetail"),
-                getLink("archivedNoteDetail"),
-                getLink("noteEdit"),
-                getLink("archivedNotebooksList"),
-                getLink("archivedNotesList"),
+                ...getLink("notebooksList"),
+                getLink("notesInNotebook"),
                 getLink("notebookAdd"),
-                getLink("notesList"),
                 getLink("notebookEdit"),
-                getLink("usersList")
+                getLink("tagsList"),
+                getLink("notesWithTag"),
+                getLink("noteDetail"),
+                getLink("noteEdit"),,
+                getLink("noteAdd")
               ]}
               render={(props) => (
                 <Breadcrumbs
@@ -204,7 +189,7 @@ export default function MainPage( props ) {
                 <EditUserContainer {...props} />
               )}
               />
-
+            {/*
               <Route
                 exact
                 path={getLink("usersList")}
@@ -212,29 +197,47 @@ export default function MainPage( props ) {
                   <UsersList {...props} search={search}/>
                 )}
                 />
+              */}
 
-            <Route exact path={getLink("noteAdd")} component={AddNote}/>
+                <Route
+                  exact
+                  path={getLink("notebooksList")}
+                  render={(props) => (
+                    <NotebooksList {...props} search={search}/>
+                  )}
+                  />
 
-            <Route exact path={getLink("noteDetail")} component={NoteDetail}/>
+                <Route
+                  exact
+                  path={[getLink("notesInNotebook"),
+                  getLink("notesWithTag")]}
+                  render={(props) => (
+                    <NotesList
+                      {...props}
+                      search={search}
+                      />
+                  )}
+                  />
+                <Route exact path={getLink("notebookAdd")} component={AddNotebook}/>
+                <Route exact path={getLink("notebookEdit")} component={EditNotebook}/>
+
+                <Route
+                  exact
+                  path={getLink("tagsList")}
+                  render={(props) => (
+                    <TagsList {...props} search={search}/>
+                  )}
+                  />
+
+                <Route exact path={getLink("noteDetail")} component={NoteDetail}/>
+                <Route exact path={getLink("noteEdit")} component={EditNote}/>
+                <Route exact path={getLink("noteAdd")} component={AddNote}/>
+                {/*
+
 
           <Route exact path={                        getLink("archivedNoteDetail")} component={ArchivedNoteDetail}/>
 
-            <Route exact path={getLink("noteEdit")} component={EditNote}/>
-
-              <Route
-                exact
-                path={[getLink("notesList"), getLink()]}
-                render={(props) => (
-                  <NotesList
-                    {...props}
-                    search={search}
-                    />
-                )}
-              />
-
-            <Route exact path={getLink("notebookAdd")} component={AddNotebook}/>
-
-            <Route exact path={getLink("notebookEdit")} component={EditNotebook}/>
+            */}
 
               <Route
                 exact
@@ -265,37 +268,3 @@ export default function MainPage( props ) {
     </div>
   );
 };
-
-/*
-
-            <Route
-              exact
-              path={getLink("addCategory")}
-              render={(props) => (
-                <CategoryAdd
-                  {...props}
-                  />
-              )}
-              />
-
-              <Route
-                exact
-                path={getLink("editCategory")}
-                render={(props) => (
-                  <CategoryEdit
-                    {...props}
-                    />
-                )}
-                />
-
-                <Route exact path={getLink("addItem")} component={ItemAdd}/>
-                <Route exact path={getLink("editItem")} component={ItemEdit}/>
-
-
-
-                <Route exact path={getLink("viewItem")} component={ItemView}/>
-
-                <Route exact path={getLink("schemeView")} component={SchemeView}/>
-                <Route exact path={getLink("schemeDraw")} component={SchemeDraw}/>
-                <Route exact path={getLink("schemeEdit")} component={SchemeEdit}/>
-*/

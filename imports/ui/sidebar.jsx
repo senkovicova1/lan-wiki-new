@@ -10,7 +10,7 @@ import {
   ModalBody
 } from 'reactstrap';
 
-import { PlusIcon, SettingsIcon } from  "/imports/other/styles/icons";
+import { PlusIcon, SettingsIcon, FolderIcon } from  "/imports/other/styles/icons";
 
 import AddTag from '/imports/ui/tags/addTagContainer';
 import EditTag from '/imports/ui/tags/editTagContainer';
@@ -36,7 +36,9 @@ export default function Menu( props ) {
   } = props;
 
   const userId = Meteor.userId();
+
   const {notebookID, tagID} = match.params;
+
   const notebooks = useSelector((state) => state.notebooks.value);
   const tags = useSelector((state) => state.tags.value);
 
@@ -44,16 +46,10 @@ export default function Menu( props ) {
   const [ tagEdit, setTagEdit ] = useState(false);
   const toggleTagEdit = () => {setTagEdit(!tagEdit);};
 
-const actualNotebookID = notebookID && notebookID !== "undefined" ? notebookID : "all-notebooks";
-const actualTagID = tagID && tagID !== "undefined" ? tagID : "all-tags";
-
-const userCanAddNotesToChosenNotebook = actualNotebookID !== "all-notebooks" && notebooks.length > 1 ? notebooks.find(notebook => notebook._id === notebookID).users.find(user => user._id === userId).editItems : false;
-
   return (
     <Sidebar>
-      {userCanAddNotesToChosenNotebook &&
       <LinkButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd", {notebookID: actualNotebookID, tagID: actualTagID}));}}
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd"));}}
         >
         <img
           className="icon"
@@ -65,27 +61,27 @@ const userCanAddNotesToChosenNotebook = actualNotebookID !== "all-notebooks" && 
           Note
         </span>
       </LinkButton>
-    }
+
+    <div className="header">
+                <img
+                  className="icon"
+                  src={FolderIcon}
+                  alt=""
+                  />
+      <h2>Notebooks</h2>
+    </div>
             {
         notebooks.map(notebook =>  (
           <div className="nav" key={notebook.value}>
             <NavLink
               className={notebook.value === notebookID ? "active" : ""}
-              style={notebook.value === "all-notebooks" ? {width: "100%"} : {}}
               key={notebook.value}
-              to={getGoToLink("notesList", {notebookID: notebook.value, tagID: actualTagID})}
-              onClick={() => {
-                if (/Mobi|Android/i.test(navigator.userAgent)) {
-                  closeSelf();
-                }
-              }}
+              to={getGoToLink("notesInNotebook", {notebookID: notebook._id})}
               >
               <span>{notebook.label}</span>
             </NavLink>
-            {
-              notebook.value !== "all-notebooks" &&
             <LinkButton
-              onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookEdit", {notebookID: notebook.value, tagID: actualTagID}))}}
+              onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookEdit", {notebookID: notebook._id}))}}
               >
               <img
                 className="icon"
@@ -93,12 +89,11 @@ const userCanAddNotesToChosenNotebook = actualNotebookID !== "all-notebooks" && 
                 alt=""
                 />
             </LinkButton>
-          }
           </div>
           ))
       }
       <LinkButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookAdd", {notebookID:actualNotebookID, tagID: actualTagID}));}}
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookAdd"));}}
         >
         <img
           className="icon"
@@ -111,7 +106,51 @@ const userCanAddNotesToChosenNotebook = actualNotebookID !== "all-notebooks" && 
         </span>
       </LinkButton>
       <hr/>
-          <div className="nav" key={"all-tags"}>
+
+        <div
+          className="header"
+          onClick={(e) => {
+            e.preventDefault();
+            history.push(getGoToLink("tagsList"));
+          }}
+          >
+                    <img
+                      className="icon"
+                      src={FolderIcon}
+                      alt=""
+                      />
+                    <h2>Tags</h2>
+        </div>
+                {
+            tags.map(tag =>  (
+              <div className="nav" key={tag.value}>
+                <NavLink
+                  className={tag.value === tagID ? "active" : ""}
+                  key={tag.value}
+                  to={getGoToLink("notesWithTag", {tagID: tag._id})}
+                  >
+                  <span>{tag.label}</span>
+                </NavLink>
+                <LinkButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedTag(tag);
+                    toggleTagEdit();
+                  }}
+                  >
+                  <img
+                    className="icon"
+                    src={SettingsIcon}
+                    alt=""
+                    />
+                </LinkButton>
+              </div>
+              ))
+          }
+<AddTag />
+          <hr/>
+
+        {/*  <div className="nav" key={"all-tags"}>
             <NavLink
               className={"all-tags" === tagID ? "active" : ""}
               style={{width: "100%"}}
@@ -188,6 +227,7 @@ const userCanAddNotesToChosenNotebook = actualNotebookID !== "all-notebooks" && 
           >
           <span>Archived</span>
         </NavLink>
+        */}
 
       <Modal isOpen={tagEdit} toggle={toggleTagEdit}>
         <ModalBody>

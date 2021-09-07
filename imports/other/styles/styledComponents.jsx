@@ -259,17 +259,24 @@ export const Breadcrumbs = styled.div`
   width: 100%;
   padding: 0em ${inputOffset};
   display: flex;
+  font-size: 1.3em;
+  font-weight: 300 !important;
   &>span{
     display: flex;
     align-items: center;
   }
   &>span>button{
-      margin: 0em 0.3em;
+    font-weight: 300 !important;
+    margin: 0em 0.3em;
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.2em;
     }
-  &>span>button:last-of-type{
+  &>span:last-of-type>button{
     color: black !important;
+    text-decoration: none;
   }
-  &>span>button:first-of-type{
+  &>span:first-of-type>button{
     margin-left: 0px !important;
   }
 `;
@@ -278,17 +285,11 @@ export const Sidebar = styled.section `
   background-color: ${backgroundColour};
   position: absolute;
   left: 0;
-  @media all and (max-width: 799px), @media handheld  {
-    box-shadow: 5px 0px 13px 0px slategrey;
-    width: ${sidebarWidthMobile};
-  }
-  @media all and (min-width: 800px){
-    box-shadow: none;
-    border-right: 0px solid #d6d6d6;
-    width: ${sidebarWidthWeb};
-    background-color: white;
-  }
   top: 50px;
+  box-shadow: none;
+  border-right: 0px solid #d6d6d6;
+  width: ${sidebarWidthWeb};
+  background-color: white;
   height: calc(100vh - 50px);
   z-index: 3;
   padding: 0px;
@@ -303,14 +304,8 @@ export const Sidebar = styled.section `
     display: flex;
     align-items: center;
     height: 3em;
-    padding: 10px ${inputOffset};
+    padding: 10px calc(${inputOffset} + 30px);
     text-decoration: none !important;
-    i, img.icon{
-      margin-right: 10px;
-    }
-    img.icon{
-      filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(80%) contrast(101%);
-    }
   }
 
   a.active {
@@ -337,20 +332,22 @@ export const Sidebar = styled.section `
     }
   }
 
-  label.selector-name{
-    height: 3em;
-    line-height: 3em;
-    width: 100%;
-    font-weight: 300;
-    font-size: 0.8em;
-    padding: 0px 15px;
-    img.icon{
-      height: 1em;
-      margin-right: 0.6em;
-      filter: invert(0);
-    }
+  div.header{
+    color: black;
+    padding: 10px ${inputOffset};
+    display: flex;
+    align-items: center;
   }
 
+  div.header>h2{
+    font-size: 1.2em;
+    margin: 0px;
+  }
+    div.header>img{
+      font-size: 1em;
+      margin-right: 0.6em;
+        filter: invert(0);
+    }
 `;
 
 export const ButtonRow = styled.section `
@@ -484,36 +481,26 @@ export const List = styled.section `
 
 `;
 
-
-export const AddressList = styled.section `
+export const IndexList = styled.section `
   width: 100%;
-  padding: 0px;
+  padding: 0em ${inputOffset};
+  color: ${basicBlueColour};
 
-  &>table{
-    width: 100%;
-    tr{
-      line-height: 2.5em;
-    }
+  &>div{
+    display: flex;
+    line-height: 3em;
+    margin: 0em;
   }
 
-  &>table>thead>tr>th{
-    font-weight: 400;
-      padding: 0px ${inputOffset};
+  &>div:hover{
+    cursor: pointer;
   }
 
-  &>table>tbody>tr{
-    background-color: white;
-    border-bottom: 1px solid ${backgroundColour};
-    color: #7d7d7d;
+  &>div>.icon{
+    align-self: center;
+    margin-right: 0.6em;
   }
-
-  &>table>tbody>tr>td{
-    padding: 0px ${inputOffset};
-      font-weight: 400;
-  }
-
 `;
-
 
 export const ItemContainer = styled.section `
 &:hover{

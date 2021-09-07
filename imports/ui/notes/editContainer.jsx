@@ -26,7 +26,7 @@ export default function EditNoteContainer( props ) {
 
   const userId = Meteor.userId();
 
-  const {notebookID, tagID, noteID} = match.params;
+  const {notebookID, tagID, noteID, filterType} = match.params;
 
   const notes = useSelector( ( state ) => state.notes.value );
   const note = useMemo(() => {
@@ -50,19 +50,20 @@ export default function EditNoteContainer( props ) {
       }
     }, [notebook, userId]);
 
-  const editNote = ( title, tags, body ) => {
+  const editNote = ( title, tags, notebook, body ) => {
     NotesCollection.update( noteID, {
        $set:
      {
        title,
        body,
+       notebook,
        tags: [...tags]
      }
     }, (error, _id) => {
       if (error){
         console.log(error);
       } else {
-        history.goBack();
+        history.push(getGoToLink("noteDetail", {noteID, filterType}));
       }
     } );
   }

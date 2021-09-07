@@ -25,6 +25,7 @@ export default function UserForm( props ) {
     onCancel,
     isSignIn,
     openLogIn,
+    changeEmail,
     errorMessage
   } = props;
 

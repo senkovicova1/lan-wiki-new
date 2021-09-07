@@ -26,12 +26,13 @@ import {
   addImagesToText
 } from '/imports/other/helperFunctions';
 
-export default function SchemeForm( props ) {
+export default function NoteForm( props ) {
 
   const {
     formTitle,
     title: noteTitle,
     tags: noteTags,
+    notebook: noteNotebook,
     body: noteBody,
     match,
     onSubmit,
@@ -42,9 +43,11 @@ export default function SchemeForm( props ) {
   const userId = Meteor.userId();
 
   const allTags = useSelector( ( state ) => state.tags.value );
+  const allNotebooks = useSelector( ( state ) => state.notebooks.value );
 
   const [ title, setTitle ] = useState("");
   const [ tags, setTags ] = useState([]);
+  const [ notebook, setNotebook ] = useState( null );
   const [ body, setBody ] = useState( "" );
 
   useEffect( () => {
@@ -58,12 +61,18 @@ export default function SchemeForm( props ) {
       } else {
         setTags( [] );
       }
+        if ( noteNotebook ) {
+          const notebook =  allNotebooks.find(nb => nb._id === noteNotebook);
+          setNotebook({...notebook, label: notebook.name, value: notebook._id});
+        } else {
+          setNotebook( null );
+        }
     if ( noteBody ) {
       setBody( addImagesToText(noteBody) );
     } else {
       setBody( "" );
     }
-  }, [ noteTitle, noteTags, noteBody ] );
+  }, [ noteTitle, noteTags, noteBody, noteNotebook, allNotebooks ] );
 
     const editors = document.getElementsByClassName("ck-file-dialog-button");
     if (editors[0]){
@@ -71,6 +80,7 @@ export default function SchemeForm( props ) {
     }
 
     const tagsToChoose = allTags.filter(tag => !tags.includes(tag._id));
+    const notebooksToChoose = allNotebooks.filter(nb => nb.users.find(u => u._id === userId).editItems);
 
     if (noteTitle && noteBody.length > 0 && body.length === 0){
       return <Loader />;
@@ -90,6 +100,18 @@ export default function SchemeForm( props ) {
           placeholder="Enter title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          />
+      </section>
+
+      <section>
+        <label htmlFor="notebook">Notebook</label>
+        <Select
+          id="notebook"
+          name="notebook"
+          styles={selectStyle}
+          value={notebook}
+          onChange={(e) => setNotebook(e)}
+          options={notebooksToChoose}
           />
       </section>
 
@@ -117,9 +139,11 @@ export default function SchemeForm( props ) {
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
         <FullButton
           colour=""
+          disabled={notebook === null}
           onClick={(e) => {e.preventDefault(); onSubmit(
             title,
             tags.map(tag => tag._id),
+            notebook.value,
             body
           );}}
           >
