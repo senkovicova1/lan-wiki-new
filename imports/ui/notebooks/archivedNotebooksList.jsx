@@ -13,8 +13,9 @@ import {
 
 import { setArchivedNotebooks } from '/imports/redux/archivedNotebooksSlice';
 
+import { FolderIcon } from  "/imports/other/styles/icons";
 import {
-  List,
+  IndexList,
 } from "/imports/other/styles/styledComponents";
 
 import {
@@ -62,7 +63,7 @@ export default function ArchivedNotebooksList( props ) {
     }
 
   return (
-    <List>
+    <IndexList>
       {
         searchedNotebooks.length === 0 &&
         <span className="message">You have no archived notebooks</span>
@@ -76,12 +77,15 @@ export default function ArchivedNotebooksList( props ) {
               history.push(getGoToLink("archivedNotesList", {notebookID: notebook._id}))
             }}
             >
-            <span className="title">
+                        <img
+                          className="icon"
+                          src={FolderIcon}
+                          alt=""
+                          />
               {yellowMatch(notebook.name)}
-            </span>
           </div>
         )
       }
-    </List>
+    </IndexList>
   );
 };

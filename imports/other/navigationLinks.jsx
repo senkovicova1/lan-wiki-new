@@ -14,7 +14,7 @@ export const tagsList = "/tags";
 export const notesWithTag = "/tags/:tagID/notes";
 
 //notes
-export const noteAdd = "/:filterType/notes/add";
+export const noteAdd = "/notes/add";
 export const noteDetail = "/:filterType/notes/:noteID/view";
 export const noteEdit = "/:filterType/notes/:noteID/edit";
 
@@ -54,7 +54,7 @@ export const getLink = (address, arguments) => {
       return `/tags/:tagID`;
       break;
     case "noteAdd":
-      return "/:filterType/notes/add";
+      return "/notes/add";
       break;
     case "noteDetail":
       return `/:filterType/notes/:noteID/view`;
@@ -108,7 +108,7 @@ export const getGoToLink = (address, arguments) => {
       return `/tags/${tagID}`;
       break;
     case "noteAdd":
-      return `/${filterType}/notes/add`;
+      return `/notes/add`;
       break;
     case "noteDetail":
       return `/${filterType}/notes/${noteID}/view`;

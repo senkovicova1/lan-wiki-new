@@ -31,9 +31,9 @@ export default function EditNotebookContainer( props ) {
     return  notebooks.find(notebook => notebook._id === notebookID);
   }, [notebooks, notebookID]);
 
-  const editNotebook = ( name, archived, users ) => {
+  const editNotebook = ( name, archived, description, users ) => {
     let data = {
-      name, archived, users
+      name, archived, description, users
     };
     NotebooksCollection.update( notebookID, {
       $set: {

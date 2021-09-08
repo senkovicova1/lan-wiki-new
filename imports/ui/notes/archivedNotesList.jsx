@@ -39,6 +39,12 @@ export default function ArchivedNotesList( props ) {
 
   const tags = useSelector( ( state ) => state.tags.value );
 
+  const archivedNotebooks = useSelector( ( state ) => state.archivedNotebooks.value );
+    const description = useMemo(() => {
+        const notebook = archivedNotebooks.find(notebook => notebook._id === notebookID);
+        return notebook && notebook.description ? notebook.description : "No description";
+    }, [notebookID, archivedNotebooks]);
+
   const taggedNotes = useMemo( () => {
     if ( notes.length > 0 && tags.length > 0) {
       return notes.map(note => ({
@@ -72,6 +78,10 @@ export default function ArchivedNotesList( props ) {
 
   return (
     <List>
+      <span className="message">
+        {description}
+        </span>
+
       {
         searchedNotes.length === 0 &&
         <span className="message">You have no notes in this notebook.</span>

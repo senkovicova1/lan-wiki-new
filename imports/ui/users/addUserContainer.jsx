@@ -1,7 +1,6 @@
 import React, {
   useState
 } from 'react';
-
 import {
   Modal,
   ModalBody
@@ -23,14 +22,16 @@ export default function AddUserContainer( props ) {
 
   const toggleAddUserModal = () => showAddUserModal( !addUserModalOpen );
 
-  const addNewUser = ( name, surname, avatar, email, password ) => {
+  const addNewUser = ( name, surname, avatar, active, rights, email, password ) => {
     Accounts.createUser( {
       password,
       email,
       profile: {
         name,
         surname,
-        avatar
+        avatar,
+        rights,
+        active: true,
       }
     } );
     showAddUserModal( false );
@@ -53,7 +54,7 @@ export default function AddUserContainer( props ) {
      </LinkButton>
       <Modal isOpen={addUserModalOpen} toggle={toggleAddUserModal}>
         <ModalBody>
-          <UserForm onSubmit={addNewUser} onCancel={closeModal}/>
+          <UserForm title={"Add user"} onSubmit={addNewUser} onCancel={closeModal}/>
         </ModalBody>
       </Modal>
     </div>

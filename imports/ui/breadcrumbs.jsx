@@ -29,6 +29,7 @@ export default function Breadcrumbs( props ) {
   const notebooks = useSelector( ( state ) => state.notebooks.value );
   const tags = useSelector( ( state ) => state.tags.value );
   const archivedNotebooks = useSelector( ( state ) => state.archivedNotebooks.value );
+  const archivedNotes = useSelector( ( state ) => state.archivedNotes.value );
 
   useEffect(() => {
     let result = [...breadcrumbs];
@@ -69,23 +70,37 @@ export default function Breadcrumbs( props ) {
         const notebook = notebooks.length > 0 && note ? notebooks.find(nb => nb._id === note.notebook) : {};
         result.push({ link: "notesInNotebook", label: notebook.label, args: {notebookID: note.notebook}});
       } else if (filterType === "tags" && result.length > 2) {
-        result = [result[0], result[1]];
-      }
-      result.push({ link: "noteDetail", label: note.title, args: {noteID, filterType}});
-      if (path[4] === "edit"){
-        result.push({ link: "noteEdit", label: "Edit note", args: {noteID, filterType}});
-      }
+            result = [result[0], result[1]];
+          }
+            result.push({ link: "noteDetail", label: note.title, args: {noteID, filterType}});
+            if (path[4] === "edit"){
+              result.push({ link: "noteEdit", label: "Edit note", args: {noteID, filterType}});
+            }
     }
 
-    if (path[2] === "notes" && noteID === "add"){
-      if (filterType === "notebooks"){
-        result = [{ link: "notebooksList", label: "Notebooks"}];
-      }
-      result.push({ link: "noteAdd", label: "Add note", args: {noteID, filterType}});
+    if (path[1] === "notes" && path[2] === "add"){
+        result = [{ link: "notebooksList", label: "Notes"}];
+        result.push({ link: "noteAdd", label: "Add note", args: {noteID, filterType}});
+    }
+
+    if (path[1] === "archived"){
+        result = [{ link: "archivedNotebooksList", label: "Archived notebooks"}];
+        if (notebookID){
+          const notebook = archivedNotebooks.length > 0 ? archivedNotebooks.find(nb => nb._id === notebookID) : {};
+          result.push({ link: "archivedNotesList", label: notebook.label, args: {notebookID}});
+        }
+        if (noteID){
+          const note = archivedNotes.length > 0 ? archivedNotes.find(note => note._id === noteID) : {};
+          result.push({ link: "archivedNoteDetail", label: note.title, args: {notebookID, noteID}});
+        }
+    }
+
+    if (path[1] === "users"){
+        result = [{ link: "usersList", label: "Users"}];        
     }
 
     setBreadcrumbs(result);
-  }, [match.path, notebookID, notebooks, tagID, tags, notes, noteID, filterType]);
+  }, [match.path, notebookID, notebooks, archivedNotebooks, tagID, tags, notes, noteID, filterType]);
 
   return (
     <StyledBreadcrumbs>

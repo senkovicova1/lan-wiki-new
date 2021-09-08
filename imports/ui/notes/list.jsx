@@ -24,6 +24,17 @@ export default function NotesList( props ) {
   const userId = Meteor.userId();
 
   const tags = useSelector( ( state ) => state.tags.value );
+  const notebooks = useSelector( ( state ) => state.notebooks.value );
+
+  const description = useMemo(() => {
+    if (notebookID){
+      const notebook = notebooks.find(notebook => notebook._id === notebookID);
+      return notebook && notebook.description ? notebook.description : "No description";
+    } else {
+      const tag = tags.find(tag => tag._id === tagID);
+      return tag && tag.description ? tag.description : "No description";
+    }
+  }, [notebookID, notebooks, tagID, tags]);
 
   const notes = useSelector( ( state ) => state.notes.value );
   const filteredNotes = useMemo( () => {
@@ -53,6 +64,10 @@ export default function NotesList( props ) {
 
   return (
     <List>
+      <span className="message">
+        {description}
+        </span>
+
       {
         searchedNotes.length === 0 &&
         <span className="message">

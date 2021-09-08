@@ -21,10 +21,11 @@ export default function EditTagContainer( props ) {
     closeSelf,
   } = props;
 
-  const editTag = ( name, colour ) => {
+  const editTag = ( name, colour, description ) => {
     let data = {
       name,
-      colour
+      colour,
+      description
     };
     TagsCollection.update( tag._id, {
       $set: {

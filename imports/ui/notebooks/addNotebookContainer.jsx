@@ -14,9 +14,9 @@ export default function AddNotebookContainer( props ) {
 
   const {tagID} = props.match.params;
 
-  const addNewNotebook = (  name, archived, users ) => {
+  const addNewNotebook = (  name, archived, description, users ) => {
     NotebooksCollection.insert( {
-       name, archived, users,
+       name, archived, description, users,
     }, (error, _id) => {
       if (error){
         console.log(error);

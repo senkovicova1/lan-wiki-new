@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux';
 import {
   Form,
   Input,
+  Textarea,
   ButtonCol,
   LinkButton,
   FullButton,
@@ -33,6 +34,7 @@ export default function NotebookForm( props ) {
     _id: notebookId,
     name: notebookName,
     archived: notebookArchived,
+    description: notebookDescription,
     users: notebookUsers,
     onSubmit,
     onRemove,
@@ -47,6 +49,7 @@ const userId = Meteor.userId();
 
   const [ name, setName ] = useState( "" );
   const [ archived, setArchived ] = useState( false );
+  const [ description, setDescription ] = useState( "" );
   const [ users, setUsers ] = useState( [] );
 
   useEffect( () => {
@@ -60,12 +63,17 @@ const userId = Meteor.userId();
     } else {
       setArchived( false );
     }
+    if ( notebookDescription ) {
+      setDescription( notebookDescription );
+    } else {
+      setDescription( "" );
+    }
     if ( notebookUsers ) {
       setUsers( notebookUsers );
     } else {
       setUsers( [{_id: userId, active: true, viewItems: true, editItems: true, manageUsers: true}] );
     }
-  }, [ notebookName, notebookArchived, notebookUsers ] );
+  }, [ notebookName, notebookArchived, notebookUsers, notebookDescription ] );
 
   const usersWithRights = useMemo(() => {
    return users.map(user =>
@@ -120,6 +128,17 @@ const userId = Meteor.userId();
           onChange={(e) =>  setArchived(!archived)}
           />
         <label htmlFor="archived">Archived</label>
+      </section>
+
+      <section>
+        <label htmlFor="description">Description</label>
+        <Textarea
+          id="description"
+          name="description"
+          placeholder="Enter description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          />
       </section>
 
       {
@@ -260,6 +279,7 @@ const userId = Meteor.userId();
             onSubmit(
                name,
                archived,
+               description,
                users
             );
           }}

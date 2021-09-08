@@ -6,6 +6,7 @@ import React, {
 import {
   Form,
   Input,
+  Textarea,
   ButtonRow,
   FullButton,
   Color
@@ -38,6 +39,7 @@ export default function TagForm( props ) {
     _id: tagId,
     name: tagName,
     colour: tagColour,
+    description: tagDescription,
     onSubmit,
     onRemove,
     onCancel,
@@ -45,6 +47,7 @@ export default function TagForm( props ) {
 
   const [ name, setName ] = useState( "" );
   const [ colour, setColour ] = useState( "" );
+  const [ description, setDescription ] = useState( "" );
 
   useEffect( () => {
     if ( tagName ) {
@@ -57,7 +60,12 @@ export default function TagForm( props ) {
     } else {
       setColour( "" );
     }
-  }, [ tagName, tagColour ] );
+    if ( tagDescription ) {
+      setDescription( tagDescription );
+    } else {
+      setDescription( "" );
+    }
+  }, [ tagName, tagColour, tagDescription ] );
 
 
   return (
@@ -103,6 +111,18 @@ export default function TagForm( props ) {
         </div>
       </section>
 
+      <section>
+        <label htmlFor="description">Description</label>
+        <Textarea
+          id="description"
+          name="description"
+          placeholder="Enter description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          />
+      </section>
+
+
       <ButtonRow>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
         {false  && onRemove &&
@@ -116,6 +136,7 @@ export default function TagForm( props ) {
             onSubmit(
               name,
               colour,
+              description
             );
           }}
           >

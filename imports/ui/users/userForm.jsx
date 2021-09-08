@@ -4,6 +4,10 @@ import React, {
 } from 'react';
 
 import {
+  useTracker
+} from 'meteor/react-meteor-data';
+
+import {
   isEmail,
   uint8ArrayToImg
 } from '../../other/helperFunctions';
@@ -18,8 +22,8 @@ import {
 export default function UserForm( props ) {
 
   const {
-    _id: userId,
-    profile,
+    title,
+    user,
     onSubmit,
     onRemove,
     onCancel,
@@ -28,6 +32,8 @@ export default function UserForm( props ) {
     changeEmail,
     errorMessage
   } = props;
+
+  const currentUser = useTracker( () => Meteor.user() );
 
   const [ name, setName ] = useState( "" );
   const [ surname, setSurname ] = useState( "" );
@@ -39,30 +45,34 @@ export default function UserForm( props ) {
   } );
   const [ password1, setPassword1 ] = useState( '' );
   const [ password2, setPassword2 ] = useState( '' );
+  const [ rights, setRights ] = useState( {
+    addNotebooks: false,
+    editUsers: false,
+  } );
+  const [ active, setActive ] = useState( true );
 
   const [ errors, setErrors ] = useState( [] );
 
   useEffect( () => {
-    if (!profile){
+    if (!user){
       setPassword1("lansystems123");
       setPassword2("lansystems123");
     }
-    if ( profile?.name ) {
-      setName( profile.name );
+    if ( user?.name ) {
+      setName( user.name );
     } else {
       setName( "" );
     }
-    if ( profile?.surname ) {
-      setSurname( profile.surname );
+    if ( user?.surname ) {
+      setSurname( user.surname );
     } else {
       setSurname( "" );
     }
-    if ( profile?.avatar ) {
-      const img = uint8ArrayToImg( profile.avatar );
+    if ( user?.avatar ) {
       setAvatar( {
         name: "",
-        buffer: profile.avatar,
-        img
+        buffer: user.avatar,
+        img: user.img,
       } );
     } else {
       setAvatar( {
@@ -71,14 +81,28 @@ export default function UserForm( props ) {
         img: null
       } );
     }
+    if ( user?.rights ) {
+      setRights( {...user.rights} );
+    } else {
+      setRights( {
+        addNotebooks: false,
+        editUsers: false,
+      } );
+    }
+    if ( user?.active ) {
+      setActive( user.active );
+    } else {
+      setActive( true );
+    }
     setErrors( [] );
-  }, [ profile ] );
+  }, [ user ] );
+
 
   return (
     <Form>
 
       <section>
-        <h1>User profile</h1>
+        <h1>{title}</h1>
       </section>
 
       <section>
@@ -117,7 +141,7 @@ export default function UserForm( props ) {
           />
       </section>
 
-      { !profile &&
+      { !user &&
         <section>
           <label  htmlFor="email">Email<span style={{color: "red"}}>*</span></label>
           <Input
@@ -165,8 +189,7 @@ export default function UserForm( props ) {
         </div>
       </section>
 
-
-      { !profile &&
+      { !user &&
         <section>
           <label htmlFor="password1">Password<span style={{color: "red"}}>*</span></label>
           <Input
@@ -187,7 +210,7 @@ export default function UserForm( props ) {
             />
         </section>
       }
-      { !profile &&
+      { !user &&
         <section>
           <label htmlFor="password2">Repeat password<span style={{color: "red"}}>*</span></label>
           <Input
@@ -210,6 +233,69 @@ export default function UserForm( props ) {
       }
 
       {
+        currentUser &&
+      currentUser.profile.rights &&
+    currentUser.profile.rights.editUsers &&
+    (!user || currentUser._id !== user._id) &&
+      <section>
+        <label>System settings</label>
+        <table width="100%">
+          <thead>
+            <tr>
+              <th width="33%">Active</th>
+              <th width="33%">Add notebooks</th>
+              <th width="33%">Edit users</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>
+                    <Input
+                      id="active"
+                      name="active"
+                      type="checkbox"
+                      checked={active}
+                      onChange={() =>  {
+                        setActive(!active);
+                      }}
+                      />
+                  </td>
+                    <td>
+                      <Input
+                        id="add-notebooks"
+                        name="add-notebooks"
+                        type="checkbox"
+                        checked={rights.addNotebooks}
+                        onChange={(e) =>  {
+                          setRights({
+                            addNotebooks: !rights.addNotebooks,
+                            editUsers: rights.editUsers,
+                          });
+                        }}
+                        />
+                    </td>
+                    <td>
+                      <Input
+                        id="read"
+                        name="read"
+                        type="checkbox"
+                        checked={rights.editUsers}
+                        onChange={(e) =>  {
+                          setRights({
+                            addNotebooks: rights.addNotebooks,
+                            editUsers: !rights.editUsers,
+                          });
+                        }}
+                        />
+                    </td>
+              </tr>
+          </tbody>
+        </table>
+      </section>
+    }
+
+
+      {
         errorMessage &&
         <p>{errorMessage}</p>
       }
@@ -222,7 +308,7 @@ export default function UserForm( props ) {
         }
         {onRemove &&
           false &&
-          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove(userId); onCancel();}}>Delete</FullButton>
+          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove(); onCancel();}}>Delete</FullButton>
         }
         <FullButton
           colour=""
@@ -235,17 +321,19 @@ export default function UserForm( props ) {
             if (surname.length === 0){
               errors.push("surname");
             }
-            if (!profile && !isEmail(email)){
+            if (!user && !isEmail(email)){
               errors.push("email");
             }
-            if  ((!profile && password1 !== password2) || (!profile && password1.length < 7)){
+            if  ((!user && password1 !== password2) || (!user && password1.length < 7)){
               errors.push("password");
             }
-            if (name.length > 0 &&surname.length > 0 && (profile || isEmail(email)) && (profile || (password1 === password2 && password1.length >= 7)) ) {
+            if (name.length > 0 &&surname.length > 0 && (user || isEmail(email)) && (user || (password1 === password2 && password1.length >= 7)) ) {
               onSubmit(
                 name,
                 surname,
                 avatar.buffer,
+                active,
+                rights,
                 email,
                 password1
               );

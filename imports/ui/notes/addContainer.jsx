@@ -27,15 +27,6 @@ export default function AddNoteContainer( props ) {
 
   const {filterType} = match.params;
 
-useEffect(() => {
-  if (notebook){
-    const userCanAddNotes = notebook.users.find(user => user._id === userId).editItems;
-    if (!userCanAddNotes){
-      history.goBack();
-    }
-  }
-}, [notebook, userId]);
-
 const addNew = ( title, tags, notebook, body ) => {
   NotesCollection.insert( {
     title, tags, body, notebook
@@ -43,7 +34,7 @@ const addNew = ( title, tags, notebook, body ) => {
     if (error){
       console.log(error);
     } else {
-      history.push(getGoToLink("noteDetail", {noteID: _id, filterType}));
+      history.push(getGoToLink("noteDetail", {noteID: _id, filterType: "notebooks"}));
     }
   } );
 }

@@ -40,10 +40,11 @@ import TagsList from '/imports/ui/tags/list';
 import NoteDetail from '/imports/ui/notes/view';
 import AddNote from '/imports/ui/notes/addContainer';
 import EditNote from '/imports/ui/notes/editContainer';
-/*import UsersList from './users/list';
-import ArchivedNotebooksList from '/imports/ui/notebooks/list';
+import ArchivedNotebooksList from '/imports/ui/notebooks/archivedNotebooksList';
 import ArchivedNotesList from '/imports/ui/notes/archivedNotesList';
-import ArchivedNoteDetail from '/imports/ui/notes/archivedView';*/
+import ArchivedNoteDetail from '/imports/ui/notes/archivedView';
+import UsersList from './users/list';
+
 
 import {
   uint8ArrayToImg
@@ -64,12 +65,7 @@ export default function MainPage( props ) {
   console.log("All our amazing icons are from FlatIcon (https://www.flaticon.com/). Thank you to all creators whose icons we could use: PixelPerfect (https://www.flaticon.com/authors/pixel-perfect), Dmitri13 (https://www.flaticon.com/authors/dmitri13), Phatplus (https://www.flaticon.com/authors/phatplus), Kiranshastry (https://www.flaticon.com/authors/kiranshastry), Those Icons (https://www.flaticon.com/authors/those-icons), Google (https://www.flaticon.com/authors/google), Dave Gandy (https://www.flaticon.com/authors/dave-gandy), Tomas Knop (https://www.flaticon.com/authors/tomas-knop), Gregor Cresnar (https://www.flaticon.com/authors/gregor-cresnar), Freepik (https://www.flaticon.com/authors/freepik)");
 
   const currentUser = useTracker( () => Meteor.user() );
-  const userId = useMemo(() => {
-    if (currentUser){
-      return currentUser._id;
-    }
-    return null;
-  }, [currentUser]);
+  const userId = Meteor.userId();
 
   const notebooks = useTracker( () => NotebooksCollection.find( { users:  { $elemMatch: { _id: userId, active: true } }, archived: false } ).fetch() );
   useEffect(() => {
@@ -82,11 +78,7 @@ export default function MainPage( props ) {
         )
       );
     } else {
-      dispatch(
-        setNotebooks(
-          []
-        )
-      );
+      dispatch(setNotebooks([]));
     }
   }, [notebooks]);
 
@@ -94,6 +86,8 @@ export default function MainPage( props ) {
   useEffect(() => {
     if (tags.length > 0){
       dispatch(setTags(tags.map(tag => ({...tag, label: tag.name, value: tag._id}))));
+    } else {
+      dispatch(setTags([]));
     }
   }, [tags]);
 
@@ -120,6 +114,8 @@ export default function MainPage( props ) {
             ...note,
             tags: note.tags.map(t1 => ({...tags.find(t2 => t2._id === t1)}))
         }))));
+      } else {
+        dispatch(setNotes([]));
       }
     }, [notes, tags]);
 
@@ -141,7 +137,12 @@ export default function MainPage( props ) {
             getLink("notesWithTag"),
             getLink("noteDetail"),
             getLink("noteEdit"),
-            getLink("noteAdd")
+            getLink("noteAdd"),
+            getLink("archivedNotebooksList"),
+            getLink("archivedNotesList"),
+            getLink("archivedNoteDetail"),
+            getLink("usersList"),
+            getLink("currentUserEdit")
           ]}
           render={(props) => (
             <Header
@@ -171,8 +172,13 @@ export default function MainPage( props ) {
                 getLink("tagsList"),
                 getLink("notesWithTag"),
                 getLink("noteDetail"),
-                getLink("noteEdit"),,
-                getLink("noteAdd")
+                getLink("noteEdit"),
+                getLink("noteAdd"),
+                getLink("archivedNotebooksList"),
+                getLink("archivedNotesList"),
+                getLink("archivedNoteDetail"),
+                getLink("usersList"),
+                getLink("currentUserEdit")
               ]}
               render={(props) => (
                 <Breadcrumbs
@@ -189,7 +195,7 @@ export default function MainPage( props ) {
                 <EditUserContainer {...props} />
               )}
               />
-            {/*
+
               <Route
                 exact
                 path={getLink("usersList")}
@@ -197,7 +203,6 @@ export default function MainPage( props ) {
                   <UsersList {...props} search={search}/>
                 )}
                 />
-              */}
 
                 <Route
                   exact
@@ -232,12 +237,8 @@ export default function MainPage( props ) {
                 <Route exact path={getLink("noteDetail")} component={NoteDetail}/>
                 <Route exact path={getLink("noteEdit")} component={EditNote}/>
                 <Route exact path={getLink("noteAdd")} component={AddNote}/>
-                {/*
 
-
-          <Route exact path={                        getLink("archivedNoteDetail")} component={ArchivedNoteDetail}/>
-
-            */}
+          <Route exact path={getLink("archivedNoteDetail")} component={ArchivedNoteDetail}/>
 
               <Route
                 exact

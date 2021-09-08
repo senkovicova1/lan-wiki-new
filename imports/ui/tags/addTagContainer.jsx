@@ -24,9 +24,9 @@ export default function AddTagContainer( props ) {
 
   const toggleAddTagModal = () => showAddTagModal( !addTagModalOpen );
 
-  const addNewTag = ( name, colour ) => {
+  const addNewTag = ( name, colour, description ) => {
     TagsCollection.insert( {
-      name, colour
+      name, colour, description
     } );
     showAddTagModal( false );
   }
@@ -42,6 +42,7 @@ export default function AddTagContainer( props ) {
           >
           <img
             className="icon"
+            style={{marginRight: "0.6em"}}
             src={PlusIcon}
             alt=""
             />

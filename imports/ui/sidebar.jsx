@@ -10,7 +10,11 @@ import {
   ModalBody
 } from 'reactstrap';
 
-import { PlusIcon, SettingsIcon, FolderIcon } from  "/imports/other/styles/icons";
+import {
+  useTracker
+} from 'meteor/react-meteor-data';
+
+import { PlusIcon, SettingsIcon, FolderIcon, TagIcon } from  "/imports/other/styles/icons";
 
 import AddTag from '/imports/ui/tags/addTagContainer';
 import EditTag from '/imports/ui/tags/editTagContainer';
@@ -22,7 +26,6 @@ getGoToLink
 import {
   Sidebar,
   SearchSection,
-  Input,
   LinkButton
 } from "/imports/other/styles/styledComponents";
 
@@ -35,9 +38,10 @@ export default function Menu( props ) {
     closeSelf
   } = props;
 
+  const currentUser = useTracker( () => Meteor.user() );
   const userId = Meteor.userId();
 
-  const {notebookID, tagID} = match.params;
+  const {notebookID, tagID, filterType} = match.params;
 
   const notebooks = useSelector((state) => state.notebooks.value);
   const tags = useSelector((state) => state.tags.value);
@@ -46,10 +50,18 @@ export default function Menu( props ) {
   const [ tagEdit, setTagEdit ] = useState(false);
   const toggleTagEdit = () => {setTagEdit(!tagEdit);};
 
+  let realFilterType = filterType;
+  if (!filterType && notebookID){
+    realFilterType = "notebooks";
+  }
+  if (!filterType && tagID){
+    realFilterType = "tags";
+  }
+
   return (
     <Sidebar>
       <LinkButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd"));}}
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd", {filterType: realFilterType}));}}
         >
         <img
           className="icon"
@@ -92,6 +104,10 @@ export default function Menu( props ) {
           </div>
           ))
       }
+      {
+        currentUser &&
+        currentUser.profile.rights &&
+        currentUser.profile.rights.addNotebooks &&
       <LinkButton
         onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookAdd"));}}
         >
@@ -105,6 +121,7 @@ export default function Menu( props ) {
           Notebook
         </span>
       </LinkButton>
+    }
       <hr/>
 
         <div
@@ -116,7 +133,7 @@ export default function Menu( props ) {
           >
                     <img
                       className="icon"
-                      src={FolderIcon}
+                      src={TagIcon}
                       alt=""
                       />
                     <h2>Tags</h2>
@@ -150,55 +167,21 @@ export default function Menu( props ) {
 <AddTag />
           <hr/>
 
-        {/*  <div className="nav" key={"all-tags"}>
+          <div className="nav" key="archived">
             <NavLink
-              className={"all-tags" === tagID ? "active" : ""}
+              className={match.path.includes("archived") ? "active" : ""}
               style={{width: "100%"}}
-              key={"all-tags"}
-              to={getGoToLink("notesList", {notebookID: actualNotebookID, tagID: "all-tags"})}
+              key={"archived"}
+              to={getGoToLink("archivedNotebooksList")}
               onClick={() => {
                 if (/Mobi|Android/i.test(navigator.userAgent)) {
                   closeSelf();
                 }
               }}
               >
-              <span>All tags</span>
+              <span>Archived</span>
             </NavLink>
           </div>
-        {
-          tags.map(tag =>  (
-            <div className="nav" key={tag.value}>
-              <NavLink
-                className={tag.value === notebookID ? "active" : ""}
-                style={tag.value === "all-tags" ? {width: "100%"} : {}}
-                key={tag.value}
-                to={getGoToLink("notesList", {notebookID: actualNotebookID, tagID: tag.value})}
-                onClick={() => {
-                  if (/Mobi|Android/i.test(navigator.userAgent)) {
-                    closeSelf();
-                  }
-                }}
-                >
-                <span>{tag.name}</span>
-              </NavLink>
-              {
-                tag.value !== "all-tags" &&
-              <LinkButton
-                onClick={(e) => {e.preventDefault(); setSelectedTag(tag); toggleTagEdit()}}
-                >
-                <img
-                  className="icon"
-                  src={SettingsIcon}
-                  alt=""
-                  />
-              </LinkButton>
-            }
-            </div>
-            ))
-        }
-        <AddTag />
-
-      <hr/>
 
         <NavLink
           className={match.path === "/users/list" ? "active" : ""}
@@ -213,21 +196,6 @@ export default function Menu( props ) {
           >
           <span>Users</span>
         </NavLink>
-
-        <NavLink
-          className={match.path.includes("archived") ? "active" : ""}
-          style={{width: "100%"}}
-          key={"archived"}
-          to={getGoToLink("archivedNotebooksList")}
-          onClick={() => {
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-              closeSelf();
-            }
-          }}
-          >
-          <span>Archived</span>
-        </NavLink>
-        */}
 
       <Modal isOpen={tagEdit} toggle={toggleTagEdit}>
         <ModalBody>
