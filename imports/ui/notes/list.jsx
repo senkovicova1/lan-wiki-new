@@ -5,8 +5,10 @@ import {
   useSelector
 } from 'react-redux';
 
+import { PlusIcon } from  "/imports/other/styles/icons";
 import {
-  List
+  List,
+  FloatingButton
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -29,10 +31,10 @@ export default function NotesList( props ) {
   const description = useMemo(() => {
     if (notebookID){
       const notebook = notebooks.find(notebook => notebook._id === notebookID);
-      return notebook && notebook.description ? notebook.description : "No description";
+      return notebook && notebook.description ? notebook.description : "";
     } else {
       const tag = tags.find(tag => tag._id === tagID);
-      return tag && tag.description ? tag.description : "No description";
+      return tag && tag.description ? tag.description : "";
     }
   }, [notebookID, notebooks, tagID, tags]);
 
@@ -87,6 +89,18 @@ export default function NotesList( props ) {
         </div>
       ))
       }
+      <FloatingButton
+        onClick={() => history.push(getGoToLink("noteAdd"))}
+        >
+        <img
+          className="icon"
+          src={PlusIcon}
+          alt="Plus icon not found"
+          />
+        <span>
+          Note
+        </span>
+      </FloatingButton>
 
     </List>
   );

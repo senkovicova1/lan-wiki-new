@@ -15,7 +15,7 @@ import Loader from '/imports/ui/other/loadingScreen';
 import {
   Form,
   Input,
-  ButtonCol,
+  ButtonRow,
   FullButton,
 } from "/imports/other/styles/styledComponents";
 import {
@@ -135,7 +135,7 @@ export default function NoteForm( props ) {
           buttonId={"ckeditor-file-upload-button-note-form"}
           />
 
-      <ButtonCol>
+      <ButtonRow>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
         <FullButton
           colour=""
@@ -149,7 +149,7 @@ export default function NoteForm( props ) {
           >
           Save
         </FullButton>
-      </ButtonCol>
+      </ButtonRow>
 
     </Form>
   );

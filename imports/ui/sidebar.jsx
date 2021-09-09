@@ -14,7 +14,7 @@ import {
   useTracker
 } from 'meteor/react-meteor-data';
 
-import { PlusIcon, SettingsIcon, FolderIcon, TagIcon } from  "/imports/other/styles/icons";
+import { PlusIcon, SettingsIcon, FolderIcon, TagIcon, ArchiveIcon, UserIcon } from  "/imports/other/styles/icons";
 
 import AddTag from '/imports/ui/tags/addTagContainer';
 import EditTag from '/imports/ui/tags/editTagContainer';
@@ -60,19 +60,6 @@ export default function Menu( props ) {
 
   return (
     <Sidebar>
-      <LinkButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd", {filterType: realFilterType}));}}
-        >
-        <img
-          className="icon"
-          style={{marginRight: "0.6em"}}
-          src={PlusIcon}
-          alt=""
-          />
-        <span>
-          Note
-        </span>
-      </LinkButton>
 
     <div className="header">
                 <img
@@ -167,7 +154,7 @@ export default function Menu( props ) {
 <AddTag />
           <hr/>
 
-          <div className="nav" key="archived">
+          <div className="nav full" key="archived">
             <NavLink
               className={match.path.includes("archived") ? "active" : ""}
               style={{width: "100%"}}
@@ -179,10 +166,19 @@ export default function Menu( props ) {
                 }
               }}
               >
+              <img
+                className="icon"
+                src={ArchiveIcon}
+                alt=""
+                />
               <span>Archived</span>
             </NavLink>
           </div>
-
+          {
+            currentUser &&
+            currentUser.profile.rights &&
+            currentUser.profile.rights.editUsers &&
+                      <div className="nav full" key="users">
         <NavLink
           className={match.path === "/users/list" ? "active" : ""}
           style={{width: "100%"}}
@@ -194,8 +190,15 @@ export default function Menu( props ) {
             }
           }}
           >
+          <img
+            className="icon"
+            src={UserIcon}
+            alt=""
+            />
           <span>Users</span>
         </NavLink>
+        </div>
+      }
 
       <Modal isOpen={tagEdit} toggle={toggleTagEdit}>
         <ModalBody>

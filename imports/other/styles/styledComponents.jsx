@@ -73,6 +73,11 @@ export const MainPage = styled.div `
 .cke_contents > iframe{
 width: 100% !important;
 }
+
+.ck-editor__editable_inline {
+    min-height: 200px;
+}
+
 `;
 
 export const MobilePageHeader = styled.header `
@@ -332,6 +337,13 @@ export const Sidebar = styled.section `
     }
   }
 
+  div.nav.full>a{
+    padding: ${inputOffset};
+    img{
+      margin-right: 0.6em;
+    }
+  }
+
   div.header{
     color: black;
     padding: 10px ${inputOffset};
@@ -426,8 +438,7 @@ export const FloatingButton = styled.button `
   border: none !important;
   border-radius: 1.5em;
   align-items: center;
-  position: -webkit-sticky;
-  position: sticky;
+  position: absolute;
   bottom: 40px;
   ${(props) => props.left &&
   `
@@ -435,7 +446,7 @@ export const FloatingButton = styled.button `
   `};
   ${(props) => !props.left &&
   `
-  left: 100%;
+  right: ${inputOffset};
   `};
   display: flex;
 
@@ -457,7 +468,7 @@ export const List = styled.section `
     display: flex;
     line-height: 3em;
     margin: 0em;
-    border-bottom: 1px solid #d6d6d6;
+    border-bottom: 0px solid #d6d6d6;
   }
 
   &>div:hover{
@@ -483,6 +494,8 @@ export const List = styled.section `
 
 export const IndexList = styled.section `
   width: 100%;
+    height: -webkit-fill-available;
+    position: relative;
   padding: 0em ${inputOffset};
   color: ${basicBlueColour};
 

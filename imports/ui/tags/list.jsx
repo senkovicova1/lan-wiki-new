@@ -3,9 +3,10 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 
-import { FolderIcon } from  "/imports/other/styles/icons";
+import { FolderIcon, PlusIcon } from  "/imports/other/styles/icons";
 import {
   IndexList,
+  FloatingButton
 } from "/imports/other/styles/styledComponents";
 
 import {
@@ -62,6 +63,18 @@ export default function TagsList( props ) {
           </div>
         )
       }
+      <FloatingButton
+        onClick={() => history.push(getGoToLink("noteAdd"))}
+        >
+        <img
+          className="icon"
+          src={PlusIcon}
+          alt="Plus icon not found"
+          />
+        <span>
+          Note
+        </span>
+      </FloatingButton>
     </IndexList>
   );
 };
