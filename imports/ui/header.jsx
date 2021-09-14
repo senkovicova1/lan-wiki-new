@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 //import { useSelector } from 'react-redux';
 
-import { SettingsIcon, MenuIcon, LogoutIcon, CloseIcon, SearchIcon, LeftArrowIcon, UserIcon } from  "/imports/other/styles/icons";
+import { SettingsIcon, MenuIcon, LogoutIcon, CloseIcon, SearchIcon, LeftArrowIcon, UserIcon, MenuIcon2 } from  "/imports/other/styles/icons";
 
 import Menu from './sidebar';
 
@@ -25,6 +25,7 @@ import {
   FullButton,
   SearchSection,
   Input,
+  Sort
 } from '../other/styles/styledComponents';
 import {
 getGoToLink
@@ -37,13 +38,18 @@ export default function Header( props ) {
     location,
     setParentOpenSidebar,
     setSearch,
-    search
+    search,
+    sortBy,
+    setSortBy,
+    sortDirection,
+    setSortDirection
   } = props;
 
   const currentUser = useTracker( () => Meteor.user() );
   const logout = () => Meteor.logout();
 
   const [ openSidebar, setOpenSidebar ] = useState(true);
+  const [ openSort, setOpenSort ] = useState(false);
   const [ title, setTitle ] = useState("Lan Wiki");
 
     const avatar = useMemo(() => {
@@ -52,6 +58,27 @@ export default function Header( props ) {
       }
       return uint8ArrayToImg(currentUser.profile.avatar);
     }, [currentUser]);
+
+    document.addEventListener("click", (evt) => {
+        const sortMenu = document.getElementById("sort-menu");
+        const openSortMenuBtn = document.getElementById("sort-menu-button");
+        let targetElement = evt.target; // clicked element
+        do {
+            if (targetElement == sortMenu) {
+                // This is a click inside. Do nothing, just return.
+                return;
+            }
+            if (targetElement == openSortMenuBtn) {
+                setOpenSort(!openSort);
+                return;
+            }
+            // Go up the DOM
+            targetElement = targetElement.parentNode;
+        } while (targetElement);
+
+        // This is a click outside.
+        setOpenSort(false);
+    });
 
   return (
     <PageHeader>
@@ -112,6 +139,24 @@ export default function Header( props ) {
   }
 
 <section className="header-section" style={{justifyContent: "flex-end"}}>
+  {
+    currentUser &&
+    <LinkButton
+      font="white"
+      id="sort-menu-button"
+      name="sort-menu-button"
+      onClick={(e) => {
+        e.preventDefault();
+        setOpenSort(!openSort);
+      }}
+      >
+      <img
+        className="icon"
+        src={MenuIcon2}
+        alt="MenuIcon2 icon not found"
+        />
+    </LinkButton>
+  }
       {
         currentUser &&
         <LinkButton
@@ -156,6 +201,87 @@ export default function Header( props ) {
         currentUser &&
         <Menu {...props} closeSelf={() => setOpenSidebar(false)}/>
       }
+      {
+              openSort &&
+              <Sort id="sort-menu" name="sort-menu">
+                <h3>Sort by</h3>
+                <span>
+                  <input
+                    id="sort-by-name-asc"
+                    name="sort-by-name-asc"
+                    type="checkbox"
+                    checked={sortBy === "name" && sortDirection === "asc"}
+                    onChange={() => {
+                      setSortBy("name");
+                      setSortDirection("asc");
+                      if (/Mobi|Android/i.test(navigator.userAgent)) {
+                        setOpenSort(!openSort);
+                      }
+                    }}
+                    />
+                  <label htmlFor="sort-by-name-asc">Name (ascending)</label>
+                </span>
+
+                  <span>
+                    <input
+                      id="sort-by-name-desc"
+                      name="sort-by-name-desc"
+                      type="checkbox"
+                      checked={sortBy === "name" && sortDirection === "desc"}
+                      onChange={() => {
+                        setSortBy("name");
+                        setSortDirection("desc");
+                        if (/Mobi|Android/i.test(navigator.userAgent)) {
+                          setOpenSort(!openSort);
+                        }
+                      }}
+                      />
+                    <label htmlFor="sort-by-name-desc">Name (descending)</label>
+                  </span>
+
+                  {
+                    match.path !== "/notebooks" &&
+                      match.path !== "/tags" &&
+                  <span>
+                    <input
+                      id="sort-by-date-asc"
+                      name="sort-by-date-asc"
+                      type="checkbox"
+                      checked={sortBy === "date" && sortDirection === "asc"}
+                      onChange={() => {
+                        setSortBy("date");
+                        setSortDirection("asc");
+                        if (/Mobi|Android/i.test(navigator.userAgent)) {
+                          setOpenSort(!openSort);
+                        }
+                      }}
+                      />
+                    <label htmlFor="sort-by-name-asc">Date created (ascending)</label>
+                  </span>
+                }
+
+                                  {
+                                    match.path !== "/notebooks" &&
+                                      match.path !== "/tags" &&
+                    <span>
+                      <input
+                        id="sort-by-date-desc"
+                        name="sort-by-date-desc"
+                        type="checkbox"
+                        checked={sortBy === "date" && sortDirection === "desc"}
+                        onChange={() => {
+                          setSortBy("date");
+                          setSortDirection("desc");
+                          if (/Mobi|Android/i.test(navigator.userAgent)) {
+                            setOpenSort(!openSort);
+                          }
+                        }}
+                        />
+                      <label htmlFor="sort-by-name-asc">Date created (descending)</label>
+                    </span>
+                  }
+              </Sort>
+            }
 
     </PageHeader>
   );

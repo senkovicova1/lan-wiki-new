@@ -60,7 +60,23 @@ export default function Menu( props ) {
 
   return (
     <Sidebar>
-
+      {
+        currentUser &&
+        notebooks.length > 1 &&
+      <LinkButton
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd"));}}
+        >
+        <img
+          className="icon"
+          style={{marginRight: "0.6em"}}
+          src={PlusIcon}
+          alt=""
+          />
+        <span>
+          Note
+        </span>
+      </LinkButton>
+    }
     <div className="header">
                 <img
                   className="icon"

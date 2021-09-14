@@ -28,7 +28,9 @@ export default function ArchivedNotebooksList( props ) {
   const {
     match,
     history,
-    search
+    search,
+    sortBy,
+    sortDirection,
   } = props;
 
   const userId = Meteor.userId();
@@ -53,6 +55,17 @@ export default function ArchivedNotebooksList( props ) {
     return notebooks.filter(notebook => notebook.name.toLowerCase().includes(search.toLowerCase()));
   }, [search, notebooks]);
 
+  const sortedNotebooks = useMemo(() => {
+    const multiplier = !sortDirection || sortDirection === "asc" ? -1 : 1;
+    return searchedNotebooks
+    .sort((p1, p2) => {
+      if (sortBy === "date"){
+        return p1.createdDate < p2.createdDate ? 1*multiplier : (-1)*multiplier;
+      }
+        return p1.name.toLowerCase() < p2.name.toLowerCase() ? 1*multiplier : (-1)*multiplier;
+    });
+  }, [searchedNotebooks, sortBy, sortDirection]);
+
     const yellowMatch = ( string ) => {
       if ( search.length === 0 || !string.toLowerCase().includes( search.toLowerCase() ) ) {
         return string;
@@ -65,11 +78,11 @@ export default function ArchivedNotebooksList( props ) {
   return (
     <IndexList>
       {
-        searchedNotebooks.length === 0 &&
+        sortedNotebooks.length === 0 &&
         <span className="message">You have no archived notebooks</span>
       }
       {
-        searchedNotebooks.map(notebook =>
+        sortedNotebooks.map(notebook =>
           <div
             key={notebook._id}
             onClick={(e) => {

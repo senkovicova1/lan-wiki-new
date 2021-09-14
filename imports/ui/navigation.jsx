@@ -45,11 +45,9 @@ import ArchivedNotesList from '/imports/ui/notes/archivedNotesList';
 import ArchivedNoteDetail from '/imports/ui/notes/archivedView';
 import UsersList from './users/list';
 
-
 import {
   uint8ArrayToImg
 } from '/imports/other/helperFunctions';
-
 
 import {
   Content
@@ -73,7 +71,7 @@ export default function MainPage( props ) {
       dispatch(
         setNotebooks(
           [
-          ...notebooks.map(notebook => ({...notebook, label: notebook.name, value: notebook._id}))
+          ...notebooks.map(notebook => ({...notebook, label: notebook.name, value: notebook._id})).sort((c1, c2) => c1.label > c2.label ? 1 : -1)
           ]
         )
       );
@@ -85,7 +83,7 @@ export default function MainPage( props ) {
   const tags = useTracker( () => TagsCollection.find( {} ).fetch() );
   useEffect(() => {
     if (tags.length > 0){
-      dispatch(setTags(tags.map(tag => ({...tag, label: tag.name, value: tag._id}))));
+      dispatch(setTags(tags.map(tag => ({...tag, label: tag.name, value: tag._id})).sort((c1, c2) => c1.label > c2.label ? 1 : -1)));
     } else {
       dispatch(setTags([]));
     }
@@ -121,6 +119,8 @@ export default function MainPage( props ) {
 
   const [ search, setSearch ] = useState( "" );
   const [ openSidebar, setOpenSidebar ] = useState( false );
+  const [ sortBy, setSortBy ] = useState("name");
+  const [ sortDirection, setSortDirection ] = useState("asc");
 
   return (
     <div style={{height: "100vh"}}>
@@ -150,6 +150,10 @@ export default function MainPage( props ) {
               setSearch={setSearch}
               search={search}
               setParentOpenSidebar={setOpenSidebar}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              sortDirection={sortDirection}
+              setSortDirection={setSortDirection}
               />
           )}
           />
@@ -186,7 +190,7 @@ export default function MainPage( props ) {
                   />
               )}
               />
-            <div style={{height: "100%", position: "relative"}}>
+            <div style={{height: "calc(100% - 52px)", position: "relative"}}>
 
             <Route
               exact
@@ -208,7 +212,12 @@ export default function MainPage( props ) {
                   exact
                   path={getLink("notebooksList")}
                   render={(props) => (
-                    <NotebooksList {...props} search={search}/>
+                    <NotebooksList
+                      {...props}
+                      search={search}
+                      sortBy={sortBy}
+                      sortDirection={sortDirection}
+                      />
                   )}
                   />
 
@@ -220,6 +229,8 @@ export default function MainPage( props ) {
                     <NotesList
                       {...props}
                       search={search}
+                      sortBy={sortBy}
+                      sortDirection={sortDirection}
                       />
                   )}
                   />
@@ -230,7 +241,12 @@ export default function MainPage( props ) {
                   exact
                   path={getLink("tagsList")}
                   render={(props) => (
-                    <TagsList {...props} search={search}/>
+                    <TagsList
+                      {...props}
+                      search={search}
+                      sortBy={sortBy}
+                      sortDirection={sortDirection}
+                      />
                   )}
                   />
 
@@ -247,6 +263,8 @@ export default function MainPage( props ) {
                   <ArchivedNotebooksList
                     {...props}
                     search={search}
+                    sortBy={sortBy}
+                    sortDirection={sortDirection}
                     />
                 )}
               />
@@ -258,6 +276,8 @@ export default function MainPage( props ) {
                 <ArchivedNotesList
                   {...props}
                   search={search}
+                  sortBy={sortBy}
+                  sortDirection={sortDirection}
                   />
               )}
               />

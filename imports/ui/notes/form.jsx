@@ -74,11 +74,6 @@ export default function NoteForm( props ) {
     }
   }, [ noteTitle, noteTags, noteBody, noteNotebook, allNotebooks ] );
 
-    const editors = document.getElementsByClassName("ck-file-dialog-button");
-    if (editors[0]){
-      editors[0].id = "ckeditor-file-upload-button-note-form";
-    }
-
     const tagsToChoose = allTags.filter(tag => !tags.includes(tag._id));
     const notebooksToChoose = allNotebooks.filter(nb => nb.users.find(u => u._id === userId).editItems);
 
@@ -133,6 +128,7 @@ export default function NoteForm( props ) {
           text={body}
           setText={setBody}
           buttonId={"ckeditor-file-upload-button-note-form"}
+          editorIndex={0}
           />
 
       <ButtonRow>

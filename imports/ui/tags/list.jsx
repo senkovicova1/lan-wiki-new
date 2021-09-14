@@ -18,7 +18,9 @@ export default function TagsList( props ) {
   const {
     match,
     history,
-    search
+    search,
+    sortBy,
+    sortDirection,
   } = props;
 
   const userId = Meteor.userId();
@@ -28,6 +30,17 @@ export default function TagsList( props ) {
   const searchedTags = useMemo(() => {
     return tags.filter(tag => tag.name.toLowerCase().includes(search.toLowerCase()));
   }, [search, tags]);
+
+  const sortedTags = useMemo(() => {
+    const multiplier = !sortDirection || sortDirection === "asc" ? -1 : 1;
+    return searchedTags
+    .sort((t1, t2) => {
+      if (sortBy === "date"){
+        return t1.createdDate < t2.createdDate ? 1*multiplier : (-1)*multiplier;
+      }
+        return t1.name.toLowerCase() < t2.name.toLowerCase() ? 1*multiplier : (-1)*multiplier;
+    });
+  }, [searchedTags, sortBy, sortDirection]);
 
     const yellowMatch = ( string ) => {
       if ( search.length === 0 || !string.toLowerCase().includes( search.toLowerCase() ) ) {
