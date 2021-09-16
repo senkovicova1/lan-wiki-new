@@ -63,7 +63,7 @@ export default function NoteDetail( props ) {
   return (
     <Form>
 
-      <h1>{note.title}</h1>
+      <h2>{note.title}</h2>
 
       <section>
         {
@@ -81,18 +81,6 @@ export default function NoteDetail( props ) {
           >
         </div>
       </section>
-
-          <FloatingButton
-            left
-            onClick={(e) => {e.preventDefault(); history.goBack();}}
-            >
-            <img
-              style={{marginRight: "2px"}}
-              src={BackIcon}
-              alt=""
-              className="icon"
-              />
-          </FloatingButton>
 
           {
           userCanEdit &&

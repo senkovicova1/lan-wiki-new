@@ -30,7 +30,6 @@ import {
 
 import Header from './header';
 import Login from './login';
-import Breadcrumbs from './breadcrumbs';
 import EditUserContainer from './users/editUserContainer';
 import NotesList from '/imports/ui/notes/list';
 import NotebooksList from '/imports/ui/notebooks/list';
@@ -166,30 +165,6 @@ export default function MainPage( props ) {
           currentUser &&
           <Content>
 
-            <Route
-              exact
-              path={[
-                ...getLink("notebooksList"),
-                getLink("notesInNotebook"),
-                getLink("notebookAdd"),
-                getLink("notebookEdit"),
-                getLink("tagsList"),
-                getLink("notesWithTag"),
-                getLink("noteDetail"),
-                getLink("noteEdit"),
-                getLink("noteAdd"),
-                getLink("archivedNotebooksList"),
-                getLink("archivedNotesList"),
-                getLink("archivedNoteDetail"),
-                getLink("usersList"),
-                getLink("currentUserEdit")
-              ]}
-              render={(props) => (
-                <Breadcrumbs
-                  {...props}
-                  />
-              )}
-              />
             <div style={{height: "calc(100% - 52px)", position: "relative"}}>
 
             <Route

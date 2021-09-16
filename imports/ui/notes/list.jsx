@@ -30,15 +30,18 @@ export default function NotesList( props ) {
   const tags = useSelector( ( state ) => state.tags.value );
   const notebooks = useSelector( ( state ) => state.notebooks.value );
 
-  const description = useMemo(() => {
+  const category = useMemo(() => {
     if (notebookID){
       const notebook = notebooks.find(notebook => notebook._id === notebookID);
-      return notebook && notebook.description ? notebook.description : "";
+      return notebook ? notebook : null;
     } else {
       const tag = tags.find(tag => tag._id === tagID);
-      return tag && tag.description ? tag.description : "";
+      return tag ? tag : null;
     }
   }, [notebookID, notebooks, tagID, tags]);
+
+  const description = category ? category.description : "";
+  const heading = category ? category.name : "Unnamed";
 
   const notes = useSelector( ( state ) => state.notes.value );
   const filteredNotes = useMemo( () => {
@@ -79,6 +82,7 @@ export default function NotesList( props ) {
 
   return (
     <List>
+      <h2>{heading}</h2>
       <span className="message">
         {description}
         </span>

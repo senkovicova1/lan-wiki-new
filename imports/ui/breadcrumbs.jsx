@@ -96,7 +96,7 @@ export default function Breadcrumbs( props ) {
     }
 
     if (path[1] === "users"){
-        result = [{ link: "usersList", label: "Users"}];        
+        result = [];        
     }
 
     setBreadcrumbs(result);

@@ -53,6 +53,7 @@ export default function TagsList( props ) {
 
   return (
     <IndexList>
+      <h2>Tags</h2>
       {
         searchedTags.length === 0 &&
         <span className="message">You have no tags</span>

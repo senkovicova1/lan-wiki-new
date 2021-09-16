@@ -61,7 +61,7 @@ export default function ArchivedNoteDetail( props ) {
   return (
     <Form>
 
-      <h1>{note.title}</h1>
+      <h2>{note.title}</h2>
 
       <section>
         {
@@ -79,18 +79,6 @@ export default function ArchivedNoteDetail( props ) {
           >
         </div>
       </section>
-
-          <FloatingButton
-            left
-            onClick={(e) => {e.preventDefault(); history.goBack();}}
-            >
-            <img
-              style={{marginRight: "2px"}}
-              src={BackIcon}
-              alt=""
-              className="icon"
-              />
-          </FloatingButton>
 
     </Form>
   );

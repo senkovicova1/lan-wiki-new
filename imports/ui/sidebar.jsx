@@ -83,7 +83,7 @@ export default function Menu( props ) {
                   src={FolderIcon}
                   alt=""
                   />
-      <h2>Notebooks</h2>
+                <h3 onClick={() => history.push(getGoToLink("notebooksList"))}>Notebooks</h3>
     </div>
             {
         notebooks.map(notebook =>  (
@@ -139,7 +139,7 @@ export default function Menu( props ) {
                       src={TagIcon}
                       alt=""
                       />
-                    <h2>Tags</h2>
+                    <h3>Tags</h3>
         </div>
                 {
             tags.map(tag =>  (

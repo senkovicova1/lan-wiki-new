@@ -23,6 +23,10 @@ export const MainPage = styled.div `
 
   h2 {
     font-size: 2em;
+    color: black;
+    margin-top: 0.2em;
+    margin-bottom: 0em;
+    line-height: 48px;
   }
 
   ul {
@@ -40,7 +44,7 @@ export const MainPage = styled.div `
   }
 
   img.icon {
-    height: 1.3em !important;
+    height: 1em !important;
     filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(90%) contrast(101%);
   }
 
@@ -309,7 +313,7 @@ export const Sidebar = styled.section `
     display: flex;
     align-items: center;
     height: 3em;
-    padding: 10px calc(${inputOffset} + 30px);
+    padding: 10px calc(${inputOffset} + 26px);
     text-decoration: none !important;
   }
 
@@ -351,8 +355,8 @@ export const Sidebar = styled.section `
     align-items: center;
   }
 
-  div.header>h2{
-    font-size: 1.2em;
+  div.header>h3{
+    font-size: 1em;
     margin: 0px;
   }
     div.header>img{
@@ -489,7 +493,12 @@ export const List = styled.section `
       padding: 0.3em;
       margin-left: 0.3em;
     }
-
+      h2{
+        line-height: 48px;
+      }
+      span.message{
+        margin-left: 0px !important;
+      }
 `;
 
 export const IndexList = styled.section `
@@ -512,6 +521,13 @@ export const IndexList = styled.section `
   &>div>.icon{
     align-self: center;
     margin-right: 0.6em;
+  }
+
+  h2{
+    line-height: 48px;
+  }
+  span.message{
+    margin-left: 0px !important;
   }
 `;
 
@@ -553,11 +569,14 @@ img.avatar {
 `;
 
 export const Form = styled.form `
-padding: 1em ${inputOffset};
+padding: 0em ${inputOffset};
 width: -webkit-fill-available;
 
+  h1{
+    line-height: 48px;
+  }
 section {
-  margin: 0em 0em 1.5em 0em;
+  margin: 1.5em 0em;
     i {
       font-size: 1.5em;
     }

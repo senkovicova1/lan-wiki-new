@@ -84,7 +84,7 @@ export default function NoteForm( props ) {
   return (
     <Form>
 
-      <h1>{formTitle}</h1>
+      <h2>{formTitle}</h2>
 
       <section>
         <label htmlFor="title">Title</label>

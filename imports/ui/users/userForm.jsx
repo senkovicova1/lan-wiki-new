@@ -101,9 +101,7 @@ export default function UserForm( props ) {
   return (
     <Form>
 
-      <section>
-        <h1>{title}</h1>
-      </section>
+        <h2>{title}</h2>
 
       <section>
         <label htmlFor="name">Name<span style={{color: "red"}}>*</span></label>

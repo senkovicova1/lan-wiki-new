@@ -52,6 +52,7 @@ export default function NotebooksList( props ) {
 
   return (
     <IndexList>
+      <h2 style={{ marginTop: "0.2em", marginBottom: "0em"}}>Notebooks</h2>
       {
         sortedNotebooks.length === 0 &&
         <span className="message">You have no notebooks</span>

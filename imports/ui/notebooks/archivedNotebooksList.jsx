@@ -77,6 +77,7 @@ export default function ArchivedNotebooksList( props ) {
 
   return (
     <IndexList>
+      <h2>Archived notebooks</h2>
       {
         sortedNotebooks.length === 0 &&
         <span className="message">You have no archived notebooks</span>
