@@ -96,9 +96,9 @@ export default function Breadcrumbs( props ) {
     }
 
     if (path[1] === "users"){
-        result = [];        
+        result = [];
     }
-
+    
     setBreadcrumbs(result);
   }, [match.path, notebookID, notebooks, archivedNotebooks, tagID, tags, notes, noteID, filterType]);
 

@@ -34,7 +34,7 @@ const addNew = ( title, tags, notebook, body ) => {
     if (error){
       console.log(error);
     } else {
-      history.push(getGoToLink("noteDetail", {noteID: _id, filterType: "notebooks"}));
+      history.push(getGoToLink("noteDetail", {noteID: _id, filterType: "notebooks", categoryID: notebook}));
     }
   } );
 }

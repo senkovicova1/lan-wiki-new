@@ -105,7 +105,7 @@ export default function ArchivedNotesList( props ) {
 
       {sortedNotes.length > 0 &&
         sortedNotes.map((note) => (
-        <div key={note._id} onClick={(e) => {e.preventDefault(); history.push(getGoToLink("archivedNoteDetail", {notebookID, noteID: note._id}))}}>
+        <div key={note._id} onClick={(e) => {e.preventDefault(); console.log("hi"); history.push(getGoToLink("archivedNoteDetail", {notebookID, noteID: note._id}))}}>
           <span className="title">{yellowMatch(note.title)}</span>
           <div className="tags">
           {note.tags.map(tag => (

@@ -34,7 +34,7 @@ export default function NoteDetail( props ) {
 
   const userId = Meteor.userId();
 
-  const {noteID,filterType} = match.params;
+  const {noteID, filterType, categoryID} = match.params;
 
   const notes = useSelector( ( state ) => state.notes.value );
   const note = useMemo(() => {
@@ -85,7 +85,7 @@ export default function NoteDetail( props ) {
           {
           userCanEdit &&
           <FloatingButton
-            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {noteID, filterType}));}}
+            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {noteID, filterType, categoryID}));}}
             >
             <img
               src={PencilIcon}

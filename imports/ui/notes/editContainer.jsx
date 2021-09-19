@@ -26,7 +26,7 @@ export default function EditNoteContainer( props ) {
 
   const userId = Meteor.userId();
 
-  const {notebookID, tagID, noteID, filterType} = match.params;
+  const {notebookID, tagID, noteID, filterType, categoryID} = match.params;
 
   const notes = useSelector( ( state ) => state.notes.value );
   const note = useMemo(() => {
@@ -63,7 +63,7 @@ export default function EditNoteContainer( props ) {
       if (error){
         console.log(error);
       } else {
-        history.push(getGoToLink("noteDetail", {noteID, filterType}));
+        history.push(getGoToLink("noteDetail", {noteID, filterType, categoryID}));
       }
     } );
   }

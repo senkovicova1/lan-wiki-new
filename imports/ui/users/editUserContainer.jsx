@@ -22,7 +22,7 @@ export default function EditUserContainer( props ) {
   const user = useSelector((state) => state.users.value).find(u => u._id === (userID ? userID : userId));
 
   const editUser = ( name, surname, avatar, active, rights ) => {
-    let data = {...user.profile, name, surname, avatar, active, rights};
+    let data = {name, surname, avatar, active, rights};
 
     Meteor.users.update((userID ? userID : userId), {
       $set: {
