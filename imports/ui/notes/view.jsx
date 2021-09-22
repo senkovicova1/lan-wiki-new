@@ -24,6 +24,10 @@ import {
   uint8ArrayToImg,
   addImagesToText
 } from '/imports/other/helperFunctions';
+import {
+  PLAIN,
+  COLUMNS
+} from "/imports/other/constants";
 
 export default function NoteDetail( props ) {
 
@@ -33,6 +37,7 @@ export default function NoteDetail( props ) {
   } = props;
 
   const userId = Meteor.userId();
+  const layout = useSelector( ( state ) => state.metadata.value ).layout;
 
   const {noteID, filterType, categoryID} = match.params;
 
@@ -61,7 +66,7 @@ export default function NoteDetail( props ) {
   const userCanEdit = notebook ? notebook.users.find(user => user._id === userId).editItems : false;
 
   return (
-    <Form>
+    <Form style={layout === COLUMNS ? {backgroundColor: "white"} : {}}>
 
       <h2>{note.title}</h2>
 

@@ -260,7 +260,7 @@ export const Content = styled.main `
     padding-left: 270px;
     padding-right: 0px;
     margin: 0px;
-    overflow-y: overlay;
+    overflow-y: auto;
   }
 `;
 
@@ -480,10 +480,6 @@ export const List = styled.section `
     color: ${basicBlueColour};
   }
 
-  &>div>span.title{
-
-  }
-
   &>div>div.tags{
     margin-left: auto;
   }
@@ -569,7 +565,7 @@ img.avatar {
 `;
 
 export const Form = styled.form `
-padding: 0em ${inputOffset};
+padding: 0em ${inputOffset} ${inputOffset} ${inputOffset};
 width: -webkit-fill-available;
 
   h1{

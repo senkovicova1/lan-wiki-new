@@ -24,6 +24,10 @@ import {
   uint8ArrayToImg,
   addImagesToText
 } from '/imports/other/helperFunctions';
+import {
+  PLAIN,
+  COLUMNS
+} from "/imports/other/constants";
 
 export default function ArchivedNoteDetail( props ) {
 
@@ -33,6 +37,7 @@ export default function ArchivedNoteDetail( props ) {
   } = props;
 
   const userId = Meteor.userId();
+  const layout = useSelector( ( state ) => state.metadata.value ).layout;
 
   const {notebookID, tagID, noteID} = match.params;
 
@@ -59,7 +64,7 @@ export default function ArchivedNoteDetail( props ) {
   }, [notebook, userId]);
 
   return (
-    <Form>
+    <Form style={layout === COLUMNS ? {backgroundColor: "white"} : {}}>
 
       <h2>{note.title}</h2>
 

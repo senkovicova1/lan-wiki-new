@@ -34,7 +34,7 @@ export default function ArchivedNotesList( props ) {
     sortDirection,
   } = props;
 
-  const {notebookID} = match.params;
+  const {notebookID, noteID} = match.params;
   const userId = Meteor.userId();
 
   const notes = useTracker( () => NotesCollection.find( { notebook: notebookID} ).fetch() );
@@ -105,8 +105,8 @@ export default function ArchivedNotesList( props ) {
 
       {sortedNotes.length > 0 &&
         sortedNotes.map((note) => (
-        <div key={note._id} onClick={(e) => {e.preventDefault(); console.log("hi"); history.push(getGoToLink("archivedNoteDetail", {notebookID, noteID: note._id}))}}>
-          <span className="title">{yellowMatch(note.title)}</span>
+        <div key={note._id} onClick={(e) => {e.preventDefault(); history.push(getGoToLink("archivedNoteDetail", {notebookID, noteID: note._id}))}}>
+          <span className="title" style={note._id === noteID ? {color: "#0078d4"} : {}}>{yellowMatch(note.title)}</span>
           <div className="tags">
           {note.tags.map(tag => (
             <span className="tag" key={note._id + tag._id} style={{backgroundColor: tag.colour}}>{tag.name}</span>

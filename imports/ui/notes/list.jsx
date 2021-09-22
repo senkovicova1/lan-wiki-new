@@ -25,7 +25,7 @@ export default function NotesList( props ) {
     sortDirection,
   } = props;
 
-  const {notebookID, tagID, categoryID, filterType} = match.params;
+  const {notebookID, tagID, categoryID, filterType, noteID} = match.params;
   const userId = Meteor.userId();
 
   const tags = useSelector( ( state ) => state.tags.value );
@@ -84,9 +84,11 @@ export default function NotesList( props ) {
     }
     let startIndex = string.toLowerCase().indexOf( search.toLowerCase() );
     let endIndex = startIndex + search.length;
-    return <span> {string.substring( 0, startIndex - 1 )} <span style={{ backgroundColor: "yellow" }}> {string.substring( startIndex-1, endIndex )} </span> {string.substring(endIndex )} </span>;
+    return <span  style={{ color: "inherit" }}>  {string.substring( 0, startIndex - 1 )} <span style={{ backgroundColor: "yellow" }}> {string.substring( startIndex-1, endIndex )} </span> {string.substring(endIndex )} </span>;
   }
-  
+
+  console.log(noteID, sortedNotes.find(n => n._id === noteID));
+
   return (
     <List>
       <h2>{heading}</h2>
@@ -110,7 +112,7 @@ export default function NotesList( props ) {
             history.push(getGoToLink("noteDetail", {noteID: note._id, filterType: location.pathname.includes("notebook") ? "notebooks" : "tags", categoryID: category._id}));
           }}
           >
-          <span className="title">{yellowMatch(note.title)}</span>
+          <span className="title" style={note._id === noteID ? {color: "#0078d4"} : {}}>{yellowMatch(note.title)}</span>
           <div className="tags">
           {note.tags.map(tag => (
             <span className="tag" key={note._id + tag._id} style={{backgroundColor: tag.colour}}>{tag.name}</span>

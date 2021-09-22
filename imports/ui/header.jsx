@@ -6,16 +6,20 @@ import React, {
 import {
   Link
 } from 'react-router-dom';
-//import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  useTracker
+} from 'meteor/react-meteor-data';
 
 import { SettingsIcon, MenuIcon, LogoutIcon, CloseIcon, SearchIcon, LeftArrowIcon, UserIcon, MenuIcon2 } from  "/imports/other/styles/icons";
 
 import Menu from './sidebar';
 
+import { setLayout } from '/imports/redux/metadataSlice';
 import {
-  useTracker
-} from 'meteor/react-meteor-data';
-
+  PLAIN,
+  COLUMNS
+} from "/imports/other/constants";
 import {
   uint8ArrayToImg
 } from '/imports/other/helperFunctions';
@@ -32,6 +36,7 @@ getGoToLink
 } from "/imports/other/navigationLinks";
 
 export default function Header( props ) {
+  const dispatch = useDispatch();
 
   const {
     match,
@@ -47,6 +52,7 @@ export default function Header( props ) {
 
   const currentUser = useTracker( () => Meteor.user() );
   const logout = () => Meteor.logout();
+  const layout = useSelector( ( state ) => state.metadata.value ).layout;
 
   const [ openSidebar, setOpenSidebar ] = useState(true);
   const [ openSort, setOpenSort ] = useState(false);
@@ -204,6 +210,38 @@ export default function Header( props ) {
       {
               openSort &&
               <Sort id="sort-menu" name="sort-menu">
+                <h3>Layout</h3>
+                  <span>
+                    <input
+                      id="plain-layout"
+                      name="plain-layout"
+                      type="checkbox"
+                      checked={layout === PLAIN}
+                      onChange={() => {
+                        dispatch(setLayout(PLAIN));
+                        if (/Mobi|Android/i.test(navigator.userAgent)) {
+                          setOpenSort(!openSort);
+                        }
+                      }}
+                      />
+                    <label htmlFor="plain-layout">Basic</label>
+                  </span>
+
+                    <span>
+                      <input
+                        id="columns-layout"
+                        name="columns-layout"
+                        type="checkbox"
+                        checked={layout === COLUMNS}
+                        onChange={() => {
+                          dispatch(setLayout(COLUMNS));
+                          if (/Mobi|Android/i.test(navigator.userAgent)) {
+                            setOpenSort(!openSort);
+                          }
+                        }}
+                        />
+                      <label htmlFor="columns-layout">Columns</label>
+                    </span>
                 <h3>Sort by</h3>
                 <span>
                   <input

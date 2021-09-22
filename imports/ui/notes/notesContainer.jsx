@@ -10,6 +10,9 @@ import NoteDetail from '/imports/ui/notes/view';
 import AddNote from '/imports/ui/notes/addContainer';
 import EditNote from '/imports/ui/notes/editContainer';
 
+import {
+  PLAIN
+} from "/imports/other/constants";
 import { PlusIcon } from  "/imports/other/styles/icons";
 import {
   List,
@@ -31,6 +34,7 @@ export default function NotesContainer( props ) {
 
   const {notebookID, tagID, noteID} = match.params;
   const userId = Meteor.userId();
+  const layout = useSelector( ( state ) => state.metadata.value ).layout;
 
   const tags = useSelector( ( state ) => state.tags.value );
   const notebooks = useSelector( ( state ) => state.notebooks.value );
@@ -85,7 +89,7 @@ export default function NotesContainer( props ) {
 
   const filterType = notebookID ? "notebooks" : "tags";
 
-  if (window.innerWidth <= 820){
+  if (window.innerWidth <= 820 || layout === PLAIN){
     switch (match.path) {
       case "/notebooks/:notebookID/notes":
         return <NotesList {...props} />;
@@ -105,7 +109,7 @@ export default function NotesContainer( props ) {
       <div style={{width: "-webkit-fill-available"}}>
         <NotesList {...props} />
       </div>
-      <div style={{width: "200%", backgroundColor: "white"}}>
+      <div style={{width: "200%", backgroundColor: "white", height: "-webkit-fill-available"}}>
         {
           noteID &&
           match.path === "/:filterType/:categoryID/notes/:noteID/view" &&
@@ -118,7 +122,7 @@ export default function NotesContainer( props ) {
           }
         {
           !noteID &&
-        <div> No chosen note</div>
+        <div style={{paddingLeft: "20px"}}><h2>No chosen note</h2> </div>
       }
       </div>
     </div>

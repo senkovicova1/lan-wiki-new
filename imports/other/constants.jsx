@@ -8,3 +8,6 @@ export const LANGUAGES = [
       value: "sk"
     }
 ]
+
+export const PLAIN = 0;
+export const COLUMNS = 1;

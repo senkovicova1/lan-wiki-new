@@ -167,7 +167,7 @@ export default function MainPage( props ) {
           currentUser &&
           <Content>
 
-            <div style={{height: "calc(100%)", position: "relative"}}>
+            <div style={{height: "calc(100% - 10px)", position: "relative"}}>
 
             <Route
               exact

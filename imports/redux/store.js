@@ -7,6 +7,7 @@ import notesReducer from './notesSlice';
 import archivedNotesReducer from './archivedNotesSlice';
 import tagsReducer from './tagsSlice';
 import usersReducer from './usersSlice';
+import metadataReducer from './metadataSlice';
 
 export default configureStore( {
   reducer: {
@@ -16,5 +17,6 @@ export default configureStore( {
     archivedNotes: archivedNotesReducer,
     tags: tagsReducer,
     users: usersReducer,
+    metadata: metadataReducer,
   },
 } )
