@@ -242,7 +242,7 @@ export const Content = styled.main `
       props.withSidebar &&
       `
         max-width: 800px;
-        margin-left: ${sidebarWidthWeb};
+        margin-left: 250px;
         margin-right: auto;
       `
     }
@@ -257,10 +257,24 @@ export const Content = styled.main `
     }
   }
   @media all and (min-width: 1300px) {
-    padding-left: 270px;
-    padding-right: 0px;
-    margin: 0px;
-    overflow-y: auto;
+    ${(props) =>
+      props.withSidebar &&
+      `
+        padding-left: 250px;
+        padding-right: 0px;
+        margin: 0px;
+        overflow-y: auto;
+      `
+    }
+    ${(props) =>
+      !props.withSidebar &&
+      `
+      margin: 0px;
+        margin-left: auto;
+        margin-right: auto;
+        overflow-y: auto;
+      `
+    }
   }
 `;
 
@@ -466,7 +480,7 @@ export const FloatingButton = styled.button `
 
 export const List = styled.section `
   width: 100%;
-  padding: 0em 20px 0em 0em;
+  padding: 0em 20px;
 
   &>div{
     display: flex;

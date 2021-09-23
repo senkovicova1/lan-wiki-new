@@ -1,6 +1,6 @@
 import React, {
   useState,
-//  useEffect,
+  useEffect,
   useMemo
 } from 'react';
 import {
@@ -85,6 +85,16 @@ export default function Header( props ) {
         // This is a click outside.
         setOpenSort(false);
     });
+
+    useEffect(() => {
+      if (window.innerWidth >= 800) {
+        setParentOpenSidebar(true);
+        setOpenSidebar(true);
+      } else {
+        setOpenSidebar(false);
+        setParentOpenSidebar(false);
+      }
+    }, [window.innerWidth]);
 
   return (
     <PageHeader>
@@ -242,6 +252,7 @@ export default function Header( props ) {
                         />
                       <label htmlFor="columns-layout">Columns</label>
                     </span>
+
                 <h3>Sort by</h3>
                 <span>
                   <input

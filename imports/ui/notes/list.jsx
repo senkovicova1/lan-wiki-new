@@ -87,8 +87,6 @@ export default function NotesList( props ) {
     return <span  style={{ color: "inherit" }}>  {string.substring( 0, startIndex - 1 )} <span style={{ backgroundColor: "yellow" }}> {string.substring( startIndex-1, endIndex )} </span> {string.substring(endIndex )} </span>;
   }
 
-  console.log(noteID, sortedNotes.find(n => n._id === noteID));
-
   return (
     <List>
       <h2>{heading}</h2>

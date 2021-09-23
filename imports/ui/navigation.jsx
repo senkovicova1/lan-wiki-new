@@ -159,13 +159,13 @@ export default function MainPage( props ) {
           )}
           />
         {!currentUser &&
-          <Content style={{paddingLeft: "250px", paddingRight: "250px"}}>
+          <Content withSidebar={false}>
             <Route path={["/", getLink("login")]} component={Login} />
           </Content>
         }
         {
           currentUser &&
-          <Content>
+          <Content withSidebar={openSidebar}>
 
             <div style={{height: "calc(100% - 10px)", position: "relative"}}>
 
