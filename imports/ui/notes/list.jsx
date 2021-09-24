@@ -88,7 +88,7 @@ export default function NotesList( props ) {
   }
 
   return (
-    <List>
+    <List style={{ padding: "20px 15px"}}>
       <h2>{heading}</h2>
       <span className="message">
         {description}

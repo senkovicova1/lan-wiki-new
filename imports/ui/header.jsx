@@ -220,7 +220,12 @@ export default function Header( props ) {
       {
               openSort &&
               <Sort id="sort-menu" name="sort-menu">
+                {
+                  window.innerWidth >=800 &&
                 <h3>Layout</h3>
+              }
+                {
+                  window.innerWidth >=800 &&
                   <span>
                     <input
                       id="plain-layout"
@@ -236,7 +241,9 @@ export default function Header( props ) {
                       />
                     <label htmlFor="plain-layout">Basic</label>
                   </span>
-
+}
+  {
+    window.innerWidth >=800 &&
                     <span>
                       <input
                         id="columns-layout"
@@ -252,6 +259,7 @@ export default function Header( props ) {
                         />
                       <label htmlFor="columns-layout">Columns</label>
                     </span>
+                  }
 
                 <h3>Sort by</h3>
                 <span>
