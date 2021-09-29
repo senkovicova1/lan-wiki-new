@@ -22,7 +22,8 @@ import {
 } from "/imports/other/navigationLinks";
 import {
   uint8ArrayToImg,
-  addImagesToText
+  addImagesToText,
+  handleMedia,
 } from '/imports/other/helperFunctions';
 import {
   PLAIN,
@@ -78,10 +79,10 @@ export default function NoteDetail( props ) {
         ))}
       </section>
 
-      <section>
+      <section className="description">
           <div
             dangerouslySetInnerHTML={{
-              __html: note?.body ? addImagesToText(note.body) : "No description",
+              __html: note?.body ? addImagesToText(handleMedia(note.body)) : "No description",
           }}
           >
         </div>

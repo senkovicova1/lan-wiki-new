@@ -76,7 +76,7 @@ export default function ArchivedNoteDetail( props ) {
         ))}
       </section>
 
-      <section>
+      <section className="description">
           <div
             dangerouslySetInnerHTML={{
               __html: note?.body ? addImagesToText(note.body) : "No description",

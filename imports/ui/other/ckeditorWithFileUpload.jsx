@@ -5,6 +5,9 @@ import React, {
 } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {
+  Spinner
+} from 'reactstrap';
 
 import {
   ImagesCollection
@@ -24,12 +27,13 @@ export default function CKEditorWithFileUpload( props ) {
     editorIndex
   } = props;
 
+  const [showLoad, setShowLoad] = useState(false);
+
   const inputFile = useRef(null);
   const editors = document.getElementsByClassName("ck-file-dialog-button");
   useEffect(() => {
     if (editors.length > 0){
       editors[editorIndex].id = `ckeditor-file-upload-button-${editorIndex}`;
-
       const input = document.querySelectorAll(`span#ckeditor-file-upload-button-${editorIndex}>input`)[0];
       if (input){
         input.click = function(){
@@ -42,6 +46,10 @@ export default function CKEditorWithFileUpload( props ) {
   return (
     <section  className="row-notes">
       <label>{title}</label>
+        {
+          showLoad &&
+          <Spinner color="primary" size="1em" className="spinner" children=""/>
+        }
       <div className="text">
         <div className="main" style={{width: "100%"}}>
           <input
@@ -51,6 +59,7 @@ export default function CKEditorWithFileUpload( props ) {
             style={{display: 'none'}}
             onChange={(e) =>  {
               e.persist();
+              setShowLoad(true);
               var file = e.target.files[0];
               if (!file) return;
               var reader = new FileReader();
@@ -68,6 +77,7 @@ export default function CKEditorWithFileUpload( props ) {
                     let newText = imgToInsert + text;
                     setText(newText);
                   }
+                  setShowLoad(false);
                 } );
               }
               reader.readAsArrayBuffer(file);
