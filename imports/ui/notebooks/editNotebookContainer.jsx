@@ -61,6 +61,6 @@ export default function EditNotebookContainer( props ) {
   }
 
   return (
-      <NotebookForm {...notebook} onSubmit={editNotebook} onCancel={cancel} onRemove={removeNotebook}/>
+      <NotebookForm {...notebook} title={"Edit notebook"} onSubmit={editNotebook} onCancel={cancel} onRemove={removeNotebook}/>
   );
 };

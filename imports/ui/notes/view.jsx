@@ -67,7 +67,7 @@ export default function NoteDetail( props ) {
   const userCanEdit = notebook ? notebook.users.find(user => user._id === userId).editItems : false;
 
   return (
-    <Form style={layout === COLUMNS ? {backgroundColor: "white", padding: "30px"} : {padding: "30px"}}>
+    <Form style={layout === COLUMNS ? {backgroundColor: "white"} : {}}>
 
       <h2>{note.title}</h2>
 

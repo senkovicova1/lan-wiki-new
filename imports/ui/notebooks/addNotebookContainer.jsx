@@ -31,6 +31,6 @@ export default function AddNotebookContainer( props ) {
   }
 
   return (
-        <NotebookForm onSubmit={addNewNotebook} onCancel={cancel}/>
+        <NotebookForm  title={"Add notebook"} onSubmit={addNewNotebook} onCancel={cancel}/>
   );
 };

@@ -167,7 +167,7 @@ export default function MainPage( props ) {
           currentUser &&
           <Content withSidebar={openSidebar}>
 
-            <div style={{height: "calc(100% - 10px)", position: "relative"}}>
+            <div style={{position: "relative"}}>
 
             <Route
               exact

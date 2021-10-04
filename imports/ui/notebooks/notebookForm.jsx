@@ -31,6 +31,7 @@ import {
 export default function NotebookForm( props ) {
 
   const {
+    title,
     _id: notebookId,
     name: notebookName,
     archived: notebookArchived,
@@ -106,6 +107,8 @@ const userId = Meteor.userId();
 
   return (
     <Form>
+
+      <h2>{title}</h2>
 
       <section>
         <label htmlFor="name">Name</label>

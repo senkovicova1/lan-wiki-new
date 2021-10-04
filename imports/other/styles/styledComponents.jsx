@@ -17,17 +17,7 @@ export const MainPage = styled.div `
   text-align: left;
   line-height: 1.5em;
 
-  h1, h2, h3, h4 {
-    font-weight: lighter;
-  }
 
-  h2 {
-    font-size: 2em;
-    color: black;
-    margin-top: 0.2em;
-    margin-bottom: 0em;
-    line-height: 48px;
-  }
 
   ul {
     list-style-type: none;
@@ -485,7 +475,7 @@ export const FloatingButton = styled.button `
 
 export const List = styled.section `
   width: 100%;
-  padding: 0em 20px;
+  padding: 0px 15px;
 
   &>div{
     display: flex;
@@ -518,9 +508,9 @@ export const List = styled.section `
 
 export const IndexList = styled.section `
   width: 100%;
-    height: -webkit-fill-available;
-    position: relative;
-  padding: 0em ${inputOffset};
+  height: -webkit-fill-available;
+  position: relative;
+  padding: 0px 15px;
   color: ${basicBlueColour};
 
   &>div{
@@ -584,7 +574,7 @@ export const ItemContainer = styled.section `
 `;
 
 export const Form = styled.form `
-  padding: 1.5em;
+  padding: 0px 15px;
   width: -webkit-fill-available;
 
   h2{

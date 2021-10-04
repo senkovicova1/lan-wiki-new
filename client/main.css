@@ -5,3 +5,15 @@ body {
 .modal-dialog img{
   max-width: 436px !important;
 }
+
+h1, h2, h3, h4 {
+  font-weight: lighter;
+}
+
+h2 {
+  font-size: 1.3em;
+  color: black;
+  margin-top: 0em;
+  margin-bottom: 0em;
+  line-height: 48px;
+}

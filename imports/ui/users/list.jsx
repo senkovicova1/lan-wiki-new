@@ -30,7 +30,7 @@ export default function UserList( props ) {
 
   return (
     <List>
-      <h2 style={{ marginTop: "0.2em", marginBottom: "0em"}}>Users</h2>
+      <h2>Users</h2>
       <AddUser {...props} />
       <table style={{width: "100%"}}>
         <thead>
