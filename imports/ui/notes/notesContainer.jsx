@@ -31,15 +31,11 @@ export default function NotesContainer( props ) {
   if (window.innerWidth <= 820 || layout === PLAIN){
     switch (match.path) {
       case "/notebooks/:notebookID/notes":
-        return <NotesList {...props} />;
+        return <NotesList narrow={true} {...props} />;
       case "/tags/:tagID/notes":
-        return <NotesList {...props} />;
-      case "/:filterType/:categoryID/notes/:noteID/view":
-        return <NoteDetail {...props} />;
-      case "/:filterType/:categoryID/notes/:noteID/edit":
-        return <EditNote {...props} />;
+        return <NotesList narrow={true} {...props} />;
       default:
-        return <NotesList {...props} />;
+        return <NotesList narrow={true} {...props} />;
     }
   }
 

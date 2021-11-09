@@ -17,7 +17,17 @@ export const MainPage = styled.div `
   text-align: left;
   line-height: 1.5em;
 
+  h1, h2, h3, h4 {
+    font-weight: lighter;
+  }
 
+  h2 {
+    font-size: 1.3em;
+    color: black;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    line-height: 48px;
+  }
 
   ul {
     list-style-type: none;
@@ -319,17 +329,31 @@ export const Sidebar = styled.section `
   }
   a {
     width: calc(100%);
-    color: ${basicBlueColour} !important;
+    color: black;
     display: flex;
     align-items: center;
     height: 3em;
-    padding: 10px calc(${inputOffset} + 26px);
+    padding: 10px calc(${inputOffset});
     text-decoration: none !important;
+  }
+
+  a img{
+    margin-right: 0.6em;
+    filter: invert(1%) !important;
   }
 
   a.active {
     background-color: ${basicBlueColour}22;
-      width: calc(100% - ${inputOffset} - 26px);
+    color: ${basicBlueColour};
+    width: calc(100% - ${inputOffset} - 26px);
+  }
+
+  a.active img{
+    filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(80%) contrast(101%) !important;
+  }
+
+  div.nav.full-width a{
+    width: 100% !important;
   }
 
   div.nav{
@@ -337,7 +361,7 @@ export const Sidebar = styled.section `
 
     button{
       margin: 0px;
-      padding: 0px 15px 0px 0px;
+      padding: 0px 0px 0px 0px;
       display: none;
       width: 41px;
       img.icon{
@@ -415,13 +439,17 @@ export const LinkButton = styled.button `
     ${(props) => props.searchButton && `
       filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(191deg) brightness(97%) contrast(101%) !important;
       `};
+    ${(props) => props.font === "grey" && `
+      filter: invert(0.7) !important;
+      width: 1em !important;
+      `};
   }
 
-      img.basic-icon {
-          height: 1.5em;
-          width: 1.5em;
-          filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(90%) contrast(101%);
-      }
+  img.basic-icon {
+      height: 1.5em;
+      width: 1.5em;
+      filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(90%) contrast(101%);
+  }
 `;
 
 export const FullButton = styled.button `
@@ -474,8 +502,19 @@ export const FloatingButton = styled.button `
 `;
 
 export const List = styled.section `
-  width: 100%;
+  width: ${(props) => props.narrow ? '' : "100%"};
+  ${(props) => props.narrow ?
+    `
+    padding: 0px;
+    padding-left: calc(50vw - 400px - 230px);
+    padding-right: calc(50vw - 400px);
+    margin: 0px !important;
+    `
+    :
+  `
   padding: 0px 15px;
+  `
+};
 
   &>div{
     display: flex;
@@ -579,6 +618,7 @@ export const Form = styled.form `
 
   h2{
     margin-top: 0px;
+    font-weight: 200 !important;
   }
   section {
   margin: 1.5em 0em;
@@ -618,6 +658,15 @@ export const Form = styled.form `
     section:last-of-type {
       margin: 0em !important;
     }
+  }
+
+  section.inline{
+    display: flex;
+    width: 50%;
+  }
+
+  section.inline label{
+    width: 100px;
   }
 
   section.description{
@@ -714,10 +763,11 @@ padding-left: 0px;
 `;
 
 export const TitleInput = styled.input `
-background-color: white;
-padding-left: 7px;
+background-color: transparent;
+padding-left: 0px;
 outline: none !important;
 font-size: 1.5em;
+font-weight: 200;
 border: none;
 width: ${(props) => props.width ? props.width : "auto"};
 height: 2.5em !important;
@@ -726,7 +776,14 @@ height: 2.5em !important;
   cursor: default;
 }
 
-`;export const TitleInputView = styled.input `
+&:focus{
+  background-color: white;
+  border: 1px solid #d6d6d6;
+  padding-left: 7px;
+}
+`;
+
+export const TitleInputView = styled.input `
 background-color: transparent !important;
 outline: none !important;
 font-size: 1.5em;

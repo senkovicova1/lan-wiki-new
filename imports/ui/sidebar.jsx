@@ -61,6 +61,7 @@ export default function Menu( props ) {
   return (
     <Sidebar>
       {
+        false &&
         currentUser &&
         notebooks.length > 1 &&
       <LinkButton
@@ -77,14 +78,22 @@ export default function Menu( props ) {
         </span>
       </LinkButton>
     }
-    <div className="header">
-                <img
-                  className="icon"
-                  src={FolderIcon}
-                  alt=""
-                  />
-                <h3 onClick={() => history.push(getGoToLink("notebooksList"))}>Notebooks</h3>
+
+    <div className="nav full-width" key={"all-notes"}>
+      <NavLink
+        className={"all-notes" === notebookID ? "active" : ""}
+        key={"all-notes"}
+        to={getGoToLink("notesInNotebook", {notebookID: "all-notes"})}
+        >
+        <img
+          className="icon"
+          src={FolderIcon}
+          alt=""
+          />
+        <span>All notes</span>
+      </NavLink>
     </div>
+
             {
         notebooks.map(notebook =>  (
           <div className="nav" key={notebook.value}>
@@ -93,6 +102,11 @@ export default function Menu( props ) {
               key={notebook.value}
               to={getGoToLink("notesInNotebook", {notebookID: notebook._id})}
               >
+              <img
+                className="icon"
+                src={FolderIcon}
+                alt=""
+                />
               <span>{notebook.label}</span>
             </NavLink>
             <LinkButton
@@ -127,7 +141,9 @@ export default function Menu( props ) {
     }
       <hr/>
 
-        <div
+    {
+      false &&
+      <div
           className="header"
           onClick={(e) => {
             e.preventDefault();
@@ -141,6 +157,7 @@ export default function Menu( props ) {
                       />
                     <h3>Tags</h3>
         </div>
+      }
                 {
             tags.map(tag =>  (
               <div className="nav" key={tag.value}>
@@ -149,6 +166,11 @@ export default function Menu( props ) {
                   key={tag.value}
                   to={getGoToLink("notesWithTag", {tagID: tag._id})}
                   >
+                  <img
+                    className="icon"
+                    src={TagIcon}
+                    alt=""
+                    />
                   <span>{tag.label}</span>
                 </NavLink>
                 <LinkButton

@@ -15,7 +15,7 @@ import {
   Form,
   ViewInput,
   ViewTextarea,
-  FloatingButton
+  LinkButton
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -71,12 +71,40 @@ export default function NoteDetail( props ) {
 
       <h2>{note.title}</h2>
 
+      {
+        userCanEdit &&
+        <LinkButton
+          onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {noteID, filterType, categoryID}));}}
+          >
+          <img
+            className="basic-icon"
+            style={{width: "1em"}}
+            src={PencilIcon}
+            alt=""
+            />
+          Edit
+        </LinkButton>
+      }
+
       <section>
+        <label style={{width: "100px"}}>Notebook:</label>
+          <span>{notebook.name}</span>
+      </section>
+
+      <section>
+        <label style={{width: "100px"}}>Tags:</label>
         {
           note.tags &&
-          note.tags.map(tag => (
-          <span className="tag" key={tag._id} style={{backgroundColor: tag.colour}}>{tag.name}</span>
-        ))}
+          <span>
+            {note.tags.map(tag => tag.name).join(", ")}
+          </span>
+        }
+        {
+          !note.tags &&
+          <span>
+            No tags
+          </span>
+        }
       </section>
 
       <section className="description">
@@ -87,19 +115,6 @@ export default function NoteDetail( props ) {
           >
         </div>
       </section>
-
-          {
-          userCanEdit &&
-          <FloatingButton
-            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {noteID, filterType, categoryID}));}}
-            >
-            <img
-              src={PencilIcon}
-              alt=""
-              className="icon"
-              />
-          </FloatingButton>
-        }
 
     </Form>
   );

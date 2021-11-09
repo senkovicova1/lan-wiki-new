@@ -45,7 +45,10 @@ export default function CKEditorWithFileUpload( props ) {
 
   return (
     <section  className="row-notes">
+      {
+        title &&
       <label>{title}</label>
+    }
         {
           showLoad &&
           <Spinner color="primary" size="1em" className="spinner" children=""/>

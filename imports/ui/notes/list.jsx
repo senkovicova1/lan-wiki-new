@@ -1,15 +1,27 @@
 import React, {
+  useState,
   useMemo
 } from 'react';
 import {
   useSelector
 } from 'react-redux';
 
-import { PlusIcon } from  "/imports/other/styles/icons";
+import {
+  Modal,
+  ModalBody
+} from 'reactstrap';
+
+import NoteDetail from '/imports/ui/notes/view';
+import NoteEdit from '/imports/ui/notes/editContainer';
+
+import { CloseIcon } from  "/imports/other/styles/icons";
+
 import {
   List,
+  LinkButton,
   FloatingButton
 } from "/imports/other/styles/styledComponents";
+
 import {
   getGoToLink
 } from "/imports/other/navigationLinks";
@@ -23,6 +35,7 @@ export default function NotesList( props ) {
     search,
     sortBy,
     sortDirection,
+    narrow
   } = props;
 
   const {notebookID, tagID, categoryID, filterType, noteID} = match.params;
@@ -38,7 +51,7 @@ export default function NotesList( props ) {
     }
     if (notebookID || (filterType === "notebooks")){
       const notebook = notebooks.find(notebook => notebook._id === id);
-      return notebook ? notebook : null;
+      return notebook ? notebook : {_id: "all-notes"};
     } else {
       const tag = tags.find(tag => tag._id === id);
       return tag ? tag : null;
@@ -46,7 +59,10 @@ export default function NotesList( props ) {
   }, [notebookID, notebooks, tagID, tags, filterType, categoryID]);
 
   const description = category ? category.description : "";
-  const heading = category ? category.name : "Unnamed";
+  let heading = category ? category.name : "Unnamed";
+  if (filterType === "notebooks"){
+    heading = "All notes";
+  }
 
   const notes = useSelector( ( state ) => state.notes.value );
   const filteredNotes = useMemo( () => {
@@ -55,7 +71,7 @@ export default function NotesList( props ) {
       id = categoryID;
     }
     if (notebookID || (filterType === "notebooks")){
-      return notes.filter(note => note.notebook === id);
+      return notes.filter(note => id === "all-notes" || note.notebook === id);
     }
       return notes.filter(note => {
         const tagIds = note.tags.map(tag => tag._id);
@@ -88,7 +104,7 @@ export default function NotesList( props ) {
   }
 
   return (
-    <List>
+    <List narrow={narrow}>
       <h2>{heading}</h2>
       <span className="message">
         {description}
@@ -119,6 +135,38 @@ export default function NotesList( props ) {
         </div>
       ))
       }
+
+      {
+        narrow &&
+        noteID &&
+        <Modal isOpen={true} className="wide bkg-grey">
+          <ModalBody>
+            <div style={{position: "relative"}}>
+              <LinkButton
+                style={{position: "absolute", right: "0"}}
+                font={"grey"}
+                onClick={() => history.goBack()}
+                >
+                <img
+                  className="icon"
+                  src={CloseIcon}
+                  className="basic-icon"
+                  alt="Close icon not found"
+                  />
+              </LinkButton>
+            </div>
+            {
+              location.pathname.includes("view") &&
+                <NoteDetail {...props} />
+            }
+            {
+              location.pathname.includes("edit") &&
+                <NoteEdit {...props} />
+            }
+          </ModalBody>
+        </Modal>
+      }
+
     </List>
   );
 };

@@ -14,9 +14,10 @@ import Loader from '/imports/ui/other/loadingScreen';
 
 import {
   Form,
+  TitleInput,
   Input,
   ButtonRow,
-  FullButton,
+  LinkButton,
 } from "/imports/other/styles/styledComponents";
 import {
   selectStyle
@@ -84,11 +85,13 @@ export default function NoteForm( props ) {
   return (
     <Form>
 
+      {
+        formTitle &&
       <h2>{formTitle}</h2>
+    }
 
-      <section>
-        <label htmlFor="title">Title</label>
-        <Input
+      <section style={!formTitle ? {marginTop: "0px"} : {}}>
+        <TitleInput
           id="title"
           name="title"
           type="text"
@@ -98,7 +101,7 @@ export default function NoteForm( props ) {
           />
       </section>
 
-      <section>
+      <section className="inline">
         <label htmlFor="notebook">Notebook</label>
         <Select
           id="notebook"
@@ -110,7 +113,7 @@ export default function NoteForm( props ) {
           />
       </section>
 
-      <section>
+      <section className="inline">
         <label htmlFor="tags">Tags</label>
         <Select
           isMulti
@@ -124,7 +127,6 @@ export default function NoteForm( props ) {
       </section>
 
       <CKEditorWithFileUpload
-        title={"Body"}
           text={body}
           setText={setBody}
           buttonId={"ckeditor-file-upload-button-note-form"}
@@ -132,8 +134,9 @@ export default function NoteForm( props ) {
           />
 
       <ButtonRow>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
-        <FullButton
+        <LinkButton font="red" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</LinkButton>
+        <LinkButton
+          style={{marginLeft: "auto"}}
           colour=""
           disabled={notebook === null}
           onClick={(e) => {e.preventDefault(); onSubmit(
@@ -144,7 +147,7 @@ export default function NoteForm( props ) {
           );}}
           >
           Save
-        </FullButton>
+        </LinkButton>
       </ButtonRow>
 
     </Form>

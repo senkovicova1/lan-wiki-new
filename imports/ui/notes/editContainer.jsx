@@ -73,6 +73,6 @@ export default function EditNoteContainer( props ) {
   }
 
   return (
-    <NoteForm {...props} {...note} formTitle={"Edit note"} onSubmit={editNote} onCancel={close} />
+    <NoteForm {...props} {...note} onSubmit={editNote} onCancel={close} />
   );
 };
