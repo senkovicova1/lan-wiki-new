@@ -68,11 +68,17 @@ export default function EditNoteContainer( props ) {
     } );
   }
 
+  const updateOne = ( data ) => {
+    NotesCollection.update( noteID, {
+      $set: data
+    } );
+  }
+
   const close = () => {
     history.goBack();
   }
 
   return (
-    <NoteForm {...props} {...note} onSubmit={editNote} onCancel={close} />
+    <NoteForm {...props} {...note} onSubmit={editNote} updateOne={updateOne} onCancel={close} />
   );
 };

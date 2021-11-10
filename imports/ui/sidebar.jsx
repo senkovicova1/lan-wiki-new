@@ -60,25 +60,6 @@ export default function Menu( props ) {
 
   return (
     <Sidebar>
-      {
-        false &&
-        currentUser &&
-        notebooks.length > 1 &&
-      <LinkButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd"));}}
-        >
-        <img
-          className="icon"
-          style={{marginRight: "0.6em"}}
-          src={PlusIcon}
-          alt=""
-          />
-        <span>
-          Note
-        </span>
-      </LinkButton>
-    }
-
     <div className="nav full-width" key={"all-notes"}>
       <NavLink
         className={"all-notes" === notebookID ? "active" : ""}

@@ -4,7 +4,8 @@ import React, {
   useEffect
 } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Editor from 'ckeditor5-custom-build/build/ckeditor';
+
 import {
   Spinner
 } from 'reactstrap';
@@ -24,6 +25,7 @@ export default function CKEditorWithFileUpload( props ) {
     text,
     setText,
     buttonId,
+    onFocus,
     editorIndex
   } = props;
 
@@ -87,7 +89,50 @@ export default function CKEditorWithFileUpload( props ) {
             }}
             />
           <CKEditor
-            editor={ClassicEditor}
+            editor={Editor}
+            config={{
+              toolbar: [
+                'Heading',
+                'FontFamily', 'FontSize',
+                'FontColor', 'FontBackgroundColor',
+                'bold', 'italic',
+                'Highlight',
+                'HorizontalLine',
+                'alignment',
+                'Indent',
+                'TodoList',
+                'blockquote',
+              //  'Autoformat',
+            //    'AutoImage',
+            //    'AutoLink',
+            //    'CKFinderUploadAdapter',
+            //  'code',  'CodeBlock',
+          //    'DataFilter',
+          //    'DataSchema',
+          //    'essentials',
+            'SpecialCharacters',
+             'FindAndReplace',
+            //	'GeneralHtmlSupport',
+            //	'Image',
+            //	'ImageCaption',
+            	'ImageInsert',
+            //	'ImageStyle',
+            //	'ImageToolbar',
+            	'ImageUpload',
+              'Link',
+              'LinkImage',
+            //  'List',
+            //	'Markdown',
+            //	'MediaEmbed',
+            //	'Paragraph',
+            //	'PasteFromOffice',
+            //	'SpecialCharactersArrows',
+            //	'Table',
+            //	'TableToolbar',
+            //	'TextTransformation',
+            //	'Title',
+              ]
+            }}
             data={text}
             onReady={() => {
               const editors = document.getElementsByClassName("ck-file-dialog-button");
@@ -103,6 +148,7 @@ export default function CKEditorWithFileUpload( props ) {
             onChange={(event, editor) => {
               setText(editor.getData());
             }}
+            onFocus={onFocus}
             />
         </div>
       </div>

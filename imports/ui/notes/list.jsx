@@ -2,6 +2,7 @@ import React, {
   useState,
   useMemo
 } from 'react';
+
 import {
   useSelector
 } from 'react-redux';
@@ -14,7 +15,7 @@ import {
 import NoteDetail from '/imports/ui/notes/view';
 import NoteEdit from '/imports/ui/notes/editContainer';
 
-import { CloseIcon } from  "/imports/other/styles/icons";
+import { CloseIcon, PlusIcon } from  "/imports/other/styles/icons";
 
 import {
   List,
@@ -58,12 +59,6 @@ export default function NotesList( props ) {
     }
   }, [notebookID, notebooks, tagID, tags, filterType, categoryID]);
 
-  const description = category ? category.description : "";
-  let heading = category ? category.name : "Unnamed";
-  if (filterType === "notebooks"){
-    heading = "All notes";
-  }
-
   const notes = useSelector( ( state ) => state.notes.value );
   const filteredNotes = useMemo( () => {
     let id = notebookID ? notebookID : tagID;
@@ -105,10 +100,19 @@ export default function NotesList( props ) {
 
   return (
     <List narrow={narrow}>
-      <h2>{heading}</h2>
-      <span className="message">
-        {description}
+      <LinkButton
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd"));}}
+        >
+        <img
+          className="icon"
+          style={{marginRight: "0.6em"}}
+          src={PlusIcon}
+          alt=""
+          />
+        <span>
+          Note
         </span>
+      </LinkButton>
 
       {
         sortedNotes.length === 0 &&

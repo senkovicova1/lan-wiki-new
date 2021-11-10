@@ -19,9 +19,15 @@ import {
   ButtonRow,
   LinkButton,
 } from "/imports/other/styles/styledComponents";
+
 import {
   selectStyle
 } from '/imports/other/styles/selectStyles';
+
+import {
+  PLAIN
+} from "/imports/other/constants";
+
 import {
   uint8ArrayToImg,
   addImagesToText
@@ -36,7 +42,9 @@ export default function NoteForm( props ) {
     notebook: noteNotebook,
     body: noteBody,
     match,
+    location,
     onSubmit,
+    updateOne,
     onRemove,
     onCancel,
   } = props;
@@ -46,10 +54,18 @@ export default function NoteForm( props ) {
   const allTags = useSelector( ( state ) => state.tags.value );
   const allNotebooks = useSelector( ( state ) => state.notebooks.value );
 
+  const { layout } = useSelector( ( state ) => state.metadata.value );
+
+  const [ useAutosave, setUseAutosave ] = useState(false);
+  const [ userIsWritting, setUserIsWritting ] = useState(false);
+  const [ timer, setTimer ] = useState(null);
+  const [ interval, setCustomInterval ] = useState(null);
+
   const [ title, setTitle ] = useState("");
   const [ tags, setTags ] = useState([]);
   const [ notebook, setNotebook ] = useState( null );
   const [ body, setBody ] = useState( "" );
+  const [ oldBody, setOldBody ] = useState( "" );
 
   useEffect( () => {
     if ( noteTitle ) {
@@ -69,11 +85,28 @@ export default function NoteForm( props ) {
           setNotebook( null );
         }
     if ( noteBody ) {
-      setBody( addImagesToText(noteBody) );
+      const newBody = addImagesToText(noteBody);
+      if (body.length === 0){
+        setBody( newBody );
+        setOldBody(newBody);
+      }
     } else {
       setBody( "" );
+      setOldBody("")
     }
   }, [ noteTitle, noteTags, noteBody, noteNotebook, allNotebooks ] );
+
+   useEffect(() => {
+       setTimer(setInterval(() => {
+       if (useAutosave && body !== oldBody){
+         setOldBody(body);
+         updateOne({body});
+       }
+     }, 3000));
+     return () => {
+       clearInterval(timer);
+     };
+   }, [body]);
 
     const tagsToChoose = allTags.filter(tag => !tags.includes(tag._id));
     const notebooksToChoose = allNotebooks.filter(nb => nb.users.find(u => u._id === userId).editItems);
@@ -83,12 +116,7 @@ export default function NoteForm( props ) {
     }
 
   return (
-    <Form>
-
-      {
-        formTitle &&
-      <h2>{formTitle}</h2>
-    }
+    <Form narrow={layout === PLAIN && !location.pathname.includes("edit")}>
 
       <section style={!formTitle ? {marginTop: "0px"} : {}}>
         <TitleInput
@@ -97,7 +125,12 @@ export default function NoteForm( props ) {
           type="text"
           placeholder="Enter title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            if (useAutosave){
+              updateOne({title: e.target.value});
+            }
+          }}
           />
       </section>
 
@@ -108,7 +141,12 @@ export default function NoteForm( props ) {
           name="notebook"
           styles={selectStyle}
           value={notebook}
-          onChange={(e) => setNotebook(e)}
+          onChange={(e) => {
+            setNotebook(e);
+            if (useAutosave){
+              updateOne({notebook: e.value});
+            }
+          }}
           options={notebooksToChoose}
           />
       </section>
@@ -121,22 +159,43 @@ export default function NoteForm( props ) {
           name="tags"
           styles={selectStyle}
           value={tags}
-          onChange={(e) => setTags(e)}
+          onChange={(e) => {
+            setTags(e);
+            if (useAutosave){
+              updateOne({tags: e.map(tag => tag.value)});
+            }
+          }}
           options={tagsToChoose}
           />
       </section>
 
       <CKEditorWithFileUpload
           text={body}
-          setText={setBody}
+          setText={(text) => {
+            setBody(text);
+          }}
           buttonId={"ckeditor-file-upload-button-note-form"}
           editorIndex={0}
           />
 
       <ButtonRow>
         <LinkButton font="red" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</LinkButton>
+        {
+          location.pathname.includes("edit") &&
+        <div
+          style={{marginLeft: "auto", width: "fit-content"}}
+          >
+          <Input
+            id="autosave"
+            name="autosave"
+            type="checkbox"
+            checked={useAutosave}
+            onChange={() => setUseAutosave(!useAutosave)}
+            />
+          <span htmlFor="autosave">Autosave</span>
+      </div>
+    }
         <LinkButton
-          style={{marginLeft: "auto"}}
           colour=""
           disabled={notebook === null}
           onClick={(e) => {e.preventDefault(); onSubmit(

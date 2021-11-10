@@ -232,20 +232,6 @@ export default function MainPage( props ) {
                       )}
                       />
 
-{ false &&
-                <Route
-                  exact
-                  path={[getLink("notesInNotebook"),
-                  getLink("notesWithTag")]}
-                  render={(props) => (
-                    <NotesList
-                      {...props}
-                      search={search}
-                      sortBy={sortBy}
-                      sortDirection={sortDirection}
-                      />
-                  )}
-                  /> }
                 <Route exact path={getLink("notebookAdd")} component={AddNotebook}/>
                 <Route exact path={getLink("notebookEdit")} component={EditNotebook}/>
 
@@ -262,11 +248,7 @@ export default function MainPage( props ) {
                   )}
                   />
 
-                { false &&    <Route exact path={getLink("noteDetail")} component={NoteDetail}/> }
-              { false &&  <Route exact path={getLink("noteEdit")} component={EditNote}/> }
             <Route exact path={getLink("noteAdd")} component={AddNote}/>
-
-        {false &&  <Route exact path={getLink("archivedNoteDetail")} component={ArchivedNoteDetail}/> }
 
               <Route
                 exact
@@ -281,18 +263,6 @@ export default function MainPage( props ) {
                 )}
               />
 
-            { false &&  <Route
-              exact
-              path={getLink("archivedNotesList")}
-              render={(props) => (
-                <ArchivedNotesList
-                  {...props}
-                  search={search}
-                  sortBy={sortBy}
-                  sortDirection={sortDirection}
-                  />
-              )}
-              />}
 
           </div>
         </Content>

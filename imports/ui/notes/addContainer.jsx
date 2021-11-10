@@ -44,6 +44,6 @@ const addNew = ( title, tags, notebook, body ) => {
   }
 
   return (
-    <NoteForm {...props} formTitle={"Add note"} onSubmit={addNew} onCancel={cancel} />
+    <NoteForm {...props} onSubmit={addNew} onCancel={cancel} />
   );
 };

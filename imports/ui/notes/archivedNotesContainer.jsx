@@ -32,11 +32,9 @@ export default function NotesContainer( props ) {
   if (window.innerWidth <= 820 || layout === PLAIN){
     switch (match.path) {
       case "/archived/:notebookID":
-        return <NotesList {...props} />;
-      case "/archived/:notebookID/:noteID":
-        return <NoteDetail {...props} />;
+        return <NotesList narrow={layout === PLAIN} {...props} />;
       default:
-        return <NotesList {...props} />;
+        return <NotesList narrow={layout === PLAIN}{...props} />;
     }
   }
 

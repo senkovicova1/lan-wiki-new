@@ -24,7 +24,7 @@ export default function NotesContainer( props ) {
 
   const {notebookID, tagID, noteID} = match.params;
   const userId = Meteor.userId();
-  const layout = useSelector( ( state ) => state.metadata.value ).layout;
+  const { layout } = useSelector( ( state ) => state.metadata.value );
 
   const filterType = notebookID ? "notebooks" : "tags";
 

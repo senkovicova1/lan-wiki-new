@@ -546,10 +546,21 @@ export const List = styled.section `
 `;
 
 export const IndexList = styled.section `
-  width: 100%;
+  width: ${(props) => props.narrow ? '' : "100%"};
+  ${(props) => props.narrow ?
+    `
+    padding: 0px;
+    padding-left: calc(50vw - 400px - 230px);
+    padding-right: calc(50vw - 400px);
+    margin: 0px !important;
+    `
+    :
+  `
+  padding: 0px 15px;
+  `
+  };
   height: -webkit-fill-available;
   position: relative;
-  padding: 0px 15px;
   color: ${basicBlueColour};
 
   &>div{
@@ -613,8 +624,19 @@ export const ItemContainer = styled.section `
 `;
 
 export const Form = styled.form `
+  width: ${(props) => props.narrow ? '' : "-webkit-fill-available"};
+  ${(props) => props.narrow ?
+    `
+    padding: 0px;
+    padding-left: calc(50vw - 400px - 230px);
+    padding-right: calc(50vw - 400px);
+    margin: 0px !important;
+    `
+    :
+  `
   padding: 0px 15px;
-  width: -webkit-fill-available;
+  `
+  };
 
   h2{
     margin-top: 0px;

@@ -2,13 +2,22 @@ import React, {
   useMemo,
   useEffect
 } from 'react';
+
 import {
+  useDispatch,
   useSelector
 } from 'react-redux';
+
 import {
   useTracker
 } from 'meteor/react-meteor-data';
-import { useDispatch } from 'react-redux';
+
+import {
+  Modal,
+  ModalBody
+} from 'reactstrap';
+
+import NoteDetail from '/imports/ui/notes/archivedView';
 
 import { setArchivedNotes } from '/imports/redux/archivedNotesSlice';
 
@@ -16,9 +25,13 @@ import {
   NotesCollection
 } from '/imports/api/notesCollection';
 
+import { CloseIcon } from  "/imports/other/styles/icons";
+
 import {
-  List
+  List,
+  LinkButton
 } from "/imports/other/styles/styledComponents";
+
 import {
   getGoToLink
 } from "/imports/other/navigationLinks";
@@ -32,6 +45,7 @@ export default function ArchivedNotesList( props ) {
     search,
     sortBy,
     sortDirection,
+    narrow
   } = props;
 
   const {notebookID, noteID} = match.params;
@@ -92,11 +106,7 @@ export default function ArchivedNotesList( props ) {
   }
 
   return (
-    <List>
-      <h2>{heading}</h2>
-      <span className="message">
-        {description}
-        </span>
+    <List narrow={narrow}>
 
       {
         sortedNotes.length === 0 &&
@@ -114,6 +124,30 @@ export default function ArchivedNotesList( props ) {
         </div>
         </div>
       ))
+      }
+
+      {
+        narrow &&
+        noteID &&
+        <Modal isOpen={true} className="wide bkg-grey">
+          <ModalBody>
+            <div style={{position: "relative"}}>
+              <LinkButton
+                style={{position: "absolute", right: "0"}}
+                font={"grey"}
+                onClick={() => history.goBack()}
+                >
+                <img
+                  className="icon"
+                  src={CloseIcon}
+                  className="basic-icon"
+                  alt="Close icon not found"
+                  />
+              </LinkButton>
+            </div>
+                <NoteDetail {...props} />            
+          </ModalBody>
+        </Modal>
       }
 
     </List>

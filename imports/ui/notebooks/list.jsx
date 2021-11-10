@@ -9,6 +9,10 @@ import {
 } from "/imports/other/styles/styledComponents";
 
 import {
+  PLAIN
+} from "/imports/other/constants";
+
+import {
 getGoToLink
 } from "/imports/other/navigationLinks";
 
@@ -25,6 +29,8 @@ export default function NotebooksList( props ) {
   const userId = Meteor.userId();
 
   const notebooks = useSelector((state) => state.notebooks.value);
+
+  const { layout } = useSelector( ( state ) => state.metadata.value );
 
   const searchedNotebooks = useMemo(() => {
     return notebooks.filter(notebook => notebook.name.toLowerCase().includes(search.toLowerCase()));
@@ -51,7 +57,7 @@ export default function NotebooksList( props ) {
     }
 
   return (
-    <IndexList>
+    <IndexList narrow={layout === PLAIN}>
       <h2 style={{ marginTop: "0em", marginBottom: "0em"}}>Notebooks</h2>
       {
         sortedNotebooks.length === 0 &&

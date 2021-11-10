@@ -63,7 +63,7 @@ export default function ArchivedNoteDetail( props ) {
       }
     }
   }, [notebook, userId]);
-
+  
   return (
     <Form style={layout === COLUMNS ? {backgroundColor: "white"} : {}}>
 
