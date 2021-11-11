@@ -143,13 +143,24 @@ export default function NotesList( props ) {
       {
         narrow &&
         noteID &&
-        <Modal isOpen={true} className="wide bkg-grey">
+        <Modal isOpen={true} className="wide high bkg-grey">
           <ModalBody>
             <div style={{position: "relative"}}>
               <LinkButton
                 style={{position: "absolute", right: "0"}}
                 font={"grey"}
-                onClick={() => history.goBack()}
+                onClick={() => {
+                  if (location.pathname.includes("edit")){
+                    history.goBack();
+                    return;
+                  }
+
+                  if (filterType === "notebooks"){
+                    history.push(getGoToLink("notesInNotebook", {notebookID: categoryID}));
+                  } else {
+                    history.push(getGoToLink("notesWithTag", {tagID: categoryID}));
+                  }
+                }}
                 >
                 <img
                   className="icon"

@@ -11,13 +11,24 @@ body {
   max-width: 1000px;
 }
 
+.modal-dialog.high {
+  min-height: calc(100vh - 28px - 28px);
+}
+
+.modal-dialog.high .modal-content {
+  min-height: inherit;
+}
+
+.modal-dialog.high .modal-content .ck-content {
+  min-height: calc(100vh - 28px - 28px - 370px);
+}
+
 .bkg-grey{
   background-color: #f6f6f6;
 }
 
 .bkg-grey .modal-content{
   background-color: #f6f6f6;
-
 }
 
 h1, h2, h3, h4 {

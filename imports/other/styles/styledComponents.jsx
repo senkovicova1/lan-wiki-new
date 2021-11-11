@@ -684,7 +684,7 @@ export const Form = styled.form `
 
   section.inline{
     display: flex;
-    width: 50%;
+    align-items: center;
   }
 
   section.inline label{
@@ -729,6 +729,18 @@ export const Form = styled.form `
    margin-right: 0.3em;
  }
 
+ .autosave{
+   margin-left: auto;
+   margin-right: 0.6em;
+   width: fit-content;
+   display:  flex;
+   align-items: center;
+ }
+
+ .autosave input{
+   width: 1.5em;
+   margin-right: 0.3em;
+ }
 `;
 
 export const Color = styled.div`

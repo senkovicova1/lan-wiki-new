@@ -10,7 +10,6 @@ export const selectStyle = {
   } ),
   dropdownIndicator: base => ( {
     ...base,
-    color: "transparent",
     padding: 4,
   } ),
   clearIndicator: base => ( {

@@ -167,7 +167,7 @@ export default function MainPage( props ) {
           currentUser &&
           <Content withSidebar={openSidebar}>
 
-            <div style={{position: "relative"}}>
+            <div style={{position: "relative",  height: "-webkit-fill-available"}}>
 
             <Route
               exact

@@ -58,7 +58,7 @@ export default function NoteForm( props ) {
 
   const [ useAutosave, setUseAutosave ] = useState(false);
   const [ userIsWritting, setUserIsWritting ] = useState(false);
-  const [ timer, setTimer ] = useState(null);
+  const [ saveInterval, setSaveInterval ] = useState(null);
   const [ interval, setCustomInterval ] = useState(null);
 
   const [ title, setTitle ] = useState("");
@@ -97,14 +97,14 @@ export default function NoteForm( props ) {
   }, [ noteTitle, noteTags, noteBody, noteNotebook, allNotebooks ] );
 
    useEffect(() => {
-       setTimer(setInterval(() => {
+       setSaveInterval(setInterval(() => {
        if (useAutosave && body !== oldBody){
          setOldBody(body);
          updateOne({body});
        }
      }, 3000));
      return () => {
-       clearInterval(timer);
+       clearInterval(saveInterval);
      };
    }, [body]);
 
@@ -179,18 +179,21 @@ export default function NoteForm( props ) {
           />
 
       <ButtonRow>
+        {
+          !useAutosave &&
         <LinkButton font="red" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</LinkButton>
+      }
         {
           location.pathname.includes("edit") &&
-        <div
-          style={{marginLeft: "auto", width: "fit-content"}}
-          >
+        <div className="autosave">
           <Input
             id="autosave"
             name="autosave"
             type="checkbox"
             checked={useAutosave}
-            onChange={() => setUseAutosave(!useAutosave)}
+            onChange={() => {
+              setUseAutosave(!useAutosave);
+            }}
             />
           <span htmlFor="autosave">Autosave</span>
       </div>
@@ -198,12 +201,15 @@ export default function NoteForm( props ) {
         <LinkButton
           colour=""
           disabled={notebook === null}
-          onClick={(e) => {e.preventDefault(); onSubmit(
+          onClick={(e) => {
+            e.preventDefault();
+            onSubmit(
             title,
             tags.map(tag => tag._id),
             notebook.value,
             body
-          );}}
+          );
+        }}
           >
           Save
         </LinkButton>
