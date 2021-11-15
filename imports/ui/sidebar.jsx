@@ -91,10 +91,12 @@ export default function Menu( props ) {
               <span>{notebook.label}</span>
             </NavLink>
             <LinkButton
+              style={{ padding: "10px 15px"}}
               onClick={(e) => {e.preventDefault(); history.push(getGoToLink("notebookEdit", {notebookID: notebook._id}))}}
               >
               <img
                 className="icon"
+                style={{ marginRight: "0px"}}
                 src={SettingsIcon}
                 alt=""
                 />
@@ -155,6 +157,7 @@ export default function Menu( props ) {
                   <span>{tag.label}</span>
                 </NavLink>
                 <LinkButton
+                  style={{ padding: "10px 15px"}}
                   onClick={(e) => {
                     e.preventDefault();
                     setSelectedTag(tag);
@@ -162,6 +165,7 @@ export default function Menu( props ) {
                   }}
                   >
                   <img
+                    style={{ marginRight: "0px"}}     
                     className="icon"
                     src={SettingsIcon}
                     alt=""

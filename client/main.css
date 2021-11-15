@@ -6,6 +6,10 @@ body {
   max-width: 436px !important;
 }
 
+.modal-content{
+  border-radius: 0px;
+}
+
 .modal-dialog.wide {
   width: 1000px;
   max-width: 1000px;

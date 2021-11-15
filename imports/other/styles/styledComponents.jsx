@@ -316,9 +316,8 @@ export const Sidebar = styled.section `
   left: 0;
   top: 50px;
   box-shadow: none;
-  border-right: 0px solid #d6d6d6;
+  border-right: 1px solid #d6d6d6;
   width: ${sidebarWidthWeb};
-  background-color: white;
   height: calc(100vh - 50px);
   z-index: 3;
   padding: 0px;
@@ -345,7 +344,7 @@ export const Sidebar = styled.section `
   a.active {
     background-color: ${basicBlueColour}22;
     color: ${basicBlueColour};
-    width: calc(100% - ${inputOffset} - 26px);
+    width: calc(100% - ${inputOffset} - ${inputOffset} - 11px);
   }
 
   a.active img{
@@ -425,7 +424,7 @@ export const ButtonCol = styled.section `
 export const LinkButton = styled.button `
   color: ${(props) => props.font ? props.font : basicBlueColour};
   padding: 0px;
-  height: 2.5em;
+  height: ${(props) => props.fit ? "fit-content" : "2.5em" };
   background-color: ${(props) => props.searchButton ? "white" : "transparent" } !important;
   outline: none !important;
   border: none !important;
@@ -518,7 +517,7 @@ export const List = styled.section `
 
   &>div{
     display: flex;
-    line-height: 3em;
+    line-height: 47px;
     margin: 0em;
     border-bottom: 0px solid #d6d6d6;
   }
@@ -543,6 +542,14 @@ export const List = styled.section `
       span.message{
         margin-left: 0px !important;
       }
+
+  & .note-list-item{
+    border-bottom: 1px solid #d6d6d6;
+  }
+
+  & .note-list-item:first-of-type{
+    border-top: 1px solid #d6d6d6;
+  }
 `;
 
 export const IndexList = styled.section `
@@ -642,8 +649,13 @@ export const Form = styled.form `
     margin-top: 0px;
     font-weight: 200 !important;
   }
+
+  hr {
+    margin: 0px 0px 0.5em 0px;
+  }
+
   section {
-  margin: 1.5em 0em;
+  margin: 0.5em 0em;
     i {
       font-size: 1.5em;
     }
@@ -803,6 +815,7 @@ outline: none !important;
 font-size: 1.5em;
 font-weight: 200;
 border: none;
+border-bottom: 1px solid #d6d6d6;
 width: ${(props) => props.width ? props.width : "auto"};
 height: 2.5em !important;
 

@@ -44,7 +44,7 @@ export default function NotesContainer( props ) {
       <div style={{width: "-webkit-fill-available"}}>
         <NotesList {...props} />
       </div>
-      <div style={{width: "200%", backgroundColor: "white", height: "-webkit-fill-available"}}>
+      <div style={{width: "200%", backgroundColor: "white", height: "-webkit-fill-available", borderLeft: "1px solid #d6d6d6"}}>
         {
           noteID &&
           match.path === "/:filterType/:categoryID/notes/:noteID/view" &&

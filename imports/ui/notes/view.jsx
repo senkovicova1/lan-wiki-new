@@ -71,9 +71,12 @@ export default function NoteDetail( props ) {
 
       <h2>{note.title}</h2>
 
+      <hr/>
+
       {
         userCanEdit &&
         <LinkButton
+          fit={true}
           onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {noteID, filterType, categoryID}));}}
           >
           <img

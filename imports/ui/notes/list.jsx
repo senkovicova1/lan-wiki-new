@@ -101,6 +101,7 @@ export default function NotesList( props ) {
   return (
     <List narrow={narrow}>
       <LinkButton
+        style={{height: "48px"}}
         onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd"));}}
         >
         <img
@@ -124,6 +125,7 @@ export default function NotesList( props ) {
       {sortedNotes.length > 0 &&
         sortedNotes.map((note) => (
         <div
+          className="note-list-item"
           key={note._id}
           onClick={(e) => {
             e.preventDefault();
