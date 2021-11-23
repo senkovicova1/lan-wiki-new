@@ -42,8 +42,6 @@ export default function Header( props ) {
     match,
     location,
     setParentOpenSidebar,
-    setSearch,
-    search,
     sortBy,
     setSortBy,
     sortDirection,
@@ -118,42 +116,7 @@ export default function Header( props ) {
         }
         <h1 onClick={(e) => props.history.push(getGoToLink(""))}>{title}</h1>
       </section>
-          {
-            currentUser &&
-          <SearchSection>
-            <LinkButton
-              font="#0078d4"
-              searchButton
-              onClick={(e) => {}}
-              >
-              <img
-                className="search-icon"
-                src={SearchIcon}
-                alt="Search icon not found"
-                />
-            </LinkButton>
-          <Input
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            />
-        <LinkButton
-          font="#0078d4"
-          searchButton
-          onClick={(e) => {
-            e.preventDefault();
-            setSearch("");
-          }}
-          >
-          <img
-            className="search-icon"
-            src={CloseIcon}
-            alt="Close icon not found"
-            />
-        </LinkButton>
-    </SearchSection>
-  }
-
+          
 <section className="header-section" style={{justifyContent: "flex-end"}}>
   {
     currentUser &&

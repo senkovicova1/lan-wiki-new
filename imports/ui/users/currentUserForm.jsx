@@ -7,6 +7,8 @@ import {
   useTracker
 } from 'meteor/react-meteor-data';
 
+import { BackIcon, PencilIcon } from  "/imports/other/styles/icons";
+
 import {
   isEmail,
   uint8ArrayToImg
@@ -14,9 +16,10 @@ import {
 
 import {
   Form,
+  Card,
   Input,
   ButtonCol,
-  FullButton,
+  BorderedLinkButton,
 } from "../../other/styles/styledComponents";
 
 export default function UserForm( props ) {
@@ -97,10 +100,108 @@ export default function UserForm( props ) {
     setErrors( [] );
   }, [ user ] );
 
-
   return (
-    <Form narrow={true}>
+    <Form>
+        <span className="command-bar">
+      {
+        onCancel &&
+        <BorderedLinkButton
+          fit={true}
+          onClick={(e) => {
+            e.preventDefault();
+            onCancel()
+          }}
+          >
+          <img
+            className="icon"
+            style={{marginRight: "0.6em"}}
+            src={BackIcon}
+            alt=""
+            />
+          <span>
+            Back
+          </span>
+        </BorderedLinkButton>
+      }
+      {
+        openLogIn &&
+        <BorderedLinkButton
+          fit={true}
+          onClick={(e) => {
+            e.preventDefault();
+            openLogIn()
+          }}
+          >
+          <img
+            className="icon"
+            style={{marginRight: "0.6em"}}
+            src={BackIcon}
+            alt=""
+            />
+          <span>
+            Cancel
+          </span>
+        </BorderedLinkButton>
+      }
+      {
+        onRemove &&
+        false &&
+        <BorderedLinkButton
+          fit={true}
+          onClick={(e) => {
+            e.preventDefault();
+            onRemove();
+            onCancel();
+          }}
+          >
+          Delete
+        </BorderedLinkButton>
+      }
+      <BorderedLinkButton
+        fit={true}
+        onClick={(e) => {
+          e.preventDefault();
+          let errors = [];
+          if (name.length === 0){
+            errors.push("name");
+          }
+          if (surname.length === 0){
+            errors.push("surname");
+          }
+          if (!user && !isEmail(email)){
+            errors.push("email");
+          }
+          if  ((!user && password1 !== password2) || (!user && password1.length < 7)){
+            errors.push("password");
+          }
+          if (name.length > 0 &&surname.length > 0 && (user || isEmail(email)) && (user || (password1 === password2 && password1.length >= 7)) ) {
+            onSubmit(
+              name,
+              surname,
+              avatar.buffer,
+              active,
+              rights,
+              email,
+              password1
+            );
+          }
+          setErrors(errors);
+        }}
+        >
+        <img
+          className="icon"
+          style={{marginRight: "0.6em"}}
+          src={PencilIcon}
+          alt=""
+          />
+        <span>
+        { isSignIn ? "Sign in" : "Save changes"}
+      </span>
+      </BorderedLinkButton>
+    </span>
 
+
+      <Card>
         <h2>{title}</h2>
 
       <section>
@@ -297,51 +398,7 @@ export default function UserForm( props ) {
         errorMessage &&
         <p>{errorMessage}</p>
       }
-      <ButtonCol>
-        {onCancel &&
-          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>
-        }
-        {openLogIn &&
-          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); openLogIn()}}>Cancel</FullButton>
-        }
-        {onRemove &&
-          false &&
-          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove(); onCancel();}}>Delete</FullButton>
-        }
-        <FullButton
-          colour=""
-          onClick={(e) => {
-            e.preventDefault();
-            let errors = [];
-            if (name.length === 0){
-              errors.push("name");
-            }
-            if (surname.length === 0){
-              errors.push("surname");
-            }
-            if (!user && !isEmail(email)){
-              errors.push("email");
-            }
-            if  ((!user && password1 !== password2) || (!user && password1.length < 7)){
-              errors.push("password");
-            }
-            if (name.length > 0 &&surname.length > 0 && (user || isEmail(email)) && (user || (password1 === password2 && password1.length >= 7)) ) {
-              onSubmit(
-                name,
-                surname,
-                avatar.buffer,
-                active,
-                rights,
-                email,
-                password1
-              );
-            }
-            setErrors(errors);
-          }}
-          >
-          { isSignIn ? "Sign in" : "Save changes"}
-        </FullButton>
-      </ButtonCol>
+    </Card>
 
     </Form>
   );

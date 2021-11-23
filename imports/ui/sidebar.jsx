@@ -60,7 +60,7 @@ export default function Menu( props ) {
 
   return (
     <Sidebar>
-    <div className="nav full-width" key={"all-notes"}>
+    <div className="nav" key={"all-notes"}>
       <NavLink
         className={"all-notes" === notebookID ? "active" : ""}
         key={"all-notes"}
@@ -73,6 +73,10 @@ export default function Menu( props ) {
           />
         <span>All notes</span>
       </NavLink>
+      <LinkButton
+        onClick={(e) => {e.preventDefault(); }}
+        >
+      </LinkButton>
     </div>
 
             {
@@ -124,21 +128,21 @@ export default function Menu( props ) {
     }
       <hr/>
 
-    {
-      false &&
-      <div
+      {
+        false &&
+        <div
           className="header"
           onClick={(e) => {
             e.preventDefault();
             history.push(getGoToLink("tagsList"));
           }}
           >
-                    <img
-                      className="icon"
-                      src={TagIcon}
-                      alt=""
-                      />
-                    <h3>Tags</h3>
+          <img
+            className="icon"
+            src={TagIcon}
+            alt=""
+            />
+          <h3>Tags</h3>
         </div>
       }
                 {
@@ -165,7 +169,7 @@ export default function Menu( props ) {
                   }}
                   >
                   <img
-                    style={{ marginRight: "0px"}}     
+                    style={{ marginRight: "0px"}}
                     className="icon"
                     src={SettingsIcon}
                     alt=""
@@ -177,10 +181,9 @@ export default function Menu( props ) {
 <AddTag />
           <hr/>
 
-          <div className="nav full" key="archived">
+          <div className="nav" key="archived">
             <NavLink
               className={match.path.includes("archived") ? "active" : ""}
-              style={{width: "100%"}}
               key={"archived"}
               to={getGoToLink("archivedNotebooksList")}
               onClick={() => {
@@ -196,15 +199,18 @@ export default function Menu( props ) {
                 />
               <span>Archived</span>
             </NavLink>
+            <LinkButton
+              onClick={(e) => {e.preventDefault(); }}
+              >
+            </LinkButton>
           </div>
           {
             currentUser &&
             currentUser.profile.rights &&
             currentUser.profile.rights.editUsers &&
-                      <div className="nav full" key="users">
+                      <div className="nav" key="users">
         <NavLink
           className={match.path === "/users/list" ? "active" : ""}
-          style={{width: "100%"}}
           key={"users"}
           to={getGoToLink("usersList")}
           onClick={() => {
@@ -220,6 +226,10 @@ export default function Menu( props ) {
             />
           <span>Users</span>
         </NavLink>
+        <LinkButton
+          onClick={(e) => {e.preventDefault(); }}
+          >
+        </LinkButton>
         </div>
       }
 

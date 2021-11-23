@@ -48,6 +48,7 @@ export default function SignInForm( props ) {
           setErrorMessage(error.reason);
         }
       }
+      history.push(getGoToLink("/notebooks/all-notes/notes"));
     } );
   };
 

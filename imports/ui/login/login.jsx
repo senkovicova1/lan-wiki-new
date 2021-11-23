@@ -46,7 +46,7 @@ export default function LoginForm( props ) {
           setShowLoading(false);
         }
       });
-    history.push(getGoToLink(""));
+      history.push(getGoToLink("/notebooks/all-notes/notes"));
   };
 
   const handleForgotPassword = () => {

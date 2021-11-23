@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { FolderIcon, PlusIcon } from  "/imports/other/styles/icons";
 import {
-  IndexList,
+  List,
   FloatingButton
 } from "/imports/other/styles/styledComponents";
 
@@ -52,7 +52,7 @@ export default function TagsList( props ) {
     }
 
   return (
-    <IndexList>
+    <List>
       <h2>Tags</h2>
       {
         searchedTags.length === 0 &&
@@ -89,6 +89,6 @@ export default function TagsList( props ) {
           Note
         </span>
       </FloatingButton>
-    </IndexList>
+    </List>
   );
 };

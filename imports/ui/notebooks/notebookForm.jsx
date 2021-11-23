@@ -10,7 +10,7 @@ import {
   selectStyle
 } from '/imports/other/styles/selectStyles';
 
-import { DeleteIcon, UserIcon } from  "/imports/other/styles/icons";
+import { BackIcon, PencilIcon, DeleteIcon, UserIcon } from  "/imports/other/styles/icons";
 
 import {
   uint8ArrayToImg
@@ -20,6 +20,8 @@ import { useSelector } from 'react-redux';
 
 import {
   Form,
+  Card,
+  BorderedLinkButton,
   Input,
   Textarea,
   ButtonCol,
@@ -108,6 +110,70 @@ const userId = Meteor.userId();
   return (
     <Form>
 
+          <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+              <BorderedLinkButton
+                fit={true}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onCancel();
+                }}
+                >
+                <img
+                  className="icon"
+                  style={{marginRight: "0.6em"}}
+                  src={BackIcon}
+                  alt=""
+                  />
+                <span>
+                  Cancel
+                </span>
+              </BorderedLinkButton>
+              {
+                onRemove &&
+                <BorderedLinkButton
+                  fit={true}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onRemove();
+                  }}
+                  >
+                  <img
+                    className="icon"
+                    style={{marginRight: "0.6em"}}
+                    src={DeleteIcon}
+                    alt=""
+                    />
+                  <span>
+                    Delete
+                  </span>
+                </BorderedLinkButton>
+              }
+              <BorderedLinkButton
+                fit={true}
+                disabled={name.length === 0}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSubmit(
+                     name,
+                     archived,
+                     description,
+                     users
+                  );
+                }}
+                >
+                <img
+                  className="icon"
+                  style={{marginRight: "0.6em"}}
+                  src={PencilIcon}
+                  alt=""
+                  />
+                <span>
+                  Save
+                </span>
+              </BorderedLinkButton>
+            </span>
+
+      <Card>
       <h2>{title}</h2>
 
       <section>
@@ -268,28 +334,7 @@ const userId = Meteor.userId();
         </table>
       </section>
     }
-
-      <ButtonCol>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
-        {onRemove &&
-          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove();}}>Delete</FullButton>
-        }
-        <FullButton
-          colour=""
-          disabled={name.length === 0}
-          onClick={(e) => {
-            e.preventDefault();
-            onSubmit(
-               name,
-               archived,
-               description,
-               users
-            );
-          }}
-          >
-          Save
-        </FullButton>
-      </ButtonCol>
+  </Card>
 
     </Form>
   );

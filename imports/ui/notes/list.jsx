@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 
 import {
+  useDispatch,
   useSelector
 } from 'react-redux';
 
@@ -12,13 +13,17 @@ import {
   ModalBody
 } from 'reactstrap';
 
-import NoteDetail from '/imports/ui/notes/view';
+import NoteDetail from '/imports/ui/notes/modalView';
 import NoteEdit from '/imports/ui/notes/editContainer';
 
-import { CloseIcon, PlusIcon } from  "/imports/other/styles/icons";
+import { CloseIcon, PlusIcon, SearchIcon } from  "/imports/other/styles/icons";
 
 import {
   List,
+  Card,
+  SearchSection,
+  Input,
+  BorderedLinkButton,
   LinkButton,
   FloatingButton
 } from "/imports/other/styles/styledComponents";
@@ -33,10 +38,11 @@ export default function NotesList( props ) {
     match,
     location,
     history,
+    setSearch,
     search,
     sortBy,
     sortDirection,
-    narrow
+    narrow,
   } = props;
 
   const {notebookID, tagID, categoryID, filterType, noteID} = match.params;
@@ -52,7 +58,7 @@ export default function NotesList( props ) {
     }
     if (notebookID || (filterType === "notebooks")){
       const notebook = notebooks.find(notebook => notebook._id === id);
-      return notebook ? notebook : {_id: "all-notes"};
+      return notebook ? notebook : {_id: "all-notes", name: "All notes"};
     } else {
       const tag = tags.find(tag => tag._id === id);
       return tag ? tag : null;
@@ -100,9 +106,46 @@ export default function NotesList( props ) {
 
   return (
     <List narrow={narrow}>
+      <h2>{category.name}</h2>
+      <span className="command-bar">
+        <SearchSection>
+          <LinkButton
+            font="#0078d4"
+            searchButton
+            onClick={(e) => {}}
+            >
+            <img
+              className="search-icon"
+              src={SearchIcon}
+              alt="Search icon not found"
+              />
+          </LinkButton>
+        <Input
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          />
       <LinkButton
-        style={{height: "48px"}}
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteAdd"));}}
+        font="#0078d4"
+        searchButton
+        onClick={(e) => {
+          e.preventDefault();
+          setSearch("");
+        }}
+        >
+        <img
+          className="search-icon"
+          src={CloseIcon}
+          alt="Close icon not found"
+          />
+      </LinkButton>
+        </SearchSection>
+      <BorderedLinkButton
+        fit={true}
+        onClick={(e) => {
+          e.preventDefault();
+          history.push(getGoToLink("noteAdd"));
+        }}
         >
         <img
           className="icon"
@@ -113,8 +156,11 @@ export default function NotesList( props ) {
         <span>
           Note
         </span>
-      </LinkButton>
+      </BorderedLinkButton>
+    </span>
 
+
+      <Card noPadding={true}>
       {
         sortedNotes.length === 0 &&
         <span className="message">
@@ -122,7 +168,30 @@ export default function NotesList( props ) {
           </span>
       }
 
-      {sortedNotes.length > 0 &&
+      {
+        sortedNotes.length > 0 &&
+        <div
+          className="note-list-head"
+          key={0}
+          >
+          <span
+            className="title"
+            >
+            Title
+          </span>
+          <div className="tags">
+            <span
+              className="tag"
+              key={0}
+              >
+              Tags
+            </span>
+        </div>
+        </div>
+      }
+
+      {
+        sortedNotes.length > 0 &&
         sortedNotes.map((note) => (
         <div
           className="note-list-item"
@@ -132,7 +201,7 @@ export default function NotesList( props ) {
             history.push(getGoToLink("noteDetail", {noteID: note._id, filterType: location.pathname.includes("notebook") ? "notebooks" : "tags", categoryID: category._id}));
           }}
           >
-          <span className="title" style={note._id === noteID ? {color: "#0078d4"} : {}}>{yellowMatch(note.title)}</span>
+          <span className="title" style={note._id === noteID ? {color: "#0078d4"} : {}}>{note.title ? yellowMatch(note.title) : "Untitled"}</span>
           <div className="tags">
           {note.tags.map(tag => (
             <span className="tag" key={note._id + tag._id} style={{backgroundColor: tag.colour}}>{tag.name}</span>
@@ -183,6 +252,7 @@ export default function NotesList( props ) {
           </ModalBody>
         </Modal>
       }
+    </Card>
 
     </List>
   );

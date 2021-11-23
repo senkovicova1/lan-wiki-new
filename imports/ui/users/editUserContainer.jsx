@@ -5,6 +5,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import UserForm from './userForm';
+import CurrentUserForm from './currentUserForm';
 
 import {
   getGoToLink
@@ -42,6 +43,12 @@ export default function EditUserContainer( props ) {
     } else {
       history.push(getGoToLink(""));
     }
+  }
+
+  if (!userID){
+    return (
+      <CurrentUserForm title={"Edit useasdfr"} user={user} onSubmit={editUser} onCancel={onCancel}/>
+      )
   }
 
   return (

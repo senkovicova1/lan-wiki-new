@@ -9,7 +9,7 @@ export default function Reroute( props ) {
 
   useEffect(() => {
     if (props.match.path === "/" ){
-      props.history.push(getLink(props.match.path, {}));
+      props.history.push("/notebooks/all-notes/notes");
     }
   }, [props.match.path]);
 

@@ -17,7 +17,7 @@ import {
   ModalBody
 } from 'reactstrap';
 
-import NoteDetail from '/imports/ui/notes/archivedView';
+import NoteDetail from '/imports/ui/notes/archivedModalView';
 
 import { setArchivedNotes } from '/imports/redux/archivedNotesSlice';
 
@@ -25,10 +25,13 @@ import {
   NotesCollection
 } from '/imports/api/notesCollection';
 
-import { CloseIcon } from  "/imports/other/styles/icons";
+import { CloseIcon, SearchIcon } from  "/imports/other/styles/icons";
 
 import {
   List,
+  Card,
+  Input,
+  SearchSection,
   LinkButton
 } from "/imports/other/styles/styledComponents";
 
@@ -42,6 +45,7 @@ export default function ArchivedNotesList( props ) {
   const {
     match,
     history,
+    setSearch,
     search,
     sortBy,
     sortDirection,
@@ -107,15 +111,81 @@ export default function ArchivedNotesList( props ) {
 
   return (
     <List narrow={narrow}>
+      <h2>{notebook.name}</h2>
+      <span className="command-bar">
+        <SearchSection>
+          <LinkButton
+            font="#0078d4"
+            searchButton
+            onClick={(e) => {}}
+            >
+            <img
+              className="search-icon"
+              src={SearchIcon}
+              alt="Search icon not found"
+              />
+          </LinkButton>
+        <Input
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          />
+      <LinkButton
+        font="#0078d4"
+        searchButton
+        onClick={(e) => {
+          e.preventDefault();
+          setSearch("");
+        }}
+        >
+        <img
+          className="search-icon"
+          src={CloseIcon}
+          alt="Close icon not found"
+          />
+      </LinkButton>
+        </SearchSection>
+      </span>
 
+
+      <Card>
       {
         sortedNotes.length === 0 &&
         <span className="message">You have no notes in this notebook.</span>
       }
 
+      {
+        sortedNotes.length > 0 &&
+        <div
+          className="note-list-head"
+          key={0}
+          >
+          <span
+            className="title"
+            >
+            Title
+          </span>
+          <div className="tags">
+            <span
+              className="tag"
+              key={0}
+              >
+              Tags
+            </span>
+        </div>
+        </div>
+      }
+
       {sortedNotes.length > 0 &&
         sortedNotes.map((note) => (
-        <div key={note._id} onClick={(e) => {e.preventDefault(); history.push(getGoToLink("archivedNoteDetail", {notebookID, noteID: note._id}))}}>
+        <div
+          key={note._id}
+            className="note-list-item"
+            onClick={(e) => {
+              e.preventDefault();
+               history.push(getGoToLink("archivedNoteDetail", {notebookID, noteID: note._id}))
+             }}
+             >
           <span className="title" style={note._id === noteID ? {color: "#0078d4"} : {}}>{yellowMatch(note.title)}</span>
           <div className="tags">
           {note.tags.map(tag => (
@@ -125,30 +195,7 @@ export default function ArchivedNotesList( props ) {
         </div>
       ))
       }
-
-      {
-        narrow &&
-        noteID &&
-        <Modal isOpen={true} className="wide bkg-grey">
-          <ModalBody>
-            <div style={{position: "relative"}}>
-              <LinkButton
-                style={{position: "absolute", right: "0"}}
-                font={"grey"}
-                onClick={() => history.goBack()}
-                >
-                <img
-                  className="icon"
-                  src={CloseIcon}
-                  className="basic-icon"
-                  alt="Close icon not found"
-                  />
-              </LinkButton>
-            </div>
-                <NoteDetail {...props} />            
-          </ModalBody>
-        </Modal>
-      }
+    </Card>
 
     </List>
   );

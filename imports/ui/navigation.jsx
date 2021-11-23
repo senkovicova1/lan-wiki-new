@@ -28,13 +28,13 @@ import {
   TagsCollection
 } from '/imports/api/tagsCollection';
 
+import Reroute from './reroute';
 import Header from './header';
 import Login from './login';
 import EditUserContainer from './users/editUserContainer';
 import NotesContainer from '/imports/ui/notes/notesContainer';
 import ArchivedNotesContainer from '/imports/ui/notes/archivedNotesContainer';
 import NotesList from '/imports/ui/notes/list';
-import NotebooksList from '/imports/ui/notebooks/list';
 import AddNotebook from '/imports/ui/notebooks/addNotebookContainer';
 import EditNotebook from '/imports/ui/notebooks/editNotebookContainer';
 import TagsList from '/imports/ui/tags/list';
@@ -148,8 +148,6 @@ export default function MainPage( props ) {
           render={(props) => (
             <Header
               {...props}
-              setSearch={setSearch}
-              search={search}
               setParentOpenSidebar={setOpenSidebar}
               sortBy={sortBy}
               setSortBy={setSortBy}
@@ -166,6 +164,8 @@ export default function MainPage( props ) {
         {
           currentUser &&
           <Content withSidebar={openSidebar}>
+
+            <Route path={["/"]} component={Reroute} />
 
             <div style={{position: "relative",  height: "-webkit-fill-available"}}>
 
@@ -185,19 +185,6 @@ export default function MainPage( props ) {
                 )}
                 />
 
-                <Route
-                  exact
-                  path={getLink("notebooksList")}
-                  render={(props) => (
-                    <NotebooksList
-                      {...props}
-                      search={search}
-                      sortBy={sortBy}
-                      sortDirection={sortDirection}
-                      />
-                  )}
-                  />
-
                   <Route
                     exact
                     path={[
@@ -209,6 +196,7 @@ export default function MainPage( props ) {
                     render={(props) => (
                       <NotesContainer
                         {...props}
+                        setSearch={setSearch}
                         search={search}
                         sortBy={sortBy}
                         sortDirection={sortDirection}
@@ -225,6 +213,7 @@ export default function MainPage( props ) {
                       render={(props) => (
                         <ArchivedNotesContainer
                           {...props}
+                          setSearch={setSearch}
                           search={search}
                           sortBy={sortBy}
                           sortDirection={sortDirection}
@@ -256,6 +245,7 @@ export default function MainPage( props ) {
                 render={(props) => (
                   <ArchivedNotebooksList
                     {...props}
+                    setSearch={setSearch}
                     search={search}
                     sortBy={sortBy}
                     sortDirection={sortDirection}

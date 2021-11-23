@@ -13,9 +13,13 @@ import {
 
 import { setArchivedNotebooks } from '/imports/redux/archivedNotebooksSlice';
 
-import { FolderIcon } from  "/imports/other/styles/icons";
+import { FolderIcon, SearchIcon, CloseIcon } from  "/imports/other/styles/icons";
 import {
-  IndexList,
+  List,
+  Card,
+  SearchSection,
+  Input,
+  LinkButton,
 } from "/imports/other/styles/styledComponents";
 
 import {
@@ -28,9 +32,11 @@ export default function ArchivedNotebooksList( props ) {
   const {
     match,
     history,
+    setSearch,
     search,
     sortBy,
     sortDirection,
+    narrow,
   } = props;
 
   const userId = Meteor.userId();
@@ -76,30 +82,87 @@ export default function ArchivedNotebooksList( props ) {
     }
 
   return (
-    <IndexList>
+    <List narrow={true}>
+
       <h2>Archived notebooks</h2>
+      <span className="command-bar">
+        <SearchSection>
+          <LinkButton
+            font="#0078d4"
+            searchButton
+            onClick={(e) => {}}
+            >
+            <img
+              className="search-icon"
+              src={SearchIcon}
+              alt="Search icon not found"
+              />
+          </LinkButton>
+        <Input
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          />
+      <LinkButton
+        font="#0078d4"
+        searchButton
+        onClick={(e) => {
+          e.preventDefault();
+          setSearch("");
+        }}
+        >
+        <img
+          className="search-icon"
+          src={CloseIcon}
+          alt="Close icon not found"
+          />
+      </LinkButton>
+        </SearchSection>
+      </span>
+
+      <Card noPadding={true}>
       {
         sortedNotebooks.length === 0 &&
         <span className="message">You have no archived notebooks</span>
       }
       {
+        sortedNotebooks.length > 0 &&
+        <div
+          className="note-list-head"
+          key={0}
+          >
+          <span
+            className="title"
+            >
+            Title
+          </span>
+        </div>
+      }
+      {
         sortedNotebooks.map(notebook =>
           <div
+            className="note-list-item"
             key={notebook._id}
             onClick={(e) => {
               e.preventDefault();
               history.push(getGoToLink("archivedNotesList", {notebookID: notebook._id}))
             }}
             >
-                        <img
-                          className="icon"
-                          src={FolderIcon}
-                          alt=""
-                          />
-              {yellowMatch(notebook.name)}
+            <img
+              style={{marginRight: "0.3em"}}
+              className="icon"
+              src={FolderIcon}
+              alt=""
+              />
+            <span
+              className="title"
+              >
+              {notebook ? yellowMatch(notebook.name) : "Untitled"}
+            </span>
           </div>
         )
       }
-    </IndexList>
+    </Card>
+    </List>
   );
 };

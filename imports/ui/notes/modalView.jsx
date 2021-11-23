@@ -13,8 +13,6 @@ import {
 } from "/imports/other/styles/icons";
 import {
   Form,
-  Card,
-  BorderedLinkButton,
   ViewInput,
   ViewTextarea,
   LinkButton
@@ -36,8 +34,7 @@ export default function NoteDetail( props ) {
 
   const {
     match,
-    history,
-    narrow
+    history
   } = props;
 
   const userId = Meteor.userId();
@@ -70,59 +67,27 @@ export default function NoteDetail( props ) {
   const userCanEdit = notebook ? notebook.users.find(user => user._id === userId).editItems : false;
 
   return (
-    <Form narrow={narrow}>
-        <span className="command-bar">
-          <BorderedLinkButton
-            fit={true}
-            onClick={(e) => {
-              e.preventDefault();
-              if (filterType === "notebooks"){
-                history.push(
-                  getGoToLink(
-                    "notesInNotebook", {
-                      notebookID: categoryID,
-                    }
-                  )
-                );
-              } else {
-              history.push(
-                getGoToLink(
-                  "notesWithTag", {
-                    tagID: categoryID
-                  }
-                )
-              );
-            }
-            }}
-            >
-            <img
-              className="icon"
-              src={BackIcon}
-              alt=""
-              />
-            Back
-          </BorderedLinkButton>
-          {
-            userCanEdit &&
-        <BorderedLinkButton
-          fit={true}
-          onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {noteID, filterType, categoryID}));}}
-          >
-          <img
-            className="icon"
-            src={PencilIcon}
-            alt=""
-            />
-          Edit
-        </BorderedLinkButton>
-      }
-      </span>
+    <Form style={layout === COLUMNS ? {backgroundColor: "white"} : {}}>
 
-      <Card>
       <h2>{note.title}</h2>
 
       <hr/>
 
+      {
+        userCanEdit &&
+        <LinkButton
+          fit={true}
+          onClick={(e) => {e.preventDefault(); history.push(getGoToLink("noteEdit", {noteID, filterType, categoryID}));}}
+          >
+          <img
+            className="basic-icon"
+            style={{width: "1em"}}
+            src={PencilIcon}
+            alt=""
+            />
+          Edit
+        </LinkButton>
+      }
 
       <section>
         <label style={{width: "100px"}}>Notebook:</label>
@@ -153,7 +118,6 @@ export default function NoteDetail( props ) {
           >
         </div>
       </section>
-    </Card>
 
     </Form>
   );

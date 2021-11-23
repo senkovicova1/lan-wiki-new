@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { FolderIcon } from  "/imports/other/styles/icons";
 import {
-  IndexList,
+  List,
 } from "/imports/other/styles/styledComponents";
 
 import {
@@ -57,7 +57,7 @@ export default function NotebooksList( props ) {
     }
 
   return (
-    <IndexList narrow={layout === PLAIN}>
+    <List narrow={layout === PLAIN}>
       <h2 style={{ marginTop: "0em", marginBottom: "0em"}}>Notebooks</h2>
       {
         sortedNotebooks.length === 0 &&
@@ -83,6 +83,6 @@ export default function NotebooksList( props ) {
         )
       }
 
-    </IndexList>
+    </List>
   );
 };

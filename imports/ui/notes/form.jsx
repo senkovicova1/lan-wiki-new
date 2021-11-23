@@ -12,12 +12,16 @@ import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 
 import Loader from '/imports/ui/other/loadingScreen';
 
+import { BackIcon, PencilIcon } from  "/imports/other/styles/icons";
+
 import {
   Form,
+  Card,
   TitleInput,
   Input,
-  ButtonRow,
-  LinkButton,
+  CommandRow,
+  BorderedLinkButton,
+  BorderedFullButton,
 } from "/imports/other/styles/styledComponents";
 
 import {
@@ -116,9 +120,11 @@ export default function NoteForm( props ) {
     }
 
   return (
-    <Form narrow={layout === PLAIN && !location.pathname.includes("edit")}>
+    <Form id="form" narrow={layout === PLAIN && !location.pathname.includes("edit") && !location.pathname.includes("view")}>
 
-      <section style={!formTitle ? {marginTop: "0px"} : {}}>
+      <Card>
+
+      <section style={{marginTop: "0px"}}>
         <TitleInput
           id="title"
           name="title"
@@ -177,43 +183,61 @@ export default function NoteForm( props ) {
           buttonId={"ckeditor-file-upload-button-note-form"}
           editorIndex={0}
           />
-
-      <ButtonRow>
-        {
-          !useAutosave &&
-        <LinkButton font="red" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</LinkButton>
+          {
+            location.pathname.includes("edit") &&
+          <div className="autosave">
+            <Input
+              id="autosave"
+              name="autosave"
+              type="checkbox"
+              checked={useAutosave}
+              onChange={() => {
+                setUseAutosave(!useAutosave);
+              }}
+              />
+            <span htmlFor="autosave">Autosave</span>
+        </div>
       }
-        {
-          location.pathname.includes("edit") &&
-        <div className="autosave">
-          <Input
-            id="autosave"
-            name="autosave"
-            type="checkbox"
-            checked={useAutosave}
-            onChange={() => {
-              setUseAutosave(!useAutosave);
-            }}
-            />
-          <span htmlFor="autosave">Autosave</span>
-      </div>
-    }
-        <LinkButton
-          colour=""
-          disabled={notebook === null}
-          onClick={(e) => {
-            e.preventDefault();
-            onSubmit(
-            title,
-            tags.map(tag => tag._id),
-            notebook.value,
-            body
-          );
-        }}
+    </Card>
+
+    <CommandRow id="command_row">
+        <BorderedLinkButton
+          fit={true}
+          onClick={(e) => {e.preventDefault(); onCancel();}}
           >
-          Save
-        </LinkButton>
-      </ButtonRow>
+          <img
+            className="icon"
+            src={BackIcon}
+            alt=""
+            />
+          <span>
+            { useAutosave ? "Back" : "Cancel" }
+          </span>
+        </BorderedLinkButton>
+
+      <BorderedFullButton
+        fit={true}
+        disabled={notebook === null}
+        onClick={(e) => {
+          e.preventDefault();
+          onSubmit(
+          title,
+          tags.map(tag => tag._id),
+          notebook.value,
+          body
+        );
+      }}
+        >
+        <img
+          className="icon"
+          src={PencilIcon}
+          alt=""
+          />
+        <span>
+        Save
+    </span>
+      </BorderedFullButton>
+    </CommandRow>
 
     </Form>
   );

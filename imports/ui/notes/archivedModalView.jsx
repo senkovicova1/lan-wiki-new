@@ -13,8 +13,6 @@ import {
 } from "/imports/other/styles/icons";
 import {
   Form,
-  Card,
-  BorderedLinkButton,
   ViewInput,
   ViewTextarea,
   FloatingButton
@@ -67,25 +65,8 @@ export default function ArchivedNoteDetail( props ) {
   }, [notebook, userId]);
 
   return (
-    <Form>
-      <span style={{display: "flex", padding: "0px", marginBottom: "1em"}}>
-        <BorderedLinkButton
-          fit={true}
-          onClick={(e) => {
-            e.preventDefault();
-            history.goBack();
-          }}
-          >
-          <img
-            className="icon"
-            src={BackIcon}
-            alt=""
-            />
-          Back
-        </BorderedLinkButton>
-      </span>
+    <Form style={layout === COLUMNS ? {backgroundColor: "white"} : {}}>
 
-      <Card style={{marginTop: "1em"}}>
       <h2>{note.title}</h2>
 
       <section>
@@ -104,7 +85,6 @@ export default function ArchivedNoteDetail( props ) {
           >
         </div>
       </section>
-    </Card>
 
     </Form>
   );

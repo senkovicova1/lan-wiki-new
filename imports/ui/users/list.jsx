@@ -16,6 +16,7 @@ import EditUser from './editUserContainer';
 
 import {
   List,
+  Card,
   Input,
   LinkButton
 } from "/imports/other/styles/styledComponents";
@@ -29,10 +30,13 @@ export default function UserList( props ) {
 
 
   return (
-    <List>
+    <List narrow={true}>
       <h2>Users</h2>
+      <span className="command-bar">
       <AddUser {...props} />
-      <table style={{width: "100%"}}>
+    </span>
+      <Card>
+      <table>
         <thead>
           <tr>
             <th width="20%">Name</th>
@@ -105,6 +109,7 @@ export default function UserList( props ) {
          </ModalBody>
        </Modal>
      }
+   </Card>
 
     </List>
   );

@@ -13,7 +13,8 @@ import {
 } from "/imports/other/constants";
 import {
   List,
-  FloatingButton
+  FloatingButton,
+    Card,
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -32,9 +33,11 @@ export default function NotesContainer( props ) {
   if (window.innerWidth <= 820 || layout === PLAIN){
     switch (match.path) {
       case "/archived/:notebookID":
-        return <NotesList narrow={layout === PLAIN} {...props} />;
+        return <NotesList narrow={true} {...props} />;
+      case "/archived/:notebookID/:noteID":
+        return <NoteDetail {...props} />;
       default:
-        return <NotesList narrow={layout === PLAIN}{...props} />;
+        return <NotesList narrow={true}{...props} />;
     }
   }
 
@@ -43,7 +46,7 @@ export default function NotesContainer( props ) {
       <div style={{width: "-webkit-fill-available"}}>
         <NotesList {...props} />
       </div>
-      <div style={{width: "200%", backgroundColor: "white", height: "-webkit-fill-available"}}>
+      <div style={{width: "200%", backgroundColor: "transparent", height: "-webkit-fill-available"}}>
         {
           noteID &&
           match.path === "/archived/:notebookID/:noteID" &&
@@ -51,7 +54,9 @@ export default function NotesContainer( props ) {
         }
         {
           !noteID &&
-        <div style={{paddingLeft: "20px"}}><h2>No chosen note</h2> </div>
+          <Card style={{margin: "1em"}}>
+            <div style={{paddingLeft: "20px"}}><h2>No chosen note</h2> </div>
+          </Card>
       }
       </div>
     </div>
