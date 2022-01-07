@@ -16,6 +16,10 @@ import {
 import NoteDetail from '/imports/ui/notes/modalView';
 import NoteEdit from '/imports/ui/notes/editContainer';
 
+import {
+  setSearch,
+} from '/imports/redux/metadataSlice';
+
 import { CloseIcon, PlusIcon, SearchIcon } from  "/imports/other/styles/icons";
 
 import {
@@ -34,15 +38,13 @@ import {
 
 export default function NotesList( props ) {
 
+  const dispatch = useDispatch();
+
   const {
     match,
     location,
     history,
-    setSearch,
-    search,
-    sortBy,
-    sortDirection,
-    narrow,
+    narrow
   } = props;
 
   const {notebookID, tagID, categoryID, filterType, noteID} = match.params;
@@ -50,6 +52,11 @@ export default function NotesList( props ) {
 
   const tags = useSelector( ( state ) => state.tags.value );
   const notebooks = useSelector( ( state ) => state.notebooks.value );
+  const {
+    search,
+    sortBy,
+    sortDirection
+  } = useSelector( ( state ) => state.metadata.value );
 
   const category = useMemo(() => {
     let id = notebookID ? notebookID : tagID;
@@ -123,14 +130,14 @@ export default function NotesList( props ) {
         <Input
           placeholder="Search"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => dispatch(setSearch(e.target.value))}
           />
       <LinkButton
         font="#0078d4"
         searchButton
         onClick={(e) => {
           e.preventDefault();
-          setSearch("");
+          dispatch(setSearch(""));
         }}
         >
         <img
@@ -161,15 +168,7 @@ export default function NotesList( props ) {
 
 
       <Card noPadding={true}>
-      {
-        sortedNotes.length === 0 &&
-        <span className="message">
-          You have no notes here.
-          </span>
-      }
 
-      {
-        sortedNotes.length > 0 &&
         <div
           className="note-list-head"
           key={0}
@@ -188,7 +187,13 @@ export default function NotesList( props ) {
             </span>
         </div>
         </div>
-      }
+
+        {
+          sortedNotes.length === 0 &&
+          <div className="note-list-item" >
+            <span className="title">You have no notes here.</span>
+          </div>
+        }
 
       {
         sortedNotes.length > 0 &&

@@ -47,7 +47,7 @@ export default function EditUserContainer( props ) {
 
   if (!userID){
     return (
-      <CurrentUserForm title={"Edit useasdfr"} user={user} onSubmit={editUser} onCancel={onCancel}/>
+      <CurrentUserForm title={"Edit user"} user={user} onSubmit={editUser} onCancel={onCancel}/>
       )
   }
 

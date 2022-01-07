@@ -118,10 +118,7 @@ export default function MainPage( props ) {
       }
     }, [notes, tags]);
 
-  const [ search, setSearch ] = useState( "" );
   const [ openSidebar, setOpenSidebar ] = useState( false );
-  const [ sortBy, setSortBy ] = useState("name");
-  const [ sortDirection, setSortDirection ] = useState("asc");
 
   return (
     <div style={{height: "100vh"}}>
@@ -149,10 +146,6 @@ export default function MainPage( props ) {
             <Header
               {...props}
               setParentOpenSidebar={setOpenSidebar}
-              sortBy={sortBy}
-              setSortBy={setSortBy}
-              sortDirection={sortDirection}
-              setSortDirection={setSortDirection}
               />
           )}
           />
@@ -181,7 +174,7 @@ export default function MainPage( props ) {
                 exact
                 path={getLink("usersList")}
                 render={(props) => (
-                  <UsersList {...props} search={search}/>
+                  <UsersList {...props}/>
                 )}
                 />
 
@@ -196,10 +189,6 @@ export default function MainPage( props ) {
                     render={(props) => (
                       <NotesContainer
                         {...props}
-                        setSearch={setSearch}
-                        search={search}
-                        sortBy={sortBy}
-                        sortDirection={sortDirection}
                         />
                     )}
                     />
@@ -213,10 +202,6 @@ export default function MainPage( props ) {
                       render={(props) => (
                         <ArchivedNotesContainer
                           {...props}
-                          setSearch={setSearch}
-                          search={search}
-                          sortBy={sortBy}
-                          sortDirection={sortDirection}
                           />
                       )}
                       />
@@ -230,9 +215,6 @@ export default function MainPage( props ) {
                   render={(props) => (
                     <TagsList
                       {...props}
-                      search={search}
-                      sortBy={sortBy}
-                      sortDirection={sortDirection}
                       />
                   )}
                   />
@@ -245,10 +227,6 @@ export default function MainPage( props ) {
                 render={(props) => (
                   <ArchivedNotebooksList
                     {...props}
-                    setSearch={setSearch}
-                    search={search}
-                    sortBy={sortBy}
-                    sortDirection={sortDirection}
                     />
                 )}
               />

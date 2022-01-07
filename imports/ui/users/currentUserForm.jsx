@@ -271,6 +271,8 @@ export default function UserForm( props ) {
             id="avatar"
             name="avatar"
             type="file"
+            style={{display: "block"}}
+            width="100%"
             value={avatar.name}
             onChange={(e) =>  {
               e.persist();

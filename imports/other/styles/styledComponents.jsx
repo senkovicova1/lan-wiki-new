@@ -291,9 +291,9 @@ export const Content = styled.main `
       !props.withSidebar &&
       `
       margin: 0px;
-        margin-left: auto;
-        margin-right: auto;
-        overflow-y: auto;
+      margin-left: auto;
+      margin-right: auto;
+      overflow-y: auto;
       `
     }
   }
@@ -882,6 +882,8 @@ height: 2.5em !important;
 
 &[type=checkbox]{
     vertical-align: middle;
+    width: 1.2em !important;
+    height: 1.2em !important;
 }
 `;
 

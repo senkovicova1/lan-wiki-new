@@ -193,6 +193,7 @@ const userId = Meteor.userId();
           id="archived"
           name="archived"
           type="checkbox"
+          style={{marginRight: "0.6em"}}
           checked={archived}
           onChange={(e) =>  setArchived(!archived)}
           />

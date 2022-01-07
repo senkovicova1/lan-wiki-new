@@ -170,6 +170,8 @@ export default function UserForm( props ) {
             id="avatar"
             name="avatar"
             type="file"
+            style={{display: "block"}}
+            width="100%"
             value={avatar.name}
             onChange={(e) =>  {
               e.persist();
@@ -302,7 +304,7 @@ export default function UserForm( props ) {
           <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>
         }
         {openLogIn &&
-          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); openLogIn()}}>Cancel</FullButton>
+          <FullButton colour="grey" style={{marginTop: "1em"}} onClick={(e) => {e.preventDefault(); openLogIn()}}>Cancel</FullButton>
         }
         {onRemove &&
           false &&

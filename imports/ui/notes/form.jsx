@@ -120,7 +120,7 @@ export default function NoteForm( props ) {
     }
 
   return (
-    <Form id="form" narrow={layout === PLAIN && !location.pathname.includes("edit") && !location.pathname.includes("view")}>
+    <Form id="form" narrow={layout === PLAIN && !location.pathname.includes("edit") && !location.pathname.includes("add") && !location.pathname.includes("view")}>
 
       <Card>
 

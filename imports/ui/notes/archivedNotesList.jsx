@@ -19,6 +19,10 @@ import {
 
 import NoteDetail from '/imports/ui/notes/archivedModalView';
 
+import {
+  setSearch,
+} from '/imports/redux/metadataSlice';
+
 import { setArchivedNotes } from '/imports/redux/archivedNotesSlice';
 
 import {
@@ -40,20 +44,22 @@ import {
 } from "/imports/other/navigationLinks";
 
 export default function ArchivedNotesList( props ) {
+
   const dispatch = useDispatch();
 
   const {
     match,
     history,
-    setSearch,
-    search,
-    sortBy,
-    sortDirection,
     narrow
   } = props;
 
   const {notebookID, noteID} = match.params;
   const userId = Meteor.userId();
+  const {
+    search,
+    sortBy,
+    sortDirection
+  } = useSelector( ( state ) => state.metadata.value );
 
   const notes = useTracker( () => NotesCollection.find( { notebook: notebookID} ).fetch() );
 
@@ -128,14 +134,14 @@ export default function ArchivedNotesList( props ) {
         <Input
           placeholder="Search"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => dispatch(setSearch(e.target.value))}
           />
       <LinkButton
         font="#0078d4"
         searchButton
         onClick={(e) => {
           e.preventDefault();
-          setSearch("");
+          dispatch(setSearch(e.target.value));
         }}
         >
         <img

@@ -13,6 +13,10 @@ import {
 
 import { setArchivedNotebooks } from '/imports/redux/archivedNotebooksSlice';
 
+import {
+  setSearch,
+} from '/imports/redux/metadataSlice';
+
 import { FolderIcon, SearchIcon, CloseIcon } from  "/imports/other/styles/icons";
 import {
   List,
@@ -32,14 +36,16 @@ export default function ArchivedNotebooksList( props ) {
   const {
     match,
     history,
-    setSearch,
-    search,
-    sortBy,
-    sortDirection,
     narrow,
   } = props;
 
   const userId = Meteor.userId();
+
+  const {
+    search,
+    sortBy,
+    sortDirection
+  } = useSelector( ( state ) => state.metadata.value );
 
   const notebooks = useTracker( () => NotebooksCollection.find( { users:  { $elemMatch: { _id: userId, active: true } }, archived: true } ).fetch() );
 
@@ -101,14 +107,14 @@ export default function ArchivedNotebooksList( props ) {
         <Input
           placeholder="Search"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => dispatch(setSearch(e.target.value))}
           />
       <LinkButton
         font="#0078d4"
         searchButton
         onClick={(e) => {
           e.preventDefault();
-          setSearch("");
+          dispatch(setSearch(""));
         }}
         >
         <img

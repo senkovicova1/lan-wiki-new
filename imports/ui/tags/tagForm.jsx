@@ -69,7 +69,7 @@ export default function TagForm( props ) {
 
 
   return (
-    <Form>
+    <Form narrow={true}>
 
       <section>
         <label htmlFor="name">Name</label>
